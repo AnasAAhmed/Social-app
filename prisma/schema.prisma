@@ -1,0 +1,136 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider     = "mysql"
+  url          = env("DATABASE_URL")
+  relationMode = "prisma"
+}
+
+model User {
+  id                     String          @id
+  username               String          @unique
+  avatar                 String?
+  cover                  String?
+  name                   String?
+  surname                String?
+  description            String?
+  city                   String?
+  school                 String?
+  work                   String?
+  dob                    DateTime?
+  website                String?
+  createdAt              DateTime        @default(now())
+  posts                  Post[]
+  likes                  Like[]
+  comments               Comments[]
+  follower               Follower[]      @relation("UserFollowers")
+  following              Follower[]      @relation("UserFollowings")
+  followRequestsSent     FollowRequest[] @relation("FollowRequestsSent")
+  followRequestsReceived FollowRequest[] @relation("FollowRequestsReceived")
+  blocks                 Block[]         @relation("BlockSent")
+  blockBy                Block[]         @relation("BlocksReceived")
+  stories                Story[]
+}
+
+model Post {
+  id        Int        @id @default(autoincrement())
+  desc      String
+  img       String?
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  user      User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  likes     Like[]
+  userId    String
+  comments  Comments[]
+
+  @@index([userId])
+}
+
+model Comments {
+  id        Int      @id @default(autoincrement())
+  desc      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+  likes     Like[]
+  postId    Int
+  userId    String
+
+  @@index([userId])
+  @@index([postId])
+}
+
+model Like {
+  id        Int       @id @default(autoincrement())
+  createdAt DateTime  @default(now())
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String
+  post      Post?     @relation(fields: [postId], references: [id], onDelete: Cascade)
+  postId    Int?
+  comment   Comments? @relation(fields: [commentId], references: [id])
+  commentId Int?
+
+  @@index([userId])
+  @@index([postId])
+  @@index([commentId])
+}
+
+model Follower {
+  id          Int      @id @default(autoincrement())
+  createdAt   DateTime @default(now())
+  following   User     @relation("UserFollowings", fields: [followingId], references: [id], onDelete: Cascade)
+  follower    User     @relation("UserFollowers", fields: [followerId], references: [id], onDelete: Cascade)
+  followerId  String
+  followingId String
+
+  @@index([followerId])
+  @@index([followingId])
+}
+
+model FollowRequest {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  sender    User     @relation("FollowRequestsSent", fields: [senderId], references: [id], onDelete: Cascade)
+
+  receiver   User   @relation("FollowRequestsReceived", fields: [receiverId], references: [id], onDelete: Cascade)
+  senderId   String
+  receiverId String
+
+  @@unique([receiverId, senderId])
+  @@index([senderId])
+  @@index([receiverId])
+}
+
+model Block {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  blocker   User     @relation("BlockSent", fields: [blockerId], references: [id], onDelete: Cascade)
+
+  blocked   User   @relation("BlocksReceived", fields: [blockedId], references: [id], onDelete: Cascade)
+  blockerId String
+  blockedId String
+
+  @@unique([blockedId, blockerId])
+  @@index([blockerId])
+  @@index([blockedId])
+}
+
+model Story {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  expiresAt DateTime
+  img       String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String   @unique
+
+  @@index([userId])
+}
