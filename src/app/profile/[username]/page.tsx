@@ -99,7 +99,7 @@ const ProfilePage = async ({ searchParams, params }: { searchParams: SearchParam
           </div>
         </div>
         <div className="hidden xl:block overflow-scroll scrollbar-hide fixed top-30 right-0 h-full w-1/4 max-xl:w-1/3 pr-14">
-          <RightMenu />
+          <RightMenu user={user}/>
         </div>
       </Suspense>
     </div>
