@@ -35,10 +35,10 @@ const Friends = async ({ searchParams }: SearchParamProps) => {
   });
   const totalPages = Math.ceil(requestsCount / perPage);
   return (
-    <div className='flex gap-6 pt-6'>
+    <div className='flex gap-6'>
       <Suspense fallback={<LoaderGif />}>
 
-      <div className="hidden  flex-col md:flex gap-6 w-[20%]"> <MenuBar /><Ad size="md" /></div>
+      <div className="hidden  flex-col md:flex gap-6 w-[20%]"> <MenuBar /><Ad size="sm" /></div>
       <div className="flex flex-col gap-6 w-full lg:w-4/5">
         <h1 className="text-3xl font-bold mb-4 text-slate-600">Friend Requests</h1>
        <FriendRequestList requests={requests} isPage={true} />

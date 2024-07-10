@@ -49,13 +49,14 @@ const ProfilePage = async ({ searchParams, params }: { searchParams: SearchParam
   if (isBlocked) return <Blocked />;
 
   return (
-    <div className='flex gap-6 pt-6'>
+    <div className='flex'>
 
       <Suspense fallback={<LoaderGif />}>
-        <div className="hidden xl:block"><LeftMenu type='profile' /></div>
-        <div className="w-full lg:w-[70%] xl:w-[50%] ">
+      <div className="hidden md:block overflow-scroll scrollbar-hide fixed top-30 left-0 h-full w-[30%] xl:w-1/4 pl-14">
+          <LeftMenu type='home' />
+        </div>
+        <div className="w-full md:w-[70%] xl:w-1/2 xl:mx-auto">
           <div className="flex flex-col gap-6">
-
             <div className="flex flex-col items-center justify-center">
               <div className="w-full h-64 relative">
                 <Image
@@ -93,11 +94,12 @@ const ProfilePage = async ({ searchParams, params }: { searchParams: SearchParam
             </div>
 
             <div className='sm:hidden'> <UserMediaCard user={user} /></div>
+            <AddPost />
             <Feed searchParams={searchParams} username={user.username} />
           </div>
         </div>
-        <div className="hidden lg:block w-[30%]">
-          <RightMenu user={user} />
+        <div className="hidden xl:block overflow-scroll scrollbar-hide fixed top-30 right-0 h-full w-1/4 max-xl:w-1/3 pr-14">
+          <RightMenu />
         </div>
       </Suspense>
     </div>

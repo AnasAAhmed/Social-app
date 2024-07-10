@@ -13,18 +13,21 @@ const Homepage = ({ searchParams }: SearchParamProps) => {
   const { userId } = auth()
   if (!userId) return <NotLoggedIn />;
   return (
-    <div className='flex gap-6 pt-6'>
+    <div className='flex justify-end'>
       <Suspense fallback={<LoaderGif />}>
-
-        <div className="hidden xl:block"><LeftMenu type='home' /></div>
-        <div className="w-full lg:w-[70%] xl:w-[50%] ">
+        <div className="hidden md:block overflow-scroll scrollbar-hide fixed top-30 left-0 h-full w-[30%] xl:w-1/4 pl-14">
+          <LeftMenu type='home' />
+        </div>
+        <div className="w-full md:w-[70%] xl:w-1/2 xl:mx-auto">
           <div className="flex flex-col gap-6">
             <Stories />
             <AddPost />
             <Feed searchParams={searchParams} />
           </div>
         </div>
-        <div className="hidden lg:block w-[40%]"><RightMenu /></div>
+        <div className="hidden xl:block overflow-scroll scrollbar-hide fixed top-30 right-0 h-full w-1/4 max-xl:w-1/3 pr-14">
+          <RightMenu />
+        </div>
       </Suspense>
     </div>
   )

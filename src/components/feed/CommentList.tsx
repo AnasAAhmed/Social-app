@@ -4,9 +4,11 @@ import { useUser } from '@clerk/nextjs';
 import { Comments, User } from '@prisma/client';
 import Image from 'next/image';
 import Link from 'next/link';
-import React, { useState } from 'react';
+import React, { Suspense, useState } from 'react';
 import CommentInfo from './CommentInfo';
 import { calculateTimeDifference } from '@/lib/utils';
+import EmojiPicker, { EmojiClickData } from 'emoji-picker-react';
+import { Spinner } from '../Loader';
 
 // type CommentWithUser = any;
 type CommentWithUser = Comments & { user: User, likes?: string[] };
@@ -19,11 +21,16 @@ const CommentList = ({ comments, postId }: { comments: CommentWithUser[], postId
     })));
     const [desc, setDesc] = useState('');
     const [page, setPage] = useState(1);
-    const commentsPerPage = 3;
+    const [showEmojiPicker, setShowEmojiPicker] = useState(false);
 
+    const commentsPerPage = 3;
+    const handleEmojiClick = (event: EmojiClickData) => {
+        
+        setDesc(prevDesc => prevDesc + event.emoji);
+    };
     const add = async () => {
         if (!user || !desc) return;
-        const newComment = {
+        const newComment:CommentWithUser = {
             id: Math.random(),
             desc,
             createdAt: new Date(Date.now()),
@@ -65,7 +72,7 @@ const CommentList = ({ comments, postId }: { comments: CommentWithUser[], postId
         const updatedComment = { ...updatedComments[commentIndex] };
 
         if (updatedComment.likes && updatedComment.likes.includes(user.id)) {
-            updatedComment.likes = updatedComment.likes.filter((id:string) => id !== user.id);
+            updatedComment.likes = updatedComment.likes.filter((id: string) => id !== user.id);
         } else {
             updatedComment.likes = [...(updatedComment.likes || []), user.id];
         }
@@ -98,9 +105,25 @@ const CommentList = ({ comments, postId }: { comments: CommentWithUser[], postId
                 <div className="flex items-center gap-4">
                     <Image src={user?.imageUrl || "/noAvatar.png"} alt='' width={32} height={32} className='w-7 h-7 rounded-full' />
                     <form action={add} className="flex-1 px-6 flex items-centre justify-between bg-slate-100 rounded-xl text-sm py-2">
-                        <input type="text" placeholder='Write a comment...' className='bg-transparent outline-none flex-1 w-5'
+                        <input type="text" value={desc} placeholder='Write a comment...' className='bg-transparent outline-none flex-1 w-5'
                             onChange={e => setDesc(e.target.value)} />
-                        <Image src={"/emoji.png"} alt='' width={20} height={16} className='cursor-pointer' />
+                        <div className="relative hidden lg:block">
+                            <Image
+                                src="/emoji.png"
+                                alt=""
+                                width={20}
+                                height={20}
+                                className="w-5 h-5 cursor-pointer self-end"
+                                onClick={() => setShowEmojiPicker(!showEmojiPicker)}
+                            />
+                            {showEmojiPicker && (
+                                <div className="absolute top-6 right-0 z-10">
+                                    <Suspense fallback={<div className="bg-white p-8 rounded-md shadow-md"><Spinner w={20} h={20} /></div>}>
+                                        <EmojiPicker onEmojiClick={handleEmojiClick} />
+                                    </Suspense>
+                                </div>
+                            )}
+                        </div>
                     </form>
                 </div>
             }

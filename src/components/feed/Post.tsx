@@ -27,12 +27,17 @@ const Post = ({ post }: { post: feedPostsType }) => {
                             {post.user.name && post.user.surname
                                 ? post.user.name + ' ' + post.user.surname
                                 : post.user.username}
+                        <span className='text-sm text-gray-400'> @{post.user.username}</span>
                         </span>
+
                         <span className='text-gray-500 text-sm lg:text-md'>{calculateTimeDifference(post.createdAt)}</span>
                     </Link>
                 </div>
+                <div className="flex items-center gap-2">
+
                 {userId === post.userId && < UpdatePost post={post} />}
                 <PostInfo postId={post.id} userId={userId} posterId={post.user.id} />
+                </div>
             </div>
             {/* desc */}
             <div className="flex flex-col gap-4 sm:mx-4">

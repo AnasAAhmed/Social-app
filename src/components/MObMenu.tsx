@@ -2,6 +2,7 @@
 import { UserButton, useUser } from '@clerk/nextjs';
 import Link from 'next/link';
 import React, { useState } from 'react'
+import Search from './Search';
 
 const MobMenu = () => {
     const { user } = useUser();
@@ -14,19 +15,22 @@ const MobMenu = () => {
                 <div className={`w-6 h-1 bg-blue-500 rounded-sm ${isOpen && "-rotate-45"} origin-left ease-in-out duration-300`} />
             </div>
             {/* {isOpen && ( */}
-                <div onClick={() => setIsOpen(!isOpen)} className={`fixed duration-500 left-0 ${isOpen?'translate-x-[0%]':'-translate-x-[150%]'} top-0 w-[87%] px-1 h-full bg-white flex flex-col items-center justsify-center gap-7 font-medium text-xl z-30`}>
-                    <Link href={"/"} className='font-bold text-xl my-9 text-blue-600'>ANAS_SOCIAL</Link>
-                    <Link href={'/'}>Home</Link>
-                    <Link href={'/friends'}>Friends</Link>
-                    <Link href={'/friends/friend-requests'}>Friend Requests</Link>
-                    <Link href={'/friends/suggestions'}>Suggestions</Link>
-                    <Link href={'/stories'}>Stories</Link>
-                    <Link href={'/settings#'}>Settings</Link>
-                    <Link href={'/settings#/security'}>Security</Link>
-                    <Link href={'/settings/update-profile'}>My Info</Link>
-                    <Link href={`/profile/${user?.username}`}>My Profile</Link>
+            <div onClick={() => setIsOpen(!isOpen)} className={`fixed duration-500 left-0 ${isOpen ? 'translate-x-[0%]' : '-translate-x-[150%]'} top-0 w-[87%] px-1 h-full bg-white flex flex-col items-center justsify-center gap-7 font-medium text-xl z-30`}>
+                <Link href={"/"} className='font-bold text-xl my-9 text-blue-600'>ANAS_SOCIAL</Link>
+                <div onClick={(e) => e.stopPropagation()}>
+                    <Search />
                 </div>
-             {/* )}  */}
+                <Link href={'/'}>Home</Link>
+                <Link href={'/friends'}>Friends</Link>
+                <Link href={'/friends/friend-requests'}>Friend Requests</Link>
+                <Link href={'/friends/suggestions'}>Suggestions</Link>
+                <Link href={'/stories'}>Stories</Link>
+                <Link href={'/settings#'}>Settings</Link>
+                <Link href={'/settings#/security'}>Security</Link>
+                <Link href={'/settings/update-profile'}>My Info</Link>
+                <Link href={`/profile/${user?.username}`}>My Profile</Link>
+            </div>
+            {/* )}  */}
         </div>
     )
 }

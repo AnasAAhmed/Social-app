@@ -9,7 +9,7 @@ import DropDown from './DropDown'
 
 const Navbar = () => {
   return (
-    <div className='h-24 flex items-center justify-between'>
+    <div className='h-14 fixed bg-white w-full z-30 left-0 px-4 sm:px-8 flex items-center justify-between'>
       <div id='LEFT' className="md:hidden lg:block w-[20%]">
         <Link href={"/"} className='font-bold text-xl text-blue-600'>ANAS_SOCIAL</Link>
       </div>

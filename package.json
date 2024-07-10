@@ -12,6 +12,7 @@
   "dependencies": {
     "@clerk/nextjs": "^5.1.4",
     "@prisma/client": "^5.15.0",
+    "emoji-picker-react": "^4.11.1",
     "next": "^15.0.0-rc.0",
     "next-cloudinary": "^6.6.2",
     "prisma": "^5.16.1",

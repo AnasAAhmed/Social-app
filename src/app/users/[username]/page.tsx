@@ -53,11 +53,12 @@ const page = async ({ params, searchParams }: { params: { username: string }, se
     const totalPages = Math.ceil(totalUsers / perPage);
 
     return (
-        <div className='flex gap-6 pt-6'>
+        <div className='flex '>
             <Suspense fallback={<LoaderGif />}>
-
-                <div className="hidden xl:block"><LeftMenu type='home' /></div>
-                <div className="w-full lg:w-[70%] xl:w-[50%] ">
+                <div className="hidden md:block overflow-scroll scrollbar-hide fixed top-30 left-0 h-full w-[30%] xl:w-1/4 pl-14">
+                    <LeftMenu type='home' />
+                </div>
+                <div className="w-full md:w-[70%] xl:w-1/2 xl:mx-auto">
                     <div className="flex flex-col gap-6">
                         <div className="p-4 bg-white shadow-md rounded-lg flex flex-col gap-8">
 
@@ -76,6 +77,7 @@ const page = async ({ params, searchParams }: { params: { username: string }, se
                                                 ? `${user.name} ${user.surname}`
                                                 : user.username}
                                         </h3>
+                                               <span className='text-sm text-gray-400'> @{user.username}</span>
                                         <p className="text-gray-600">mutual friends 12</p>
                                     </div>
                                     <div className="flex gap-3">
@@ -89,7 +91,9 @@ const page = async ({ params, searchParams }: { params: { username: string }, se
                         </div>
                     </div>
                 </div>
-                <div className="hidden lg:block w-[40%]"><RightMenu /></div>
+                <div className="hidden xl:block overflow-scroll scrollbar-hide fixed top-30 right-0 h-full w-1/4 max-xl:w-1/3 pr-14">
+                    <RightMenu />
+                </div>
             </Suspense>
         </div>
     )

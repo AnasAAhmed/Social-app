@@ -1,11 +1,13 @@
 'use client'
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { CldUploadWidget } from "next-cloudinary";
 import AddPostButton from "../AddPostButton";
 import { updatePost } from "@/lib/action";
 import { Post } from "@prisma/client";
 import React from "react";
+import EmojiPicker, { EmojiClickData } from "emoji-picker-react";
+import { Spinner } from "../Loader";
 
 const UpdatePost = ({ post }: { post: Post }) => {
 
@@ -13,9 +15,12 @@ const UpdatePost = ({ post }: { post: Post }) => {
     const [desc, setDesc] = useState(post.desc || '');
     const [img, setImg] = useState<any>(null);
     const [open, setOpen] = useState<boolean>(false);
+    const [showEmojiPicker, setShowEmojiPicker] = useState(false);
 
     const handleImageRemove = () => setImg('');
-
+    const handleEmojiClick = (event: EmojiClickData) => {
+        setDesc(prevDesc => prevDesc + event.emoji);
+    };
     useEffect(() => {
         setImg('')
     }, [post.img])
@@ -26,7 +31,7 @@ const UpdatePost = ({ post }: { post: Post }) => {
                 className="text-blue-500 text-xs cursor-pointer"
                 onClick={() => setOpen(true)}
             >
-                Update
+                <Image src={'/edit.svg'} alt="update" width={14} height={14} />
             </span>
             {open && (
                 <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-65 z-50">
@@ -74,7 +79,25 @@ const UpdatePost = ({ post }: { post: Post }) => {
                                         value={desc}
                                         onChange={(e) => setDesc(e.target.value)}
                                     ></textarea>
-                                    <AddPostButton desc={desc} text="Update"/>
+                                    <div className="relative hidden lg:block">
+                                        <Image
+                                            src="/emoji.png"
+                                            alt=""
+                                            width={20}
+                                            height={20}
+                                            className="w-5 h-5 cursor-pointer self-end"
+                                            onClick={() => setShowEmojiPicker(!showEmojiPicker)}
+                                        />
+                                        {showEmojiPicker && (
+                                            <div className="absolute top-6 right-0 z-10">
+                                                <Suspense fallback={<div className="bg-white p-8 rounded-md shadow-md"><Spinner w={20} h={20} /></div>}>
+                                                    <EmojiPicker onEmojiClick={handleEmojiClick} />
+                                                </Suspense>
+                                            </div>
+                                        )}
+                                    </div>
+
+                                    <AddPostButton desc={desc} text="Update" />
                                 </form>
                                 <div className="flex items-center gap-2">
                                     <CldUploadWidget

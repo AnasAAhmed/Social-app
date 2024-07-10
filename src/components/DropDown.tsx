@@ -21,7 +21,7 @@ const DropDown = ({ options }: DropSearchProps) => {
     const toggleOpen = () => setOpen(!open);
 
     return (
-        <div className="relative" onMouseLeave={handleMouseLeave}>
+        <div className="relative" >
             <button
                 onMouseEnter={handleMouseEnter}
                 onClick={toggleOpen}
@@ -33,7 +33,7 @@ const DropDown = ({ options }: DropSearchProps) => {
 
             </button>
             {open && (
-                <div
+                <div onMouseLeave={handleMouseLeave}
                     className="absolute z-30 animate-modal p-2 w-44 left-20 top-6 bg-white border border-gray-300 divide-y divide-gray-100 rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
                 >
                     {options.map((option, index) => (
