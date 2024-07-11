@@ -1,10 +1,9 @@
 import prisma from '@/lib/client'
 import { User } from '@prisma/client'
 import Image from 'next/image'
-import Link from 'next/link'
 import React from 'react'
 
-const UserMediaCard = async ({ user }: { user: User }) => {
+const UserMediaCard = async ({ user ,size}: { user: User ,size?:string}) => {
     const postSWithMedia = await prisma.post.findMany({
         where: {
             userId: user.id,
@@ -27,7 +26,7 @@ const UserMediaCard = async ({ user }: { user: User }) => {
             {/* top */}
             <div className=" flex justify-between items-center font-medium">
                 <span className="text-gray-500">Recent Media</span>
-                <Link href={'/'} className='text-blue-500 text-xs'>See all</Link>
+                <div className='text-blue-500 cursor-pointer text-xs'>See all</div>
             </div>
             <div className="flex gap-4 justify-center flex-wrap">
                 {postSWithMedia.length ? postSWithMedia.map((post) => (

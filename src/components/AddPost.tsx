@@ -1,14 +1,18 @@
 'use client'
 import { useUser } from "@clerk/nextjs";
 import Image from "next/image";
-import { Suspense, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { CldUploadWidget } from "next-cloudinary";
 import AddPostButton from "./AddPostButton";
 import { addPost } from "@/lib/action";
 import { LoaderGif, Spinner } from "./Loader";
 import dynamic from "next/dynamic";
 import { EmojiClickData } from "emoji-picker-react";
-const EmojiPicker = dynamic(() => import('emoji-picker-react'), { ssr: false });
+
+const EmojiPicker = dynamic(() => import('emoji-picker-react'), {
+  ssr: false,
+  loading: () => <div className="bg-white p-8 rounded-md shadow-md"><Spinner w={20} h={20} /></div>
+});
 
 const AddPost = () => {
   const { user, isLoaded } = useUser();
@@ -20,14 +24,15 @@ const AddPost = () => {
     setImg('')
   }, [])
 
-  const handleEmojiClick = (event:EmojiClickData) => {
-      setDesc(prevDesc => prevDesc + event.emoji);
+  const handleEmojiClick = (event: EmojiClickData) => {
+    setDesc(prevDesc => prevDesc + event.emoji);
   };
 
   if (!isLoaded) {
     return <LoaderGif />;
   }
   if (!user?.id) return null;
+
   return (
     <div className="p-4 bg-white shadow-md rounded-lg flex gap-4 justify-between text-sm">
       {/* AVATAR */}
@@ -70,18 +75,21 @@ const AddPost = () => {
               width={20}
               height={20}
               className="w-5 h-5 cursor-pointer self-end"
-              onClick={() => setShowEmojiPicker(!showEmojiPicker)}
+              onClick={() => {
+                setShowEmojiPicker(!showEmojiPicker);
+              }}
             />
             {showEmojiPicker && (
               <div className="absolute top-6 right-0 z-10">
-                <Suspense fallback={<div className="bg-white p-8 rounded-md shadow-md"><Spinner w={20} h={20}/></div>}>
-                <EmojiPicker onEmojiClick={handleEmojiClick} />
-                </Suspense>
+                <EmojiPicker
+                  open={showEmojiPicker}
+                  onEmojiClick={handleEmojiClick}
+                />
               </div>
             )}
             <AddPostButton desc={desc} />
           </div>
-         <div className="lg:hidden"><AddPostButton desc={desc} /></div>
+          <div className="lg:hidden"><AddPostButton desc={desc} /></div>
         </form>
         {/* POST OPTIONS */}
         <div className="flex items-center gap-4 mt-4 text-gray-400 flex-wrap">
@@ -104,11 +112,11 @@ const AddPost = () => {
             )}
           </CldUploadWidget>
           {img && <span className="bg-red-500 px-1 rounded-full text-white" onClick={() => setImg('')}>X</span>}
-          <div className="flex max-sm:hidden items-center gap-2 cursor-pointer">
+          <div className="flex items-center gap-2 cursor-pointer">
             <Image src="/poll.png" alt="" width={20} height={20} />
             Poll
           </div>
-          <div className="flex max-sm:hidden items-center gap-2 cursor-pointer">
+          <div className="flex items-center gap-2 cursor-pointer">
             <Image src="/addevent.png" alt="" width={20} height={20} />
             Event
           </div>

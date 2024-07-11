@@ -61,7 +61,7 @@ const page = async ({ params, searchParams }: { params: { query: string }, searc
     const totalPages = Math.ceil(totalPosts / perPage);
 
     return (
-        <div className='flex'>
+        <div className='flex justify-end'>
             <Suspense fallback={<LoaderGif />}>
                 <div className="hidden md:block overflow-scroll scrollbar-hide fixed top-30 left-0 h-full w-[30%] xl:w-1/4 pl-14">
                     <LeftMenu type='home' />

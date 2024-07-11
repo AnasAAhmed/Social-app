@@ -6,6 +6,7 @@ import NotLoggedIn from '@/components/NotLoggedIn';
 import Feed from '@/components/feed/Feed';
 import LeftMenu from '@/components/leftMenu/LeftMenu';
 import RightMenu from '@/components/rightMenu/RightMenu';
+import UserInfoCard from '@/components/rightMenu/UserInfoCard';
 import UserMediaCard from '@/components/rightMenu/UserMediaCard';
 import prisma from '@/lib/client';
 import { auth } from '@clerk/nextjs/server';
@@ -49,10 +50,10 @@ const ProfilePage = async ({ searchParams, params }: { searchParams: SearchParam
   if (isBlocked) return <Blocked />;
 
   return (
-    <div className='flex'>
+    <div className='flex justify-end'>
 
       <Suspense fallback={<LoaderGif />}>
-      <div className="hidden md:block overflow-scroll scrollbar-hide fixed top-30 left-0 h-full w-[30%] xl:w-1/4 pl-14">
+        <div className="hidden md:block overflow-scroll scrollbar-hide fixed top-30 left-0 h-full w-[30%] xl:w-1/4 pl-14">
           <LeftMenu type='home' />
         </div>
         <div className="w-full md:w-[70%] xl:w-1/2 xl:mx-auto">
@@ -93,13 +94,14 @@ const ProfilePage = async ({ searchParams, params }: { searchParams: SearchParam
               </div>
             </div>
 
-            <div className='sm:hidden'> <UserMediaCard user={user} /></div>
-            <AddPost />
+            {user.id === currentUser && <AddPost />}
+            <div className='xl:hidden'> <UserMediaCard user={user} /></div>
+            <div className='xl:hidden'> <UserInfoCard user={user} /></div>
             <Feed searchParams={searchParams} username={user.username} />
           </div>
         </div>
         <div className="hidden xl:block overflow-scroll scrollbar-hide fixed top-30 right-0 h-full w-1/4 max-xl:w-1/3 pr-14">
-          <RightMenu user={user}/>
+          <RightMenu user={user} />
         </div>
       </Suspense>
     </div>

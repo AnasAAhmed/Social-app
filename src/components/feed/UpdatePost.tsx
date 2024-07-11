@@ -6,8 +6,14 @@ import AddPostButton from "../AddPostButton";
 import { updatePost } from "@/lib/action";
 import { Post } from "@prisma/client";
 import React from "react";
-import EmojiPicker, { EmojiClickData } from "emoji-picker-react";
+import { EmojiClickData } from "emoji-picker-react";
+import dynamic from "next/dynamic";
 import { Spinner } from "../Loader";
+const EmojiPicker = dynamic(() => import('emoji-picker-react'), {
+    ssr: false,
+    loading: () => <div className="bg-white p-8 rounded-md shadow-md"><Spinner w={20} h={20} /></div>
+});
+
 
 const UpdatePost = ({ post }: { post: Post }) => {
 
@@ -89,10 +95,7 @@ const UpdatePost = ({ post }: { post: Post }) => {
                                             onClick={() => setShowEmojiPicker(!showEmojiPicker)}
                                         />
                                         {showEmojiPicker && (
-                                            <div className="absolute top-6 right-0 z-10">
-                                                <Suspense fallback={<div className="bg-white p-8 rounded-md shadow-md"><Spinner w={20} h={20} /></div>}>
-                                                    <EmojiPicker onEmojiClick={handleEmojiClick} />
-                                                </Suspense>
+                                            <div className="absolute top-6 left-0 z-10"> <EmojiPicker onEmojiClick={handleEmojiClick} />
                                             </div>
                                         )}
                                     </div>

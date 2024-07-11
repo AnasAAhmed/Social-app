@@ -7,8 +7,14 @@ import Link from 'next/link';
 import React, { Suspense, useState } from 'react';
 import CommentInfo from './CommentInfo';
 import { calculateTimeDifference } from '@/lib/utils';
-import EmojiPicker, { EmojiClickData } from 'emoji-picker-react';
-import { Spinner } from '../Loader';
+import { EmojiClickData } from "emoji-picker-react";
+import dynamic from "next/dynamic";
+import { Spinner } from "../Loader";
+const EmojiPicker = dynamic(() => import('emoji-picker-react'), {
+    ssr: false,
+    loading: () => <div className="bg-white p-8 rounded-md shadow-md"><Spinner w={20} h={20} /></div>
+});
+
 
 // type CommentWithUser = any;
 type CommentWithUser = Comments & { user: User, likes?: string[] };

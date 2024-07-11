@@ -8,7 +8,7 @@ const Feed = async ({ searchParams, username, blockedPostId }: { username?: stri
   const { userId } = auth();
   if (!userId) return null;
   const page = Number(searchParams?.page) || 1;
-  const perPage = 4;
+  const perPage = 8;
   const offset = (page - 1) * perPage;
   let posts: any[] = [];
   let totalPosts: number = 0;

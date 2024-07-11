@@ -54,7 +54,7 @@ const UserInfoCard = async ({ user }: { user: User }) => {
       {/* top */}
       <div className=" flex justify-between items-center font-medium">
         <span className="text-gray-500">User Information</span>
-       {currentUser===user.id?<UpdateUser user={user}/>: <Link href={'/'} className='text-blue-500 text-xs'>See all</Link>}
+       {currentUser===user.id?<UpdateUser user={user}/>: <div className='text-blue-500 cursor-pointer text-xs'>See all</div>}
       </div>
       <div className="flex flex-col gap-4 text-gray-500">
         <div className="flex items-center gap-2">

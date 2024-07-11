@@ -29,8 +29,9 @@ const ProfileCard = async () => {
         <Image src={user.cover || '/noCover.jpeg'} alt='' fill className='rounded-md' />
         <Image src={user.avatar || '/noAvatar.png'} alt='' width={48} height={48} className='rounded-full w-12 h-12 absolute left-0 right-0 m-auto -bottom-6 ring-1 ring-white z-10' />
       </div>
-      <div className="h-20 flex flex-col gap-2 items-center">
-        <span className="font-semibold">{(user.name && user.surname) ? user.name + ' ' + user.surname : user.username}</span>
+      <div className="h-36d flex flex-col items-center">
+        <span className="font-semibold">{(user.name && user.surname) && user.name + ' ' + user.surname}</span>
+        <span className="font-semibold text-sm text-gray-400">@{user.username}</span>
         <div className="flex flex-wrap justify-center items-center gap-4">
           <div className="flex">
             <Image src={'https://images.pexels.com/photos/415829/pexels-photo-415829.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500'} alt='' width={12} height={12} className='object-cover w-5 h-5 rounded-full' />
