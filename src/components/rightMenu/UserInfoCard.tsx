@@ -5,7 +5,9 @@ import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
 import UserInfoCardIntraction from './UserInfoCardIntraction'
-import UpdateUser from '../UpdateUser'
+import UpdateUser from '../forms/UpdateUser'
+import { Truculenta } from 'next/font/google'
+import Truncate from '@/lib/truncate'
 
 const UserInfoCard = async ({ user }: { user: User }) => {
 
@@ -62,8 +64,7 @@ const UserInfoCard = async ({ user }: { user: User }) => {
           </span>
           <span className="text-sm">@{user.username}</span>
         </div>
-        <p className="">{user.description}
-        </p>
+        <Truncate desc={user.description!} numOfChar={80} />
         {user.city && <div className="flex items-center gap-2">
           <Image src={"/map.png"} alt='' width={16} height={16} />
           <span className="">Living in <b>{user.city}</b></span>

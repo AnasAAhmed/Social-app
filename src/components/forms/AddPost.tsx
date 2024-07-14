@@ -1,13 +1,14 @@
 'use client'
 import { useUser } from "@clerk/nextjs";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { CldUploadWidget } from "next-cloudinary";
-import AddPostButton from "./AddPostButton";
-import { addPost } from "@/lib/action";
-import { LoaderGif, Spinner } from "./Loader";
+import AddPostButton from "../AddPostButton";
+import { addPost } from "@/lib/form.actions";
+import { LoaderAddPost, Spinner } from "../Loader";
 import dynamic from "next/dynamic";
 import { EmojiClickData } from "emoji-picker-react";
+import { toast } from "sonner";
 
 const EmojiPicker = dynamic(() => import('emoji-picker-react'), {
   ssr: false,
@@ -19,23 +20,38 @@ const AddPost = () => {
   const [desc, setDesc] = useState("");
   const [img, setImg] = useState<any>();
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
-
-  useEffect(() => {
-    setImg('')
-  }, [])
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleEmojiClick = (event: EmojiClickData) => {
     setDesc(prevDesc => prevDesc + event.emoji);
   };
 
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+    setIsSubmitting(true);
+    try {
+      await addPost(formData, img?.secure_url || "");
+      setDesc("");
+      setImg(null);
+      setShowEmojiPicker(false);
+      toast.success('Posted Successfully');
+    } catch (error) {
+      const typerror=error as Error;
+      console.error("Failed to add post:", typerror.message);
+      toast.error(`Failed to add post: ${typerror.message}`) 
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   if (!isLoaded) {
-    return <LoaderGif />;
+    return <LoaderAddPost/>;
   }
-  if (!user?.id) return null;
+  if (!user?.id) return "Current User Not Found /Clerk Webhook Failure";
 
   return (
     <div className="p-4 bg-white shadow-md rounded-lg flex gap-4 justify-between text-sm">
-      {/* AVATAR */}
       <Image
         src={user?.imageUrl || "/noAvatar.png"}
         alt=""
@@ -45,28 +61,24 @@ const AddPost = () => {
       />
       {/* POST */}
       <div className="flex-1">
-        <div className="mb-3 gap-2">
+        <div className="mb-3 gap-2 ">
           {img?.secure_url ? (
             img?.secure_url.endsWith('.mp4') || img?.secure_url.endsWith('.webm') || img?.secure_url.endsWith('.ogg') ? (
               <video autoPlay controls src={img?.secure_url} className="rounded-md w-[300px] h-[300px]"></video>
             ) : (
-              <>
-                <Image src={img?.secure_url} className="rounded-md " alt="Uploaded Image" width={300} height={300} />
-                {img && <span className="text-gray-900 text-center rounded-full cursor-pointer " onClick={() => setImg('')}>Remove</span>}
-              </>
+              <Image src={img?.secure_url} className="rounded-md" alt="Uploaded Image" width={300} height={300} />
             )
-          ) : (""
-          )}
-          {img && <span className="text-gray-900 text-center rounded-full cursor-pointer " onClick={() => setImg('')}>Remove</span>}
+          ) : null}
         </div>
         {/* TEXT INPUT */}
-        <form action={(formData) => addPost(formData, img?.secure_url || "")} className="flex gap-4">
+        <form onSubmit={handleSubmit} className="flex gap-4">
           <textarea
             placeholder={`What's on your mind, ${user?.username}?`}
-            className="flex-1 w-5 bg-slate-100 rounded-lg p-2"
+            className="flex-1 w-5 bg-slate-100 rounded-lg p-2 disabled:opacity-35 disabled:cursor-not-allowed"
             name="desc"
-            value={desc}
+            value={desc} maxLength={270} minLength={3}
             onChange={(e) => setDesc(e.target.value)}
+            disabled={isSubmitting}
           ></textarea>
           <div className="relative hidden lg:block">
             <Image
@@ -82,7 +94,6 @@ const AddPost = () => {
             {showEmojiPicker && (
               <div className="absolute top-6 right-0 z-10">
                 <EmojiPicker
-                  open={showEmojiPicker}
                   onEmojiClick={handleEmojiClick}
                 />
               </div>
@@ -95,8 +106,11 @@ const AddPost = () => {
         <div className="flex items-center gap-4 mt-4 text-gray-400 flex-wrap">
           <CldUploadWidget
             uploadPreset="anas_social"
+            options={{
+              clientAllowedFormats: ["jpg", "jpeg", "png", "gif", "mp4", "avi", "mov", "mkv", "webm"],
+              maxFileSize: 5 * 1024 * 1024,
+            }}
             onSuccess={(result, { widget }) => {
-              console.log(result);
               setImg(result.info);
               widget.close();
             }}
@@ -111,7 +125,7 @@ const AddPost = () => {
               </div>
             )}
           </CldUploadWidget>
-          {img && <span className="bg-red-500 px-1 rounded-full text-white" onClick={() => setImg('')}>X</span>}
+          {img && <span className="bg-red-500 px-1 rounded-full text-white cursor-pointer" onClick={() => setImg(null)}>X</span>}
           <div className="flex items-center gap-2 cursor-pointer">
             <Image src="/poll.png" alt="" width={20} height={20} />
             Poll
@@ -119,7 +133,7 @@ const AddPost = () => {
           <div className="flex items-center gap-2 cursor-pointer">
             <Image src="/addevent.png" alt="" width={20} height={20} />
             Event
-          </div>
+          </div>{desc.length}
         </div>
       </div>
     </div>

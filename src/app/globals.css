@@ -3,34 +3,71 @@
 @tailwind utilities;
 
 .scrollbar-hide::-webkit-scrollbar {
-    display: none;
+  display: none;
 }
 
 .scrollbar-hide {
-    scrollbar-width: none;
+  scrollbar-width: none;
 }
 
 @keyframes upScale {
-    from {
-      transform: scale(0.95);
-      /* transform: translateY(-50px); */
-      opacity: 0;
-    }
-  
-    to {
-      transform: scale(1);
-       /* transform: translateY(0); */
-      opacity: 1;
-    }
+  from {
+    transform: scale(0.95);
+    /* transform: translateY(-50px); */
+    opacity: 0;
   }
-  .animate-modal {
-    animation: upScale 0.2s ease-out forwards;
+
+  to {
+    transform: scale(1);
+    /* transform: translateY(0); */
+    opacity: 1;
   }
-  @keyframes loading-bar {
-    from { width: 0; }
-    to { width: 100%; }
+}
+
+.animate-modal {
+  animation: upScale 0.2s ease-out forwards;
+}
+
+@keyframes loading-bar {
+  from {
+    width: 0;
   }
-  
-  .animate-loading-bar {
-    animation: loading-bar linear;
+
+  to {
+    width: 100%;
   }
+}
+
+.animate-loading-bar {
+  animation: loading-bar linear;
+}
+
+.boom {
+  display: none;
+}
+
+.baam:hover {
+  .boom {
+    display: block;
+  }
+}
+
+.blackOverlay {
+  background-color: rgba(0, 0, 0, 0.137);
+}
+
+.translate-btn {
+  display: inline-block;
+  transition: transform 0.3s ease-in-out;
+}
+
+.translate-btn:hover {
+  .translate-element {
+
+    transform: translateX(200px);
+  }
+}
+
+.no-scroll {
+  overflow: hidden;
+}

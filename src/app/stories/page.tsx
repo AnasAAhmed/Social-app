@@ -3,7 +3,7 @@ import { LoaderGif, LoaderStories } from '@/components/Loader';
 import MenuBar from '@/components/MenuBar'
 import NotLoggedIn from '@/components/NotLoggedIn';
 import Pagination from '@/components/Pagination';
-import StoryList from '@/components/StoryList';
+import StoryList from '@/components/stories/StoryList';
 import prisma from '@/lib/client';
 import { auth } from '@clerk/nextjs/server';
 import React, { Suspense } from 'react'

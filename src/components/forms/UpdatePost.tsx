@@ -1,13 +1,14 @@
 'use client'
 import Image from "next/image";
-import { Suspense, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { CldUploadWidget } from "next-cloudinary";
 import AddPostButton from "../AddPostButton";
-import { updatePost } from "@/lib/action";
+import { updatePost } from "@/lib/form.actions";
 import { Post } from "@prisma/client";
 import React from "react";
 import { EmojiClickData } from "emoji-picker-react";
 import dynamic from "next/dynamic";
+import FocusLock from "react-focus-lock";
 import { Spinner } from "../Loader";
 const EmojiPicker = dynamic(() => import('emoji-picker-react'), {
     ssr: false,
@@ -19,7 +20,7 @@ const UpdatePost = ({ post }: { post: Post }) => {
 
 
     const [desc, setDesc] = useState(post.desc || '');
-    const [img, setImg] = useState<any>(null);
+    const [img, setImg] = useState<any>({ secure_url: '' });
     const [open, setOpen] = useState<boolean>(false);
     const [showEmojiPicker, setShowEmojiPicker] = useState(false);
 
@@ -27,9 +28,6 @@ const UpdatePost = ({ post }: { post: Post }) => {
     const handleEmojiClick = (event: EmojiClickData) => {
         setDesc(prevDesc => prevDesc + event.emoji);
     };
-    useEffect(() => {
-        setImg('')
-    }, [post.img])
 
     return (
         <div className="">
@@ -41,7 +39,7 @@ const UpdatePost = ({ post }: { post: Post }) => {
             </span>
             {open && (
                 <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-65 z-50">
-                    <div className="bg-white p-4 md:p-8 rounded-lg shadow-md max-w-2xl w-full relative overflow-y-auto max-h-screen">
+                    <FocusLock className="bg-white p-4 md:p-8 rounded-lg shadow-md max-w-2xl w-full relative overflow-y-auto max-h-screen">
                         <button
                             className="absolute top-2 right-2 text-2xl"
                             onClick={() => setOpen(false)}
@@ -105,16 +103,20 @@ const UpdatePost = ({ post }: { post: Post }) => {
                                 <div className="flex items-center gap-2">
                                     <CldUploadWidget
                                         uploadPreset="anas_social"
+                                        options={{
+                                            clientAllowedFormats: ["jpg", "jpeg", "png", "gif", "mp4", "avi", "mov", "mkv"],
+                                            maxFileSize: 5 * 1024 * 1024,
+                                        }}
                                         onSuccess={(result, { widget }) => {
                                             setImg(result.info);
                                             widget.close();
                                         }}
                                     >
                                         {({ open }) => (
-                                            <div className="flex items-center gap-2 cursor-pointer" onClick={() => open()}>
+                                            <button className="flex items-center gap-2 cursor-pointer" onClick={() => open()}>
                                                 <Image src="/addimage.png" alt="Add Image" width={20} height={20} />
                                                 <span>media</span>
-                                            </div>
+                                            </button>
                                         )}
                                     </CldUploadWidget>
                                     <div className="flex items-center gap-2 cursor-pointer">
@@ -128,7 +130,7 @@ const UpdatePost = ({ post }: { post: Post }) => {
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </FocusLock>
                 </div>
             )}
         </div>

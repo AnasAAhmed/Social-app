@@ -3,6 +3,7 @@ import { auth } from '@clerk/nextjs/server'
 import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
+import { ProfileCardError } from '../Loader'
 
 const ProfileCard = async () => {
 
@@ -22,7 +23,7 @@ const ProfileCard = async () => {
     }
   })
 
-  if (!user) return null;
+  if (!user) return <ProfileCardError />;
   return (
     <div className='max-xl:hidden p-4 bg-white rounded-lg shadow-md text-sm flex flex-col gap-6'>
       <div className="h-20 relative">

@@ -3,6 +3,7 @@ import { switchLike } from '@/lib/action';
 import { useAuth } from '@clerk/nextjs';
 import Image from 'next/image'
 import React, { useOptimistic, useState } from 'react'
+import { toast } from 'sonner';
 
 const PostIntraction = ({
     postId,
@@ -30,15 +31,17 @@ const PostIntraction = ({
         switchOptimisticLike('');
         try {
             switchLike(postId);
-            setLikeState(state=>({
+            setLikeState(state => ({
                 likeCount: state.isLiked ? state.likeCount - 1 : state.likeCount + 1,
                 isLiked: !state.isLiked
             }))
+            toast.success(likeState.isLiked ? "unLiked" : "Liked")
         } catch (error) {
-
+            const typeError = error as Error
+            console.log(typeError);
+            toast.error(`Something went wrong ${typeError.message}`)
         }
     }
-
     return (
         <div>
             <div className="flex items-center justify-between text-sm m-4">

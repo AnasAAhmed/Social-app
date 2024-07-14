@@ -57,17 +57,16 @@ const Navbar = () => {
               <Image src={"/notifications.png"} alt='people' width={20} height={20} />
             </div>
             <UserButton />
+        <MobMenu />
           </SignedIn>
           <SignedOut>
-            <div className="flex items-center gap-1">
-              <Image src={"/noAvatar.png"} alt='people' width={20} height={20} />
+            <div className="flex items-center gap-1 text-xs sm:text-sm">
+              <Image className='hidden sm:block' src={"/noAvatar.png"} alt='people' width={20} height={20} />
               <Link href={'/sign-in'} >Login</Link>/
               <Link href={'/sign-up'} >Register</Link>
             </div>
           </SignedOut>
         </ClerkLoaded>
-        <MobMenu />
-
       </div>
     </div>
   )

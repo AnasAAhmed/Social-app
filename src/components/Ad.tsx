@@ -1,13 +1,29 @@
 'use client'
 import Image from "next/image"
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const Ad = ({ size }: { size: 'sm' | 'md' | 'lg' }) => {
     const [open, setOpen] = useState(false);
+    const dropdownRef = useRef<HTMLDivElement>(null);
+    const toggleClose = () => setOpen(false);
+    const toggleOpen = () => setOpen(!open);
+
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+                toggleClose();
+            }
+        };
+
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, []);
     return (
         <div className='p-4 bg-white rounded-lg texxt-sm shadow-md'>
 
-            <div className="flex items-center justify-between text-gray-500 font-medium">
+            <div ref={dropdownRef} className="flex items-center justify-between text-gray-500 font-medium">
                 <span className="">Sponsor Ads</span>
                 <div className="relative">
                     <Image
@@ -15,7 +31,7 @@ const Ad = ({ size }: { size: 'sm' | 'md' | 'lg' }) => {
                         width={16}
                         height={16}
                         alt=""
-                        onClick={() => setOpen((prev) => !prev)}
+                        onClick={toggleOpen}
                         className="cursor-pointer"
                     />
                     {open && (

@@ -9,7 +9,7 @@ import { User } from '@prisma/client'
 
 const RightMenu = ({ user }: { user?: User }) => {
   return (
-    <div className='flex flex-col gap-6 '>
+    <div className='flex flex-col gap-6'>
       {user ? (<>
         <Suspense fallback={<Loader />}>
           <UserInfoCard user={user} />
@@ -19,8 +19,12 @@ const RightMenu = ({ user }: { user?: User }) => {
         </Suspense>
 
       </>
-      ) : <BirthDays />}
+      ) : 
+      <>
+      <BirthDays />
       <FriendRequest />
+      </>
+      }
       <Ad size='sm' />
     </div>
   )

@@ -34,27 +34,27 @@ const FriendsPage = async ({ searchParams }: SearchParamProps) => {
 
   const [totalCount, userData]: [number, UserData[]] = filter === 'followers'
     ? await Promise.all([
-        prisma.follower.count({
-          where: { followingId: userId },
-        }),
-        prisma.follower.findMany({
-          where: { followingId: userId },
-          skip: offset,
-          take: perPage,
-          include: { follower: true },
-        }),
-      ])
+      prisma.follower.count({
+        where: { followingId: userId },
+      }),
+      prisma.follower.findMany({
+        where: { followingId: userId },
+        skip: offset,
+        take: perPage,
+        include: { follower: true },
+      }),
+    ])
     : await Promise.all([
-        prisma.follower.count({
-          where: { followerId: userId },
-        }),
-        prisma.follower.findMany({
-          where: { followerId: userId },
-          skip: offset,
-          take: perPage,
-          include: { following: true },
-        }),
-      ]);
+      prisma.follower.count({
+        where: { followerId: userId },
+      }),
+      prisma.follower.findMany({
+        where: { followerId: userId },
+        skip: offset,
+        take: perPage,
+        include: { following: true },
+      }),
+    ]);
 
   const totalPages = Math.ceil(totalCount / perPage);
 
@@ -84,21 +84,21 @@ const FriendsPage = async ({ searchParams }: SearchParamProps) => {
   return (
     <div className="flex flex-row gap-6 max-md:px-5">
       <Suspense fallback={<LoaderGif />}>
-      <div className="hidden  flex-col md:flex gap-6 w-[20%]"> <MenuBar /><Ad size="sm" /></div>
+        <div className="hidden  flex-col md:flex gap-6 w-[20%]"> <MenuBar /><Ad size="sm" /></div>
         <div className="flex flex-col gap-6 w-full lg:w-4/5">
-          <h1 className="text-3xl font-bold mb-4 text-slate-600">Friends ({totalCount})</h1>
+          <h1 className="text-3xl font-bold mb-4 text-slate-600">Friends </h1>
           <div className="flex justify-center mb-4">
             <Link href="?filter=followers" className={`mr-4 ${filter === 'followers' ? 'text-blue-500' : 'text-gray-500'}`}>
-              Followers
+              Followers {filter === 'followers' && `(${totalCount})`}
             </Link>
             <Link href="?filter=followings" className={`${filter === 'followings' ? 'text-blue-500' : 'text-gray-500'}`}>
-              Followings
+              Followings {filter === 'followings'&& `(${totalCount})`}
             </Link>
           </div>
           {totalCount > 0 ? (
             userData.map((data) => renderUser(data.follower || data.following!))
           ) : (
-            <p className="text-gray-600 text-center font-medium text-2xl">You don&apos;t have {filter||'Followers'} yet.</p>
+            <p className="text-gray-600 text-center font-medium text-2xl">You don&apos;t have {filter || 'Followers'} yet.</p>
           )}
           <Pagination urlParamName="page" totalPages={totalPages} page={page} />
         </div>

@@ -1,6 +1,6 @@
 import { SearchParamProps } from '@/app/friends/page';
-import AddPost from '@/components/AddPost';
-import Blocked from '@/components/Blocked';
+import AddPost from '@/components/forms/AddPost';
+import {Blocked, NotFound} from '@/components/NotLoggedIn';
 import { LoaderGif } from '@/components/Loader';
 import NotLoggedIn from '@/components/NotLoggedIn';
 import Feed from '@/components/feed/Feed';
@@ -34,7 +34,7 @@ const ProfilePage = async ({ searchParams, params }: { searchParams: SearchParam
     }
   })
 
-  if (!user) return notFound();
+  if (!user) return <NotFound text="If this is your profile, it seems there was an issue with the Clerk webhook, causing your profile not to be created in our database. Please contact support for assistance." />;
 
 
   let isBlocked: boolean = false;

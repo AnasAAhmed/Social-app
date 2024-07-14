@@ -8,7 +8,7 @@ const ActionButton = ({text}:{text:string}) => {
 
   return (
     <button
-      className="text-red-500 disabled:cursor-not-allowed "
+      className="text-red-500 text-center disabled:cursor-not-allowed "
       disabled={pending}
     >
       {pending ? <Spinner/> : text}

@@ -51,7 +51,7 @@ const page = async ({ params, searchParams }: { params: { username: string }, se
         },
     });
     const totalPages = Math.ceil(totalUsers / perPage);
-
+    // const pop = users.filter(u => u.id !== userId);
     return (
         <div className='flex justify-end'>
             <Suspense fallback={<LoaderGif />}>
@@ -77,12 +77,12 @@ const page = async ({ params, searchParams }: { params: { username: string }, se
                                                 ? `${user.name} ${user.surname}`
                                                 : user.username}
                                         </h3>
-                                               <span className='text-sm text-gray-400'> @{user.username}</span>
+                                        <span className='text-sm text-gray-400'> @{user.username}</span>
                                         <p className="text-gray-600">mutual friends 12</p>
                                     </div>
                                     <div className="flex gap-3">
                                         <Link href={`/profile/${user.username}`} className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700">
-                                            Profile
+                                            {userId === user.id ? 'Your Profile' : 'Profile'}
                                         </Link>
                                     </div>
                                 </div>

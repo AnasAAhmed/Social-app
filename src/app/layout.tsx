@@ -3,8 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import { ClerkProvider } from "@clerk/nextjs";
-import { Suspense } from "react";
-import { Loader1, Spinner } from "@/components/Loader";
+import { Toaster } from 'sonner';
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -19,12 +18,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <ClerkProvider>
+    <ClerkProvider afterSignOutUrl={'/sign-in'}>
       <html lang="en">
         <body className={inter.className}>
             <Navbar />
           <div className=" bg-slate-100 md:px-8 xl:px-20 pt-20 min-h-[100vh]">
             {children}
+            <Toaster />
           </div>
         </body>
       </html>

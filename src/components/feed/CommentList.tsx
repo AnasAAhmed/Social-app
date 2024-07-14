@@ -1,5 +1,7 @@
 'use client';
-import { addComments, deleteComment, switchCommentLike } from '@/lib/action';
+import { switchCommentLike } from '@/lib/action';
+import { addComments } from '@/lib/form.actions';
+import { deleteComment } from '@/lib/delete.actions';
 import { useUser } from '@clerk/nextjs';
 import { Comments, User } from '@prisma/client';
 import Image from 'next/image';
@@ -10,6 +12,8 @@ import { calculateTimeDifference } from '@/lib/utils';
 import { EmojiClickData } from "emoji-picker-react";
 import dynamic from "next/dynamic";
 import { Spinner } from "../Loader";
+import Truncate from '@/lib/truncate';
+import { toast } from 'sonner';
 const EmojiPicker = dynamic(() => import('emoji-picker-react'), {
     ssr: false,
     loading: () => <div className="bg-white p-8 rounded-md shadow-md"><Spinner w={20} h={20} /></div>
@@ -31,12 +35,12 @@ const CommentList = ({ comments, postId }: { comments: CommentWithUser[], postId
 
     const commentsPerPage = 3;
     const handleEmojiClick = (event: EmojiClickData) => {
-        
+
         setDesc(prevDesc => prevDesc + event.emoji);
     };
     const add = async () => {
         if (!user || !desc) return;
-        const newComment:CommentWithUser = {
+        const newComment: CommentWithUser = {
             id: Math.random(),
             desc,
             createdAt: new Date(Date.now()),
@@ -64,8 +68,11 @@ const CommentList = ({ comments, postId }: { comments: CommentWithUser[], postId
         try {
             const createdComment = await addComments(postId, desc);
             setCommentState(prev => [createdComment, ...prev.filter(comment => comment.id !== newComment.id)]);
+            toast.success('Comment added sucessfully')
         } catch (error) {
-            // Handle error
+            const typerror = error as Error;
+            console.error("Failed to add Comment:", typerror.message);
+            toast.error(`Failed to add Comment: ${typerror.message}`)
         }
     };
 
@@ -89,8 +96,11 @@ const CommentList = ({ comments, postId }: { comments: CommentWithUser[], postId
 
         try {
             await switchCommentLike(commentId);
+            toast.success(updatedComment.likes && updatedComment.likes.includes(user.id) ? "Liked" : "Comment unLiked")
         } catch (error) {
-            // Handle error
+            const typeError = error as Error
+            console.log(typeError);
+            toast.error(`Something went wrong ${typeError.message}`)
         }
     };
 
@@ -111,7 +121,7 @@ const CommentList = ({ comments, postId }: { comments: CommentWithUser[], postId
                 <div className="flex items-center gap-4">
                     <Image src={user?.imageUrl || "/noAvatar.png"} alt='' width={32} height={32} className='w-7 h-7 rounded-full' />
                     <form action={add} className="flex-1 px-6 flex items-centre justify-between bg-slate-100 rounded-xl text-sm py-2">
-                        <input type="text" value={desc} placeholder='Write a comment...' className='bg-transparent outline-none flex-1 w-5'
+                        <input type="text" max={250} value={desc} placeholder='Write a comment...' className='bg-transparent outline-none flex-1 w-5'
                             onChange={e => setDesc(e.target.value)} />
                         <div className="relative hidden lg:block">
                             <Image
@@ -134,9 +144,9 @@ const CommentList = ({ comments, postId }: { comments: CommentWithUser[], postId
                 </div>
             }
             {displayedComments.map((comment) => (
-                <div className="flex gap-4 justify-between mt-6" key={comment.id}>
+                <div className="flex gap-4 justify-between mt-6 px-4" key={comment.id}>
                     <Link href={`/profile/${comment.user.username}`}>
-                        <Image src={comment.user.avatar || "/noAvatar.png"} alt='' width={40} height={40} className='w-8 h-8 rounded-full' />
+                        <Image src={comment.user.avatar || "/noAvatar.png"} alt='' width={40} height={40} className='w-7 h-7 rounded-full' />
                     </Link>
                     <div className="flex flex-col gap-2 flex-1">
                         <span className="font-medium text-sm">
@@ -145,7 +155,7 @@ const CommentList = ({ comments, postId }: { comments: CommentWithUser[], postId
                                 : comment.user.username}
                             <span className='font-medium text-xs lg:text-sm text-gray-600 ml-3'>{calculateTimeDifference(comment.createdAt)}</span>
                         </span>
-                        <p className="text-sm">{comment.desc}</p>
+                        <Truncate desc={comment.desc} numOfChar={50} />
                         <div className="flex items-center gap-8 text-xs text-gray-500 mt-2">
                             <div className="flex items-center gap-4">
                                 <button onClick={() => likeComment(comment.id)}>
