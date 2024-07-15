@@ -8,7 +8,7 @@ const AddPostButton = ({desc,text="Post"}:{desc:string,text?:string}) => {
 
   return (
     <button
-      className="bg-blue-500 text-white text-center p-1 mt-2 rounded-md disabled:bg-opacity-50 disabled:cursor-not-allowed"
+      className="bg-blue-500 w-full text-white text-center p-1 mt-2 rounded-md disabled:bg-opacity-50 disabled:cursor-not-allowed"
       disabled={pending||desc===''}
     >
       {pending ? <Spinner w={21} h={21}/>: text}

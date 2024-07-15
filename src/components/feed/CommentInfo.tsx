@@ -57,7 +57,7 @@ const CommentInfo = ({ commentId, userId, commenterId, onDelete }: { commentId: 
                         <>
                             {/* <span className="cursor-pointer p-2 hover:bg-gray-100">View</span>
                             <span className="cursor-pointer p-2 hover:bg-gray-100">Edit</span> */}
-                            <form className="p-2 hover:bg-gray-100" action={handleDelete}>
+                            <form className="p-2 rounded-lg w-full hover:bg-gray-100" action={handleDelete}>
                                 <ActionButton text={'Delete'} />
                             </form>
                         </> :

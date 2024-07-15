@@ -46,8 +46,8 @@ const UpdateUser = ({ user, isSetting }: { user: User | any, isSetting?: boolean
         </span>
       )}
       {open && (
-        <div className={`${isSetting ? "" : "fixed w-screen h-screen top-0 left-0 bg-black bg-opacity-65 flex items-center justify-center z-30"}`}>
-          <FocusLock className="p-4 sm:p-6 bg-white animate-modal rounded-lg shadow-md flex flex-col gap-2 max-md:h-full scrollbar-hide overflow-scroll w-full sm:w-3/4 lg:w-1/2 relative">
+        <div className={`${isSetting ? "" : "fixed w-screen h-screen top-0 bottom-0 left-0 bg-black bg-opacity-65 flex items-center justify-center z-30"}`}>
+          <FocusLock className="p-4 sm:p-6 bg-white animate-modal rounded-lg shadow-md flex flex-col gap-2 scrollbar-hide overflow-scroll w-full sm:w-3/4 lg:w-1/2 relative">
             <form
               action={(formData) =>
                 formAction({ formData, cover: cover?.secure_url || "" })
@@ -105,7 +105,7 @@ const UpdateUser = ({ user, isSetting }: { user: User | any, isSetting?: boolean
                 </div>
               )}
               {/* INPUT FIELDS */}
-              <div className="flex flex-wrap justify-center gap-2 sm:gap-4">
+              <div className="grid md:flex grid-cols-2 md:flex-wrap justify-center gap-2 sm:gap-4">
                 <div className="flex flex-col gap-2 sm:gap-4">
                   <label htmlFor="name" className="text-xs text-gray-500">First Name</label>
                   <input
@@ -182,6 +182,8 @@ const UpdateUser = ({ user, isSetting }: { user: User | any, isSetting?: boolean
                   />
                 </div>
               </div>
+              <div className="flex flex-col gap-2">
+
               <UpdateButton />
               {state.success && (
                 <span className="text-green-500">Profile has been updated!</span>
@@ -189,6 +191,7 @@ const UpdateUser = ({ user, isSetting }: { user: User | any, isSetting?: boolean
               {state.error && (
                 <span className="text-red-500">Something went wrong!</span>
               )}
+              </div>
               {!isSetting && (
                 <div
                   className="absolute text-xl right-3 top-4 cursor-pointer"

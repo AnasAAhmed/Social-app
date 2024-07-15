@@ -132,28 +132,30 @@ const Modal = ({
     videoDuration: number;
     children: React.ReactNode;
 }) => (
-    <div className="fixed top-0 left-0 w-screen h-screen flex items-center justify-center bg-black bg-opacity-85 z-50">
-        <div className="relative flex flex-col gap-2 p-6 bg-transparent rounded-lg shadow-md animate-modal">
+    <div onClick={closeModal} className="fixed top-0 left-0 w-screen h-screen flex items-center justify-center bg-black bg-opacity-85 z-50">
+        <div onClick={e => e.stopPropagation()} className="relative flex baam flex-col gap-2 p-6 bg-transparent rounded-lg shadow-md animate-modal">
             <div className="relative w-full h-full">
-                <div className="absolute top-0 right-0 left-0 p-2 bg-black bg-opacity-40 flex justify-between items-center z-10 sm:rounded-t-md w-full">
-                    <div className="flex items-center gap-2">
-                        <Image
-                            src={story.user.avatar || '/noAvatar.png'}
-                            alt=""
-                            width={80}
-                            height={80}
-                            className="w-10 h-10 rounded-full"
-                        />
-                        <span className="font-medium text-white">{story.user.name || story.user.username}</span>
+                <div className="absolute boom top-0 right-0 left-0 p-2 bg-black bg-opacity-40 z-10 sm:rounded-t-md w-full">
+                    <div className="flex justify-between items-center gap-2">
+                        <div className="flex items-center gap-2">
+                            <Image
+                                src={story.user.avatar || '/noAvatar.png'}
+                                alt=""
+                                width={80}
+                                height={80}
+                                className="w-10 h-10 rounded-full"
+                            />
+                            <span className="font-medium text-white">{story.user.name || story.user.username}</span>
+                        </div>
+                        <button onClick={closeModal} className="text-white text-3xl px-2">
+                            &times;
+                        </button>
                     </div>
-                    <button onClick={closeModal} className="text-white text-3xl px-2">
-                        &times;
-                    </button>
                 </div>
                 {isVideo ? (
                     <video autoPlay src={story.img} className="w-full h-full object-cover rounded-lg" />
                 ) : (
-                    <Image src={story.img || '/noImage.jpg'} alt="story" width={600} height={600} className="object-cover rounded-md" />
+                    <Image src={story.img || '/noImage.jpg'} alt="story" width={600} height={600} className="obsject-cover rounded-md" />
                 )}
             </div>
             {children}

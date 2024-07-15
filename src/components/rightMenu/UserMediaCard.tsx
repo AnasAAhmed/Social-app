@@ -28,7 +28,7 @@ const UserMediaCard = async ({ user ,size}: { user: User ,size?:string}) => {
                 <span className="text-gray-500">Recent Media</span>
                 <div className='text-blue-500 cursor-pointer text-xs'>See all</div>
             </div>
-            <div className="flex gap-4 justify-center flex-wrap">
+            <div className="flex gap-4 justify-s flex-wrap">
                 {postSWithMedia.length ? postSWithMedia.map((post) => (
                     <div key={post.id} className="relative w-[27%] h-24">
                         {post.img ? (

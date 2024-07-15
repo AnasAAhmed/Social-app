@@ -39,7 +39,7 @@ const PostInfo = ({ postId, userId, posterId }: { postId: number, userId: string
                 <div  className="absolute animate-modal bg-gray-50 top-4 ring-[0.5px] right-0 w-32 rounded-lg flex flex-col text-sm shadow-lg z-10">
                     {userId === posterId ?
                         <>
-                            <form className="p-2 hover:bg-gray-100" action={deletePostWithId}>
+                            <form className="p-2 rounded-lg w-full hover:bg-gray-100" action={deletePostWithId}>
                                 <ActionButton text={'Delete'} />
                             </form>
                         </> :

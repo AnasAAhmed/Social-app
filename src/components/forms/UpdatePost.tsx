@@ -41,13 +41,13 @@ const UpdatePost = ({ post }: { post: Post }) => {
                 <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-65 z-50">
                     <FocusLock className="bg-white p-4 md:p-8 rounded-lg shadow-md max-w-2xl w-full relative overflow-y-auto max-h-screen">
                         <button
-                            className="absolute top-2 right-2 text-2xl"
+                            className="absolute top-0 right-2 text-2xl"
                             onClick={() => setOpen(false)}
                         >
                             &times;
                         </button>
                         <div className="flex flex-col md:flex-row gap-4">
-                            <div className="flex-1">
+                            <div className="flex-1 mt-4">
                                 {img?.secure_url && (
                                     img.secure_url.endsWith('.mp4') || img.secure_url.endsWith('.webm') || img.secure_url.endsWith('.ogg') ? (
                                         <>
@@ -97,8 +97,15 @@ const UpdatePost = ({ post }: { post: Post }) => {
                                             </div>
                                         )}
                                     </div>
-
-                                    <AddPostButton desc={desc} text="Update" />
+                                    <div className="flex justisfy-center gap-3">
+                                        <AddPostButton desc={desc} text="Update" />
+                                        <button
+                                            className="bg-blue-500 w-full text-white text-center p-1 mt-2 rounded-md disabled:bg-opacity-50 disabled:cursor-not-allowed"
+                                            onClick={() => setOpen(false)}
+                                        >
+                                            Close
+                                        </button>
+                                    </div>
                                 </form>
                                 <div className="flex items-center gap-2">
                                     <CldUploadWidget
