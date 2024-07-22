@@ -32,7 +32,7 @@ const DarkModeToggle = () => {
                 onClick={toggleDarkMode}
                 className="text-black text-[22px] dark:text-white"
             >
-              {darkMode?<span>&#9728;</span>:<Image height={18} width={18} src="/moon.svg" alt="moon" />} 
+              {darkMode?<Image height={18} width={18} src="/sun.svg" alt="moon" />:<Image height={18} width={18} src="/Moon.svg" alt="moon" />} 
             </button>
     );
 };
