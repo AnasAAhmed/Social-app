@@ -22,7 +22,7 @@ export default function RootLayout({
       <html lang="en">
         <body className={inter.className}>
             <Navbar />
-          <div className=" bg-slate-100 md:px-8 xl:px-20 pt-20 min-h-[100vh]">
+          <div className="dark:bg-gray-800 bg-slate-100 md:px-8 xl:px-20 pt-20 min-h-[100vh]">
             {children}
             <Toaster />
           </div>

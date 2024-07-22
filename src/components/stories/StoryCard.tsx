@@ -96,8 +96,8 @@ const StoryCard = ({ story, onDelete }: { story: StoryWithUser, onDelete: (story
                                         className="cursor-pointer"
                                     />
                                     {isDropdownOpen && (
-                                        <div className="absolute right-0 top-4 w-32 p-2 bg-gray-50 rounded-lg shadow-lg animate-modal ring-[0.5px] text-sm flex flex-col z-10">
-                                            <form className="p-2 hover:bg-gray-100" action={handleDelete}>
+                                        <div className="absolute right-0 top-4 w-32 bg-gray-50 dark:bg-slate-900 rounded-lg shadow-lg animate-modal ring-[0.5px] text-sm flex flex-col z-10">
+                                            <form className="p-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700" action={handleDelete}>
                                                 <ActionButton text={'Delete'} />
                                             </form>
                                         </div>
@@ -105,7 +105,7 @@ const StoryCard = ({ story, onDelete }: { story: StoryWithUser, onDelete: (story
                                 </div>
                             )}
                         </div>
-                        <span className="font-medium text-white px-2 rounded-b-md blackOverlay">
+                        <span className="font-medium text-white backdrop-blur-[1.5px] px-2 rounded-b-md blackOverlay">
                             {story.user.name || story.user.username}
                         </span>
                     </div>

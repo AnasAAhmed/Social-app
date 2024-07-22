@@ -51,7 +51,7 @@ const AddPost = () => {
   if (!user?.id) return "Current User Not Found /Clerk Webhook Failure";
 
   return (
-    <div className="p-4 bg-white shadow-md rounded-lg flex gap-4 justify-between text-sm">
+    <div className="p-4 bg-white dark:bg-slate-900 shadow-md rounded-lg flex gap-4 justify-between text-sm">
       <Image
         src={user?.imageUrl || "/noAvatar.png"}
         alt=""
@@ -74,9 +74,9 @@ const AddPost = () => {
         <form onSubmit={handleSubmit} className="flex gap-4">
           <textarea
             placeholder={`What's on your mind, ${user?.username}?`}
-            className="flex-1 w-5 bg-slate-100 rounded-lg p-2 disabled:opacity-35 disabled:cursor-not-allowed"
+            className="flex-1 w-5 bg-slate-100 dark:text-gray-200 dark:bg-slate-800 rounded-lg p-2 disabled:opacity-35 disabled:cursor-not-allowed"
             name="desc"
-            value={desc} maxLength={270} minLength={3}
+            value={desc} maxLength={230} minLength={3}
             onChange={(e) => setDesc(e.target.value)}
             disabled={isSubmitting}
           ></textarea>
@@ -103,7 +103,7 @@ const AddPost = () => {
           <div className="lg:hidden"><AddPostButton desc={desc} /></div>
         </form>
         {/* POST OPTIONS */}
-        <div className="flex items-center gap-4 mt-4 text-gray-400 flex-wrap">
+        <div className="flex items-center gap-4 mt-4 dark:text-white text-gray-400 flex-wrap">
           <CldUploadWidget
             uploadPreset="anas_social"
             options={{
@@ -125,7 +125,7 @@ const AddPost = () => {
               </div>
             )}
           </CldUploadWidget>
-          {img && <span className="bg-red-500 px-1 rounded-full text-white cursor-pointer" onClick={() => setImg(null)}>X</span>}
+          {img && <span className="bg-red-500 px-1 rounded-full text-white cursor-pointer" onClick={() => setImg(null)}>&times;</span>}
           <div className="flex items-center gap-2 cursor-pointer">
             <Image src="/poll.png" alt="" width={20} height={20} />
             Poll
@@ -133,7 +133,7 @@ const AddPost = () => {
           <div className="flex items-center gap-2 cursor-pointer">
             <Image src="/addevent.png" alt="" width={20} height={20} />
             Event
-          </div>{desc.length}
+          </div>{desc.length}/230
         </div>
       </div>
     </div>

@@ -64,15 +64,17 @@ const page = async ({ params, searchParams }: { params: { query: string }, searc
         <div className='flex justify-end'>
             <Suspense fallback={<LoaderGif />}>
                 <div className="hidden md:block overflow-scroll scrollbar-hide fixed top-30 left-0 h-full w-[30%] xl:w-1/4 pl-14">
-                    <LeftMenu type='home' />
+                    <LeftMenu type='profile' />
                 </div>
                 <div className="w-full md:w-[70%] xl:w-1/2 xl:mx-auto">
                     <div className="flex flex-col gap-6">
-                        <div className="p-4 bg-white shadow-md rounded-lg flex flex-col gap-12">
-                            {posts?.length ? (
-                                posts.map(post => (
-                                    <Post key={post.id} post={post} />
-                                ))) : ""}
+                        <div className="mb-4 rounded-lg flex flex-col gap-4">
+                            <p className="text-gray-600 dark:text-gray-300 text-center font-medium text-2xl">
+                                {posts.length > 0 ? "Posts results for" : "No Post Found For"} ({decodedQuery}).
+                            </p>
+                            {posts && posts.map(post => (
+                                <Post userId={userId} key={post.id} post={post} />
+                            ))}
                             <Pagination urlParamName='page' totalPages={totalPages} page={page} />
                         </div>
                     </div>

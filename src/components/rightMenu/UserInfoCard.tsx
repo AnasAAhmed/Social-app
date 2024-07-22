@@ -22,6 +22,7 @@ const UserInfoCard = async ({ user }: { user: User }) => {
   let isUserBlocked = false;
   let isFollowing = false;
   let isFollowingSent = false;
+  let isFollowingBack = false;
 
   const { userId: currentUser } = auth()
   if (currentUser) {
@@ -41,26 +42,43 @@ const UserInfoCard = async ({ user }: { user: User }) => {
     })
     FollowRes && (isFollowingSent = true);
   } if (currentUser) {
-    const blockRes = await prisma.follower.findFirst({
+    const followingRes = await prisma.follower.findFirst({
       where: {
-        followerId: currentUser,
-        followingId: user.id,
+        followerId: user.id,
+        followingId: currentUser,
       }
     })
-    blockRes && (isFollowing = true);
+    followingRes && (isFollowing = true);
   }
-
+  const stripURL = (url:string) => {
+    if (!url) return "";
+    
+    let strippedUrl = url;
+    
+    if (url.startsWith("https")) {
+      strippedUrl = url.slice(8);
+    } else if (url.startsWith("www.")) {
+      strippedUrl = url.slice(4);
+    }
+    
+    // Optional: Limit the length of the displayed URL
+    if (strippedUrl.length > 25) {
+      strippedUrl = strippedUrl.slice(0, 25) + "...";
+    }
+    
+    return strippedUrl;
+  };
 
   return (
-    <div className='p-4 bg-white rounded-lg text-sm shadow-md flex flex-col gap-4'>
+    <div className='p-4 bg-white dark:bg-slate-900 rounded-lg text-sm shadow-md flex flex-col gap-4'>
       {/* top */}
       <div className=" flex justify-between items-center font-medium">
-        <span className="text-gray-500">User Information</span>
+        <span className="text-gray-500 dark:text-gray-300">User Information</span>
        {currentUser===user.id?<UpdateUser user={user}/>: <div className='text-blue-500 cursor-pointer text-xs'>See all</div>}
       </div>
-      <div className="flex flex-col gap-4 text-gray-500">
+      <div className="flex flex-col gap-4 text-gray-500 dark:text-gray-300">
         <div className="flex items-center gap-2">
-          <span className="text-xl text-black">{(user.name && user.surname) ? user.name + ' ' + user.surname : user.username}
+          <span className="text-xl dark:text-white text-black">{(user.name && user.surname) ? user.name + ' ' + user.surname : user.username}
           </span>
           <span className="text-sm">@{user.username}</span>
         </div>
@@ -84,7 +102,7 @@ const UserInfoCard = async ({ user }: { user: User }) => {
         <div className="flex items-center justify-between">
           {user.website && <div className="flex gap-1 items-center">
             <Image src={"/link.png"} alt='' width={16} height={16} />
-            <a target='blank' href={user.website} className='text-blue-500 font-medium'> {user.website}</a>
+            <a target='blank' href={user.website.startsWith("http") ? user.website : `https://${user.website.slice(4)}`} className='text-blue-500 font-medium'> {stripURL(user.website)}</a>
           </div>}
           <div className="flex gap-1 items-center">
             <Image src={"/date.png"} alt='' width={16} height={16} />

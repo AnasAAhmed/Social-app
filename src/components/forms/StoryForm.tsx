@@ -107,7 +107,7 @@ const StoryForm = ({ userId, addOptimisticStory, setStoryList }: { userId: strin
                                 </button>
                             </>
                         ) : (
-                            <span className="font-medium text-white text-center h-10 text-xm lg:text-sm bg-gray-500 rounded-b-md w-full">Add a Story</span>
+                            <span className="font-medium dark:text-white shadow-md text-center h-10 text-xm lg:text-sm dark:bg-slate-700 bg-white rounded-b-md w-full">Add a Story</span>
                         )
                     }
                 </div>

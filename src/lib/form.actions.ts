@@ -195,6 +195,7 @@ export const addComments = async (postId: number, desc: string) => {
                 user: true
             }
         });
+
         revalidatePath('/')
 
         return createComment;

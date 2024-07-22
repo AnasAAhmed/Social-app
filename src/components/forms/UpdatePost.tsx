@@ -12,7 +12,7 @@ import FocusLock from "react-focus-lock";
 import { Spinner } from "../Loader";
 const EmojiPicker = dynamic(() => import('emoji-picker-react'), {
     ssr: false,
-    loading: () => <div className="bg-white p-8 rounded-md shadow-md"><Spinner w={20} h={20} /></div>
+    loading: () => <div className="bg-white dark:bg-gray-900 p-8 rounded-md shadow-md"><Spinner w={20} h={20} /></div>
 });
 
 
@@ -32,16 +32,16 @@ const UpdatePost = ({ post }: { post: Post }) => {
     return (
         <div className="">
             <span
-                className="text-blue-500 text-xs cursor-pointer"
+                className="dark:text-white text-sm cursor-pointer"
                 onClick={() => setOpen(true)}
             >
-                <Image src={'/edit.svg'} alt="update" width={14} height={14} />
+                &#9998;
             </span>
             {open && (
                 <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-65 z-50">
-                    <FocusLock className="bg-white p-4 md:p-8 rounded-lg shadow-md max-w-2xl w-full relative overflow-y-auto max-h-screen">
+                    <FocusLock className="bg-white dark:bg-slate-900 p-4 md:p-8 rounded-lg shadow-md max-w-2xl w-full relative overflow-y-auto max-h-screen">
                         <button
-                            className="absolute top-0 right-2 text-2xl"
+                            className="absolute dark:text-white top-0 right-2 text-2xl"
                             onClick={() => setOpen(false)}
                         >
                             &times;
@@ -78,7 +78,7 @@ const UpdatePost = ({ post }: { post: Post }) => {
                                 <form action={(formData) => updatePost(formData, img?.secure_url || "", post.id)} className="flex flex-col gap-4">
                                     <textarea
                                         placeholder="What's on your mind?"
-                                        className="flex-1 w-full bg-slate-100 rounded-lg p-2"
+                                        className="flex-1 w-full dark:bg-slate-800 dark:text-gray-200 bg-slate-100 rounded-lg p-2"
                                         name="desc"
                                         value={desc}
                                         onChange={(e) => setDesc(e.target.value)}
@@ -120,17 +120,17 @@ const UpdatePost = ({ post }: { post: Post }) => {
                                         }}
                                     >
                                         {({ open }) => (
-                                            <button className="flex items-center gap-2 cursor-pointer" onClick={() => open()}>
+                                            <button className="flex dark:text-gray-200 items-center gap-2 cursor-pointer" onClick={() => open()}>
                                                 <Image src="/addimage.png" alt="Add Image" width={20} height={20} />
                                                 <span>media</span>
                                             </button>
                                         )}
                                     </CldUploadWidget>
-                                    <div className="flex items-center gap-2 cursor-pointer">
+                                    <div className="flex dark:text-gray-200 items-center gap-2 cursor-pointer">
                                         <Image src="/poll.png" alt="Poll" width={20} height={20} />
                                         <span>Poll</span>
                                     </div>
-                                    <div className="flex items-center gap-2 cursor-pointer">
+                                    <div className="flex dark:text-gray-200 items-center gap-2 cursor-pointer">
                                         <Image src="/addevent.png" alt="Event" width={20} height={20} />
                                         <span>Event</span>
                                     </div>

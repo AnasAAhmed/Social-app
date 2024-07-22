@@ -5,7 +5,7 @@ import MenuBar from "../MenuBar";
 const LeftMenu = ({ type }: { type: "home" | "profile" }) => {
   return (
     <div className="flex flex-col gap-6 mb-24">
-      <div className="max-xl:hidden">{type === "home" && <ProfileCard />}</div>
+     {type === "home" && <div className="max-xl:hidden"> <ProfileCard /></div>}
      <MenuBar/>
       <Ad size="sm"/>
     </div>

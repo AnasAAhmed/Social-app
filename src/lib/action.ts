@@ -2,7 +2,6 @@
 
 import { auth } from "@clerk/nextjs/server"
 import prisma from "./client";
-import { z } from "zod";
 import { revalidatePath } from "next/cache";
 
 export const switchFollow = async (userId: string) => {
@@ -109,8 +108,8 @@ export const acceptFollowRequest = async (userId: string) => {
       });
       await prisma.follower.create({
         data: {
-          followingId: currentUserId,
-          followerId: userId,
+          followerId: currentUserId,
+          followingId: userId,
         },
       });
     }

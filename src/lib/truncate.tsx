@@ -14,7 +14,7 @@ const Truncate = ({ desc, numOfChar, textSize=14 }: { desc: string, numOfChar: n
     };
     return (
         <>
-            <p style={{fontSize:`${textSize}`}}>
+            <p style={{fontSize:`${textSize}`}} className='dark:text-gray-200'>
                 {isExpanded ? desc : truncateText(desc, numOfChar)}
             </p>
             {desc.length > numOfChar && (

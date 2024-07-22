@@ -54,7 +54,7 @@ const ProfilePage = async ({ searchParams, params }: { searchParams: SearchParam
 
       <Suspense fallback={<LoaderGif />}>
         <div className="hidden md:block overflow-scroll scrollbar-hide fixed top-30 left-0 h-full w-[30%] xl:w-1/4 pl-14">
-          <LeftMenu type='home' />
+          <LeftMenu type='profile' />
         </div>
         <div className="w-full md:w-[70%] xl:w-1/2 xl:mx-auto">
           <div className="flex flex-col gap-6">
@@ -72,13 +72,13 @@ const ProfilePage = async ({ searchParams, params }: { searchParams: SearchParam
                   alt=""
                   width={128}
                   height={128}
-                  className="w-32 h-32 rounded-full absolute left-0 right-0 m-auto -bottom-16 ring-4 ring-white object-cover"
+                  className="w-32 h-32 rounded-full absolute left-0 right-0 m-auto -bottom-16 ring-4 ring-white dark:ring-slate-600 object-cover"
                 />
               </div>
-              <h1 className="mt-20 mb-4 text-2xl font-medium">
+              <h1 className="mt-20 mb-4 text-2xl dark:text-gray-200 font-medium">
                 {(user.name && user.surname) ? user.name + ' ' + user.surname : user.username}
               </h1>
-              <div className="flex items-center justify-center gap-12 mb-4">
+              <div className="flex items-center dark:text-gray-200 justify-center gap-12 mb-4">
                 <div className="flex flex-col items-center">
                   <span className="font-medium">{user._count.posts}</span>
                   <span className="text-sm">Posts</span>

@@ -7,52 +7,52 @@ const Lodaer = () => {
     <div className='p-4 bg-white rounded-lg text-sm shadow-md flex flex-col gap-4 animate-pulse'>
       {/* Top Section */}
       <div className="flex justify-between items-center font-medium">
-        <span className="bg-gray-300 rounded w-24 h-4"></span>
-        <span className="bg-gray-300 rounded w-12 h-4"></span>
+        <span className="bg-gray-300 dark:bg-gray-700 rounded w-24 h-4"></span>
+        <span className="bg-gray-300 dark:bg-gray-700 rounded w-12 h-4"></span>
       </div>
 
       {/* User Details Section */}
       <div className="flex flex-col gap-4 text-gray-500">
         <div className="flex items-center gap-2">
-          <span className="bg-gray-300 rounded w-32 h-6"></span>
-          <span className="bg-gray-300 rounded w-16 h-4"></span>
+          <span className="bg-gray-300 dark:bg-gray-700 rounded w-32 h-6"></span>
+          <span className="bg-gray-300 dark:bg-gray-700 rounded w-16 h-4"></span>
         </div>
-        <p className="bg-gray-300 rounded w-full h-12"></p>
+        <p className="bg-gray-300 dark:bg-gray-700 rounded w-full h-12"></p>
 
         {/* User City */}
         <div className="flex items-center gap-2">
-          <div className="bg-gray-300 rounded w-4 h-4"></div>
-          <span className="bg-gray-300 rounded w-40 h-4"></span>
+          <div className="bg-gray-300 dark:bg-gray-700 rounded w-4 h-4"></div>
+          <span className="bg-gray-300 dark:bg-gray-700 rounded w-40 h-4"></span>
         </div>
 
         {/* User School */}
         <div className="flex items-center gap-2">
-          <div className="bg-gray-300 rounded w-4 h-4"></div>
-          <span className="bg-gray-300 rounded w-40 h-4"></span>
+          <div className="bg-gray-300 dark:bg-gray-700 rounded w-4 h-4"></div>
+          <span className="bg-gray-300 dark:bg-gray-700 rounded w-40 h-4"></span>
         </div>
 
         {/* User Work */}
         <div className="flex items-center gap-2">
-          <div className="bg-gray-300 rounded w-4 h-4"></div>
-          <span className="bg-gray-300 rounded w-40 h-4"></span>
+          <div className="bg-gray-300 dark:bg-gray-700 rounded w-4 h-4"></div>
+          <span className="bg-gray-300 dark:bg-gray-700 rounded w-40 h-4"></span>
         </div>
 
         {/* User Website and Date */}
         <div className="flex items-center justify-between">
           <div className="flex gap-1 items-center">
-            <div className="bg-gray-300 rounded w-4 h-4"></div>
-            <span className="bg-gray-300 rounded w-24 h-4"></span>
+            <div className="bg-gray-300 dark:bg-gray-700 rounded w-4 h-4"></div>
+            <span className="bg-gray-300 dark:bg-gray-700 rounded w-24 h-4"></span>
           </div>
           <div className="flex gap-1 items-center">
-            <div className="bg-gray-300 rounded w-4 h-4"></div>
-            <span className="bg-gray-300 rounded w-20 h-4"></span>
+            <div className="bg-gray-300 dark:bg-gray-700 rounded w-4 h-4"></div>
+            <span className="bg-gray-300 dark:bg-gray-700 rounded w-20 h-4"></span>
           </div>
         </div>
 
         {/* Interaction Section */}
         <div className="flex flex-col gap-2">
-          <div className="bg-gray-300 rounded w-full h-8"></div>
-          <div className="bg-gray-300 self-end rounded w-16 h-3"></div>
+          <div className="bg-gray-300 dark:bg-gray-700 rounded w-full h-8"></div>
+          <div className="bg-gray-300 dark:bg-gray-700 self-end rounded w-16 h-3"></div>
         </div>
       </div>
     </div>
@@ -64,16 +64,16 @@ export const Loader1 = () => {
     <div className='p-4 bg-white rounded-lg text-sm shadow-md flex flex-col gap-4 animate-pulse'>
       {/* Top Section */}
       <div className="flex justify-between items-center font-medium">
-        <span className="bg-gray-300 rounded w-24 h-4"></span>
-        <span className="bg-gray-300 rounded w-12 h-4"></span>
+        <span className="bg-gray-300 dark:bg-gray-700 rounded w-24 h-4"></span>
+        <span className="bg-gray-300 dark:bg-gray-700 rounded w-12 h-4"></span>
       </div>
 
       {/* Media Section */}
       <div className="flex gap-4 justify-between flex-wrap">
         {/* Placeholder for Media Items */}
-        <div className="relative w-[27%] h-24 bg-gray-300 rounded-md"></div>
-        <div className="relative w-[27%] h-24 bg-gray-300 rounded-md"></div>
-        <div className="relative w-[27%] h-24 bg-gray-300 rounded-md"></div>
+        <div className="relative w-[27%] h-24 bg-gray-300 dark:bg-gray-700 rounded-md"></div>
+        <div className="relative w-[27%] h-24 bg-gray-300 dark:bg-gray-700 rounded-md"></div>
+        <div className="relative w-[27%] h-24 bg-gray-300 dark:bg-gray-700 rounded-md"></div>
       </div>
     </div>
 
@@ -83,8 +83,68 @@ export const LoaderGif = ({ w, h }: { w?: number, h?: number }) => {
   return (
     <div className="flex items-center justify-center w-full h-screen">
 
-      <Image src={'/Bars.gif'} alt='Loader' width={w || 200} height={w || 200} />
+      <Image unoptimized src={'/Bars.gif'} alt='Loader' width={w || 200} height={w || 200} />
     </div>
+  )
+}
+
+export const PostIntractionLoader = () => {
+  return (
+    <>
+      <div className="flex items-center justify-between text-sm m-4">
+        <div className="flex gap-8">
+          <div className="flex items-center gap-4 bg-slate-100 rounded-lg p-2 animate-pulse">
+            <div className="w-4 h-4 bg-gray-300 dark:bg-gray-700 rounded-full"></div>
+            <span className="text-gray-300">|</span>
+            <span className="w-6 h-4 bg-gray-300 dark:bg-gray-700 rounded"></span>
+          </div>
+          <div className="flex items-center gap-3 bg-slate-100 rounded-lg p-2 animate-pulse">
+            <div className="w-4 h-4 bg-gray-300 dark:bg-gray-700 rounded-full"></div>
+            <span className="text-gray-300">|</span>
+            <span className="w-6 h-4 bg-gray-300 dark:bg-gray-700 rounded"></span>
+          </div>
+        </div>
+      </div>
+      <div className="flex items-center gap-4 mb-6 mx-4">
+        <div className="w-7 h-7 rounded-full bg-gray-300 dark:bg-gray-700 animate-pulse"></div>
+        <div className="flex-1 px-6 py-2 justify-between bg-slate-200 rounded-xl animate-pulse">
+          <div className="bg-transparent outline-none flex-1 w-full h-5 bg-gray-300 dark:bg-gray-700 animate-pulse rounded"></div>
+        </div>
+      </div>
+
+    </>
+  );
+};
+export const CommentLoader = ({commentNumber}:{commentNumber: number}) => {
+  const length = commentNumber > 5 ? 5 : commentNumber;
+  return (
+    <>
+      <div className="flex items-center gap-4 mb-6">
+        <div className="w-8 h-8 rounded-full bg-gray-300 dark:bg-gray-700 animate-pulse"></div>
+        <div className="flex-1 px-6 py-2 justify-between bg-gray-300 dark:bg-gray-700 rounded-xl animate-pulse">
+          <div className="bg-transparent outline-none flex-1 w-full h-5 bg-gray-300 dark:bg-gray-700 animate-pulse rounded"></div>
+        </div>
+      </div>
+      {[...Array(length)].map((_, index) => (
+
+        <div key={index} className="flex gap-4 justify-between my-6 mx-4">
+          <div className="w-7 h-7 rounded-full bg-gray-300 dark:bg-gray-700 animate-pulse"></div>
+          <div className="flex flex-col gap-2 flex-1">
+            <div className="w-1/4 h-4 bg-gray-300 dark:bg-gray-700 rounded animate-pulse"></div>
+            <div className="w-full h-6 bg-gray-300 dark:bg-gray-700 rounded animate-pulse"></div>
+            <div className="flex items-center gap-8 text-xs text-gray-500 mt-2">
+              <div className="flex items-center gap-4">
+                <div className="w-4 h-4 bg-gray-300 dark:bg-gray-700 rounded-full animate-pulse"></div>
+                |
+                <div className="w-6 h-4 bg-gray-300 dark:bg-gray-700 rounded animate-pulse"></div>
+              </div>
+              <div className="w-8 h-4 bg-gray-300 dark:bg-gray-700 rounded animate-pulse"></div>
+            </div>
+          </div>
+          <div className="w-6 h-2 bg-gray-300 dark:bg-gray-700 rounded animate-pulse"></div>
+        </div>
+      ))}
+    </>
   )
 }
 export const Spinner = ({ w, h }: { w?: number, h?: number }) => {

@@ -78,9 +78,9 @@ const BirthDays = async () => {
     });
 
     return (
-        <div className='p-4 bg-white rounded-lg text-sm shadow-md flex flex-col gap-4'>
+        <div className='p-4 bg-white dark:bg-slate-900 rounded-lg text-sm shadow-md flex flex-col gap-4'>
             <div className="flex justify-between items-center font-medium">
-                <span className="text-gray-500">Birthdays</span>
+                <span className="text-gray-500 dark:text-white">Birthdays</span>
                 <Link href={'/'} className='text-blue-500 text-xs'>See all</Link>
             </div>
 
@@ -97,20 +97,20 @@ const BirthDays = async () => {
                         </div>
                     ))
                 ) : (
-                    <span className="text-gray-500">No birthdays today</span>
+                    <span className="text-gray-500 dark:text-white">No birthdays today</span>
                 )}
 
             </div>
 
             {/* Upcoming Birthdays */}
             {upcomingBirthdays.length > 0 && (
-                <div className="p-4 bg-slate-100 rounded-lg flex flex-col gap-4">
+                <div className="p-4 dark:bg-slate-800 bg-slate-100 rounded-lg flex flex-col gap-4">
                     <div className="font-medium">Upcoming Birthdays</div>
                     {upcomingBirthdays.slice(0, 5).map(follower => (
                         <div key={follower.id} className="flex items-center gap-4">
                             <Image src={follower.follower.avatar || '/noAvatar.png'} alt='' width={24} height={24} className='w-6 h-6 rounded-full object-cover' />
                             <Link href={`/profile/${follower.follower.username}`} className='text-xs text-gray-700'>{follower.follower.name}</Link>
-                            <span className="text-xs text-gray-500">{formatDate(new Date(follower.follower.dob!))}</span>
+                            <span className="text-xs dark:text-white text-gray-500">{formatDate(new Date(follower.follower.dob!))}</span>
                         </div>
                     ))}
                     <Link href={'/'} className='text-blue-500 text-xs'>See all upcoming birthdays</Link>

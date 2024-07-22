@@ -81,8 +81,8 @@ const page = async ({ searchParams }: { searchParams: { page: string } }) => {
       <Suspense fallback={<LoaderGif />}>
 
         <div className="hidden  flex-col md:flex gap-6 w-[20%]"> <MenuBar /><Ad size="md" /></div>
-        <div className="flex flex-col gap-6">
-          <h1 className="text-3xl font-bold mb-4 text-slate-600">Stories</h1>
+        <div className="flex flex-col gap-6 max-md:mx-4">
+          <h1 className="text-3xl  font-bold mb-4 text-slate-600">Stories</h1>
           <Suspense fallback={<LoaderStories />}>
             <StoryList stories={stories} userId={currentUser} />
           </Suspense>

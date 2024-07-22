@@ -26,7 +26,7 @@ const Homepage = ({ searchParams }: SearchParamProps) => {
           </div>
         </div>
         <div className="hidden xl:block overflow-scroll scrollbar-hide fixed right-0 h-full w-1/4 max-xl:w-1/3 pr-14">
-          <RightMenu />
+          <RightMenu/>
         </div>
       </Suspense>
     </div>

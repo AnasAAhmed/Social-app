@@ -33,13 +33,13 @@ const FriendRequestList = ({ requests, isPage }: { requests: RequestWithUser[], 
   );
 
   if (optimisticRequests.length === 0) {
-    return <p className="text-center font-medium text-gray-600">No friend requests</p>;
+    return <p className="text-center font-medium dark:text-white text-gray-600">No friend requests</p>;
   }
 
   return (
     <div className={`flex flex-col  w-full gap-4`}>
       {optimisticRequests.map((request) => (
-        <div key={request.id} className={`bg-white ${isPage&&'shadow-md flex-col sm:flex-row'} rounded-lg p-4 w-full flex items-center gap-4`}>
+        <div key={request.id} className={`bg-white dark:bg-slate-900 ${isPage&&'shadow-md flex-col sm:flex-row'} rounded-lg p-4 w-full flex items-center gap-4`}>
           <Image
             src={request.sender.avatar || "/noAvatar.png"}
             alt=""
@@ -48,12 +48,12 @@ const FriendRequestList = ({ requests, isPage }: { requests: RequestWithUser[], 
             className="w-10 h-10 rounded-full object-cover"
           />
           <div className="flex-grow text-center sm:text-left">
-            <h3 className="font-semibold">
+            <h3 className="font-semibold dark:text-white">
               {request.sender.name && request.sender.surname
                 ? `${request.sender.name} ${request.sender.surname}`
                 : request.sender.username}
             </h3>
-            <p className="text-gray-600">mutual friends</p>
+            <p className="text-gray-600 dark:text-gray-300">mutual friends</p>
           </div>
           <div className="flex gap-3">
             <form action={() => handleAction(request.id, request.sender.id, 'accept')}>
@@ -68,7 +68,7 @@ const FriendRequestList = ({ requests, isPage }: { requests: RequestWithUser[], 
               </button>
             </form>
             <form action={() => handleAction(request.id, request.sender.id, 'decline')}>
-              <button type="submit" className={`${isPage&&"bg-gray-300 text-gray-700 px-4 py-2 rounded hover:bg-gray-500"}`}>
+              <button type="submit" className={`${isPage&&"bg-gray-300 dark:bg-slate-700 dark:text-white text-gray-700 px-4 py-2 rounded hover:bg-slate-400 dark:hover:bg-slate-500"}`}>
                {isPage?"Decline": <Image
                   src="/reject.png"
                   alt=""

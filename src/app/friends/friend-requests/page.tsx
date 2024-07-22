@@ -40,7 +40,7 @@ const Friends = async ({ searchParams }: SearchParamProps) => {
 
       <div className="hidden  flex-col md:flex gap-6 w-[20%]"> <MenuBar /><Ad size="sm" /></div>
       <div className="flex flex-col gap-6 w-full lg:w-4/5">
-        <h1 className="text-3xl font-bold mb-4 text-slate-600">Friend Requests</h1>
+        <h1 className="text-3xl font-bold mb-4 dark:text-gray-300 text-slate-600">Friend Requests</h1>
        <FriendRequestList requests={requests} isPage={true} />
         <Pagination urlParamName="page" totalPages={totalPages} page={page} />
       </div>

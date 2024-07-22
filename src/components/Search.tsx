@@ -43,18 +43,18 @@ const Search = ({ placeholder = 'Search...' }: { placeholder?: string }) => {
   }
 
   return (
-    <div className="flex p-2 rounded-xl bg-slate-100 items-center">
+    <div className="flex p-2 rounded-xl dark:bg-slate-700 bg-slate-100 items-center">
       <input
         type="text"
         placeholder={placeholder}
         onChange={(e) => setQuery(e.target.value)}
         onKeyDown={handleKeyDown}
-        className="max-sm:w-full border-0 bg-transparent outline-none placeholder:text-grey-500 focus:border-0 focus-visible:ring-0 focus-visible:ring-offset-0"
+        className="max-sm:w-full border-0 bg-transparent outline-none focus:border-0 focus-visible:ring-0 focus-visible:ring-offset-0"
       />
       <button onClick={() => router.push(`/${route}/${query}`)} disabled={query === ''}>
         <Image src="/search.png" alt="search" width={14} height={14} />
       </button>
-      <select onChange={(e) => setRoute(e.target.value)} className='ml-1 bg-transparent outline-none'>
+      <select onChange={(e) => setRoute(e.target.value)} className='ml-1 bg-transparent cursor-pointer dark:bg-slate-700 dark:text-white outline-none'>
         <option value="search">Posts</option>
         <option value="users">Users</option>
       </select>

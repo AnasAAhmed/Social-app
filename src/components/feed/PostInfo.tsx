@@ -36,17 +36,17 @@ const PostInfo = ({ postId, userId, posterId }: { postId: number, userId: string
                 
             />
             {open && (
-                <div  className="absolute animate-modal bg-gray-50 top-4 ring-[0.5px] right-0 w-32 rounded-lg flex flex-col text-sm shadow-lg z-10">
+                <div  className="absolute animate-modal dark:bg-slate-900 bg-gray-50 top-4 ring-[0.5px] right-0 w-32 rounded-lg flex flex-col text-sm shadow-lg z-10">
                     {userId === posterId ?
                         <>
-                            <form className="p-2 rounded-lg w-full hover:bg-gray-100" action={deletePostWithId}>
+                            <form className="p-2 rounded-lg w-full dark:hover:bg-gray-700 hover:bg-gray-100" action={deletePostWithId}>
                                 <ActionButton text={'Delete'} />
                             </form>
                         </> :
                         <>
-                            <span className="cursor-pointer p-2 hover:bg-gray-100">Share</span>
-                            <span className="cursor-pointer p-2 hover:bg-gray-100">Hide Post</span>
-                            <span className="text-red-500 cursor-pointer p-2 hover:bg-gray-100">Report</span>
+                            <span className="cursor-pointer p-2 dark:text-gray-200 rounded-t-md dark:hover:bg-gray-700 hover:bg-gray-100">Share</span>
+                            <span className="cursor-pointer p-2 dark:text-gray-200 dark:hover:bg-gray-700 hover:bg-gray-100">Hide Post</span>
+                            <span className="text-red-500 cursor-pointer dark:text-gray-200 rounded-b-md p-2 dark:hover:bg-gray-700 hover:bg-gray-100">Report</span>
                         </>
 
                     }

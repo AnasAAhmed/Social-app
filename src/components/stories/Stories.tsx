@@ -48,7 +48,7 @@ const Stories = async () => {
         },
     });
     return (
-        <div className='p-4 bg-white rounded-lg shadow-md overflow-scroll text-sm scrollbar-hide'>
+        <div className='p-4 bg-white dark:bg-slate-900 rounded-lg shadow-md overflow-scroll text-sm scrollbar-hide'>
             <div className="flex gap-2 w-max">
                 <Suspense fallback={<LoaderStories />}>
                     <StoryList stories={stories} userId={currentUser} />

@@ -47,18 +47,18 @@ const UpdateUser = ({ user, isSetting }: { user: User | any, isSetting?: boolean
       )}
       {open && (
         <div className={`${isSetting ? "" : "fixed w-screen h-screen top-0 bottom-0 left-0 bg-black bg-opacity-65 flex items-center justify-center z-30"}`}>
-          <FocusLock className="p-4 sm:p-6 bg-white animate-modal rounded-lg shadow-md flex flex-col gap-2 scrollbar-hide overflow-scroll w-full sm:w-3/4 lg:w-1/2 relative">
+          <FocusLock className="p-4 sm:p-6 bg-white dark:bg-slate-900 animate-modal rounded-lg shadow-md flex flex-col gap-2 scrollbar-hide overflow-scroll w-full sm:w-3/4 lg:w-1/2 relative">
             <form
               action={(formData) =>
                 formAction({ formData, cover: cover?.secure_url || "" })
               }
             >
               {/* TITLE */}
-              <h1 className="text-lg sm:text-xl font-semibold">Update Profile</h1>
+              <h1 className="text-lg dark:text-gray-200 sm:text-xl font-semibold">Update Profile</h1>
               <Link href="/settings/#profile" className="mt-2 sm:mt-4 text-xs text-blue-500 underline">
                 Go to &gt;settings&gt;#profile to change username or avatar.
               </Link>
-              <div className="text-xs text-gray-500">
+              <div className="text-xs dark:text-gray-200 text-gray-500">
                 OR Use the navbar profile to change the avatar or username.
               </div>
               {/* COVER PIC UPLOAD */}
@@ -76,7 +76,7 @@ const UpdateUser = ({ user, isSetting }: { user: User | any, isSetting?: boolean
                     onClick={() => open()}
                   >
                     <div className="flex items-center gap-2">
-                      <label>Cover Picture</label>
+                      <label className="dark:text-gray-200">Cover Picture</label>
                       <Image
                         src={user.cover || "/noCover.jpeg"}
                         alt="Cover Picture"
@@ -84,14 +84,14 @@ const UpdateUser = ({ user, isSetting }: { user: User | any, isSetting?: boolean
                         height={32}
                         className="w-12 h-8 rounded-md object-cover"
                       />
-                      <span className="text-xs underline text-gray-600">Change</span>
+                      <span className="text-xs underline dark:text-gray-200 text-gray-600">Change</span>
                     </div>
                   </div>
                 )}
               </CldUploadWidget>
               {cover && (
                 <div className="flex items-center gap-2">
-                  <label>Preview</label>
+                  <label className="dark:text-gray-200">Preview</label>
                   <Image
                     src={cover.secure_url}
                     alt="Cover Preview"
@@ -99,85 +99,85 @@ const UpdateUser = ({ user, isSetting }: { user: User | any, isSetting?: boolean
                     height={32}
                     className="w-12 h-8 rounded-md object-cover"
                   />
-                  <span onClick={() => setCover('')} className="text-xs underline cursor-pointer text-gray-600">
+                  <span onClick={() => setCover('')} className="text-xs underline cursor-pointer dark:text-gray-200 text-gray-600">
                     Remove
                   </span>
                 </div>
               )}
               {/* INPUT FIELDS */}
-              <div className="grid md:flex grid-cols-2 md:flex-wrap justify-center gap-2 sm:gap-4">
+              <div className="grid md:flex dark:text-gray-200 grid-cols-2 md:flex-wrap justify-center gap-2 sm:gap-4">
                 <div className="flex flex-col gap-2 sm:gap-4">
-                  <label htmlFor="name" className="text-xs text-gray-500">First Name</label>
+                  <label htmlFor="name" className="text-xs dark:text-gray-200 text-gray-500">First Name</label>
                   <input
                     type="text"
                     placeholder={user.name || "John"}
-                    className="ring-1 ring-gray-300 p-2 sm:p-[13px] rounded-md text-sm"
+                    className="ring-1 dark:text-gray-200 dark:bg-slate-800 p-2 sm:p-[13px] rounded-md text-sm"
                     name="name"
                     max={8}
                   />
                 </div>
                 <div className="flex flex-col gap-2 sm:gap-4">
-                  <label htmlFor="surname" className="text-xs text-gray-500">Surname</label>
+                  <label htmlFor="surname" className="text-xs dark:text-gray-200 text-gray-500">Surname</label>
                   <input
                     type="text"
                     placeholder={user.surname || "Doe"}
-                    className="ring-1 ring-gray-300 p-2 sm:p-[13px] rounded-md text-sm"
+                    className="ring-1 dark:text-gray-200 dark:bg-slate-800 p-2 sm:p-[13px] rounded-md text-sm"
                     name="surname"
                     max={8}
                   />
                 </div>
                 <div className="flex flex-col gap-2 sm:gap-4">
-                  <label htmlFor="description" className="text-xs text-gray-500">Description</label>
+                  <label htmlFor="description" className="text-xs dark:text-gray-200 text-gray-500">Description</label>
                   <input
                     type="text"
                     placeholder={user.description || "Life is beautiful..."}
-                    className="ring-1 ring-gray-300 p-2 sm:p-[13px] rounded-md text-sm"
+                    className="ring-1 dark:text-gray-200 dark:bg-slate-800 p-2 sm:p-[13px] rounded-md text-sm"
                     name="description"
                   />
                 </div>
                 <div className="flex flex-col gap-2 sm:gap-4">
-                  <label htmlFor="city" className="text-xs text-gray-500">City</label>
+                  <label htmlFor="city" className="text-xs dark:text-gray-200 text-gray-500">City</label>
                   <input
                     type="text"
                     placeholder={user.city || "New York"}
-                    className="ring-1 ring-gray-300 p-2 sm:p-[13px] rounded-md text-sm"
+                    className="ring-1 dark:text-gray-200 dark:bg-slate-800 p-2 sm:p-[13px] rounded-md text-sm"
                     name="city"
                   />
                 </div>
                 <div className="flex flex-col gap-2 sm:gap-4">
-                  <label htmlFor="school" className="text-xs text-gray-500">School</label>
+                  <label htmlFor="school" className="text-xs dark:text-gray-200 text-gray-500">School</label>
                   <input
                     type="text"
                     placeholder={user.school || "MIT"}
-                    className="ring-1 ring-gray-300 p-2 sm:p-[13px] rounded-md text-sm"
+                    className="ring-1 dark:text-gray-200 dark:bg-slate-800 p-2 sm:p-[13px] rounded-md text-sm"
                     name="school"
                   />
                 </div>
                 <div className="flex flex-col gap-2 sm:gap-4">
-                  <label htmlFor="work" className="text-xs text-gray-500">Work</label>
+                  <label htmlFor="work" className="text-xs dark:text-gray-200 text-gray-500">Work</label>
                   <input
                     type="text"
                     placeholder={user.work || "Apple Inc."}
-                    className="ring-1 ring-gray-300 p-2 sm:p-[13px] rounded-md text-sm"
+                    className="ring-1 dark:text-gray-200 dark:bg-slate-800 p-2 sm:p-[13px] rounded-md text-sm"
                     name="work"
                   />
                 </div>
                 <div className="flex flex-col gap-2 sm:gap-4">
-                  <label htmlFor="website" className="text-xs text-gray-500">Website</label>
+                  <label htmlFor="website" className="text-xs dark:text-gray-200 text-gray-500">Website</label>
                   <input
                     type="text"
                     placeholder={user.website || "https://your-domain.com"}
-                    className="ring-1 ring-gray-300 p-2 sm:p-[13px] rounded-md text-sm"
+                    className="ring-1 dark:text-gray-200 dark:bg-slate-800 p-2 sm:p-[13px] rounded-md text-sm"
                     name="website"
                   />
                 </div>
                 <div className="flex flex-col gap-2 sm:gap-4">
-                  <label htmlFor="dob" className="text-xs text-gray-500">
+                  <label htmlFor="dob" className="text-xs dark:text-gray-200 text-gray-500">
                     Date of Birth: {user.dob ? new Date(user.dob).toISOString().split('T')[0] : "null"}
                   </label>
                   <input
                     type="date"
-                    className="ring-1 ring-gray-300 p-2 sm:p-[13px] rounded-md text-sm"
+                    className="ring-1 dark:text-gray-200 dark:bg-slate-800 p-2 sm:p-[13px] rounded-md text-sm"
                     name="dob"
                   />
                 </div>
@@ -192,20 +192,12 @@ const UpdateUser = ({ user, isSetting }: { user: User | any, isSetting?: boolean
                 <span className="text-red-500">Something went wrong!</span>
               )}
               </div>
-              {!isSetting && (
                 <div
-                  className="absolute text-xl right-3 top-4 cursor-pointer"
+                  className="absolute text-2xl dark:text-gray-200 right-3 top-4 cursor-pointer"
                   onClick={handleClose}
                 >
-                  <Image
-                    src="/cross.png"
-                    alt="Close"
-                    width={5}
-                    height={5}
-                    className="w-5 h-5 rounded-md object-cover"
-                  />
+                  &times;
                 </div>
-              )}
             </form>
           </FocusLock>
         </div>
