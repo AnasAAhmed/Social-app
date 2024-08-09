@@ -50,7 +50,7 @@ const UpdateUser = ({ user, isSetting }: { user: User | any, isSetting?: boolean
           <FocusLock className="p-4 sm:p-6 bg-white dark:bg-slate-900 animate-modal rounded-lg shadow-md flex flex-col gap-2 scrollbar-hide overflow-scroll w-full sm:w-3/4 lg:w-1/2 relative">
             <form
               action={(formData) =>
-                formAction({ formData, cover: cover?.secure_url || "" })
+                formAction({ formData, cover: cover?.secure_url || user.cover || "/noCover.jpeg" })
               }
             >
               {/* TITLE */}
@@ -184,20 +184,20 @@ const UpdateUser = ({ user, isSetting }: { user: User | any, isSetting?: boolean
               </div>
               <div className="flex flex-col gap-2">
 
-              <UpdateButton />
-              {state.success && (
-                <span className="text-green-500">Profile has been updated!</span>
-              )}
-              {state.error && (
-                <span className="text-red-500">Something went wrong!</span>
-              )}
+                <UpdateButton />
+                {state.success && (
+                  <span className="text-green-500">Profile has been updated!</span>
+                )}
+                {state.error && (
+                  <span className="text-red-500">Something went wrong!</span>
+                )}
               </div>
-                <div
-                  className="absolute text-2xl dark:text-gray-200 right-3 top-4 cursor-pointer"
-                  onClick={handleClose}
-                >
-                  &times;
-                </div>
+              <div
+                className="absolute text-2xl dark:text-gray-200 right-3 top-4 cursor-pointer"
+                onClick={handleClose}
+              >
+                &times;
+              </div>
             </form>
           </FocusLock>
         </div>

@@ -1,7 +1,6 @@
 'use client';
 
 import { addComments } from "@/lib/form.actions";
-// import { deleteComment } from "@/lib/delete.actions";
 import { useUser } from "@clerk/nextjs";
 import { Comments, User } from "@prisma/client";
 import Image from "next/image";
@@ -15,6 +14,7 @@ import { calculateTimeDifference } from "@/lib/utils";
 import { EmojiClickData } from "emoji-picker-react";
 import dynamic from "next/dynamic";
 import { Spinner } from "../Loader";
+import { deleteComment } from "@/lib/delete.actions";
 
 const EmojiPicker = dynamic(() => import('emoji-picker-react'), {
     ssr: false,
@@ -27,14 +27,12 @@ const CommentList = ({
     comments,
     postId,
     author,
-    deleteComment,
     sort
 }: {
     comments: CommentWithUser[];
     postId: number;
     author: string;
-    deleteComment: any;
-    sort:string
+    sort?:string;
 }) => {
     const { user } = useUser();
     const [commentState, setCommentState] = useState<CommentWithUser[]>(comments);
@@ -46,7 +44,7 @@ const CommentList = ({
     };
     useEffect(() => {
         setCommentState(comments)
-    }, [comments,sort])
+    }, [comments])
     const add = async () => {
         if (!user || !desc) return;
 
@@ -176,7 +174,7 @@ const CommentList = ({
                                     ? comment.user.name + ' ' + comment.user.surname
                                     : comment.user.username}
                                 <span className='font-medium text-xs text-gray-600 dark:text-gray-400 ml-3'>{calculateTimeDifference(comment.createdAt)}</span>
-                                {author === user?.id && <span className='font-medium text-xs text-gray-600 dark:text-gray-400 ml-2'>&#9998; author</span>}
+                                {author === comment.userId && <span className='font-medium text-xs text-gray-600 dark:text-gray-400 ml-2'>&#9998; author</span>}
                             </span>
                             <Truncate desc={comment.desc} numOfChar={60} />
                             <div className="flex items-center gap-8 text-xs text-gray-500 dark:text-gray-300 mt-2">

@@ -34,7 +34,7 @@ const Navbar = () => {
           <Search />
         </div>
       </div>
-      <div id='RIGHT' className="w-[30%] flex items-center gap-4 xl:gap-8 justify-end">
+      <div id='RIGHT' className="w-[33%] flex items-center gap-2 sm:gap-4 xl:gap-8 justify-end">
         <ClerkLoading>
           <div role="status" className="animate-pulse">
             <div className="flex items-center gap-4">

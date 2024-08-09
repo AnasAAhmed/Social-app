@@ -8,13 +8,14 @@ import { toast } from 'sonner';
 import { PostIntractionLoader } from '../Loader';
 import Comment from './Comment';
 
-const PostIntraction = ({ postId, likes, commentNumber, author }: { postId: number; likes: string[]; commentNumber: number; author: string }) => {
+const PostIntraction = ({ postId, likes, commentNumber, author }: { postId: number; likes: string[]; commentNumber: number; author: string; }) => {
     const { userId, isLoaded } = useAuth();
     const [likeState, setLikeState] = useState({
         likeCount: likes.length,
         isLiked: userId ? likes.includes(userId) : false
     });
     const [open, setOpen] = useState(false);
+    const [open2, setOpen2] = useState(true);
     const [buttonDisabled, setButtonDisabled] = useState(false);
     const [optimisticLike, switchOptimisticLike] = useState(likeState);
 
@@ -57,11 +58,19 @@ const PostIntraction = ({ postId, likes, commentNumber, author }: { postId: numb
                     </div>
                 </div>
                 <div className="flex items-center gap-3">
-                    <div className="flex items-center gap-3 bg-slate-50 dark:bg-slate-800 rounded-lg p-2">
-                        <Image src={'/comment.png'} alt='' width={16} height={16} className='cursor-pointer' />
-                        <span className="text-gray-300 dark:text-gray-300">|</span>
-                        <span onClick={() => setOpen(!open)} className="text-gray-500 dark:text-gray-200 lg:text-xs">{commentNumber} <span className="hidden md:inline cursor-pointer hover:underline">Comments</span> </span>
-                    </div>
+                    {open ?
+                        <div onClick={() => {setOpen2(!open2)}} className="flex items-center gap-3 bg-slate-50 dark:bg-slate-800 rounded-lg p-2">
+                            <Image src={'/comment.png'} alt='' width={16} height={16} className='cursor-pointer' />
+                            <span className="text-gray-300 dark:text-gray-300">|</span>
+                            <span className="text-gray-500 dark:text-gray-200 lg:text-xs">{commentNumber} <span className="hidden md:inline cursor-pointer hover:underline">Comments</span> </span>
+                        </div>
+                        :
+                        <div onClick={() => setOpen(true)} className="flex items-center gap-3 bg-slate-50 dark:bg-slate-800 rounded-lg p-2">
+                            <Image src={'/comment.png'} alt='' width={16} height={16} className='cursor-pointer' />
+                            <span className="text-gray-300 dark:text-gray-300">|</span>
+                            <span className="text-gray-500 dark:text-gray-200 lg:text-xs">{commentNumber} <span className="hidden md:inline cursor-pointer hover:underline">Comments</span> </span>
+                        </div>
+                    }
                     <div className="flex items-center gap-3 bg-slate-50 dark:bg-slate-800 p-2 rounded-xl">
                         <Image src="/share.png" width={16} height={16} alt="" className="cursor-pointer" />
                         <span className="text-gray-300 dark:text-gray-300">|</span>
@@ -69,7 +78,7 @@ const PostIntraction = ({ postId, likes, commentNumber, author }: { postId: numb
                     </div>
                 </div>
             </div>
-            {open && <Comment postId={postId} commentNumber={commentNumber} author={author} />}
+            {open && <Comment postId={postId} open={open2} commentNumber={commentNumber} author={author} />}
         </>
     );
 };

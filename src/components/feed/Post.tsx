@@ -61,7 +61,10 @@ const Post = ({ post, userId }: { post: feedPostsType, userId: string }) => {
                     postId={post.id}
                     likes={post.likes.map((like: any) => like.userId)}
                     commentNumber={post._count.comments}
-                    author={post.userId} />
+                    author={post.userId}
+                     />
+                    {/* <Comment postId={post.id} author={post.userId} /> */}
+                     
             </Suspense>
         </div >
     )
