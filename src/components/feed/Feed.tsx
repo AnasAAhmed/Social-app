@@ -4,7 +4,9 @@ import { auth } from '@clerk/nextjs/server'
 import prisma from '@/lib/client';
 import Pagination from '../Pagination';
 import Link from 'next/link';
-import Feep from './Feep';
+import { Suspense } from "react"
+import { LoaderGif } from "@/components/Loader"
+
 // import Feep from './Feep';
 const Feed = async ({ searchParams, username, blockedPostId }: { username?: string, blockedPostId?: number[], searchParams: any }) => {
   const { userId } = auth();
@@ -102,7 +104,7 @@ const Feed = async ({ searchParams, username, blockedPostId }: { username?: stri
         new Set([userId, ...allUsersIds])
       );
       console.log('ssss');
-      
+
     }
     // Fetch posts and total post count in parallel
 
@@ -150,8 +152,9 @@ const Feed = async ({ searchParams, username, blockedPostId }: { username?: stri
   const totalPages = Math.ceil(totalPosts / perPage);
 
   return (
-    <div className="mb-4 dark:bg-slate-800 bg-slate-100 rounded-lg flex flex-col gap-4">
-      {/* <Feep
+    <Suspense fallback={<LoaderGif />}>
+      <div className="mb-4 dark:bg-slate-800 bg-slate-100 rounded-lg flex flex-col gap-4">
+        {/* <Feep
         totalPages={totalPages}
         page={page}
         posts={posts}
@@ -159,31 +162,32 @@ const Feed = async ({ searchParams, username, blockedPostId }: { username?: stri
         username={username}
         userId={userId}
         /> */}
-      {posts?.length ? (
-        <>
-          {posts.map(post => (
-            <Post userId={userId} key={post.id} post={post} />
-          ))}
-          <Pagination urlParamName="page" totalPages={totalPages} page={page} />
-        </>
-      ) : (
-        !username &&
-        <div>
-          <p className="text-gray-600 text-center font-medium text-xl">No Posts yet. make friends to see thier posts or switch to public.</p>
-          <div className="flex justify-center gap-2">
+        {posts?.length ? (
+          <>
+            {posts.map(post => (
+              <Post userId={userId} key={post.id} post={post} />
+            ))}
+            <Pagination urlParamName="page" totalPages={totalPages} page={page} />
+          </>
+        ) : (
+          !username &&
+          <div>
+            <p className="text-gray-600 text-center font-medium text-xl">No Posts yet. make friends to see thier posts or switch to public.</p>
+            <div className="flex justify-center gap-2">
 
-            <Link href="/" className={`mr-2 ${filter === 'friends' ? 'text-blue-500' : 'text-gray-500'}`}>
-              Friends
-            </Link>
-            <Link href="?filter=all" className={`${filter === 'all' ? 'text-blue-500' : 'text-gray-500'}`}>
-              Public
-            </Link>
+              <Link href="/" className={`mr-2 ${filter === 'friends' ? 'text-blue-500' : 'text-gray-500'}`}>
+                Friends
+              </Link>
+              <Link href="?filter=all" className={`${filter === 'all' ? 'text-blue-500' : 'text-gray-500'}`}>
+                Public
+              </Link>
+            </div>
           </div>
-        </div>
-      )}
-    </div>
+        )}
+      </div>
+      </Suspense >
 
-  )
+      )
 }
 
-export default Feed
+      export default Feed
