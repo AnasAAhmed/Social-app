@@ -52,7 +52,8 @@ const Post = ({ post, userId }: { post: feedPostsType, userId: string }) => {
                                 </div>
                             }
                         </div>
-                    </FullImage>
+                   </FullImage>
+
                 }
             </div>
             {/* interaction */}

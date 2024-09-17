@@ -1,6 +1,6 @@
 import { SearchParamProps } from '@/app/friends/page';
 import AddPost from '@/components/forms/AddPost';
-import {Blocked, NotFound} from '@/components/NotLoggedIn';
+import { Blocked, NotFound } from '@/components/NotLoggedIn';
 import { LoaderGif } from '@/components/Loader';
 import NotLoggedIn from '@/components/NotLoggedIn';
 import Feed from '@/components/feed/Feed';
@@ -51,59 +51,56 @@ const ProfilePage = async ({ searchParams, params }: { searchParams: SearchParam
 
   return (
     <div className='flex justify-end'>
-
-      <Suspense fallback={<LoaderGif />}>
-        <div className="hidden md:block overflow-scroll scrollbar-hide fixed top-30 left-0 h-full w-[30%] xl:w-1/4 pl-14">
-          <LeftMenu type='profile' />
-        </div>
-        <div className="w-full md:w-[70%] xl:w-1/2 xl:mx-auto">
-          <div className="flex flex-col gap-6">
-            <div className="flex flex-col items-center justify-center">
-              <div className="w-full h-64 relative">
-                <Image
-                  // src={"/banner.jpg"}
-                  src={user.cover || "/noCover.jpeg"}
-                  alt=""
-                  fill
-                  className="rounded-md object-cover"
-                />
-                <Image
-                  src={user.avatar || "/noAvatar.png"}
-                  alt=""
-                  width={128}
-                  height={128}
-                  className="w-32 h-32 rounded-full absolute left-0 right-0 m-auto -bottom-16 ring-4 ring-white dark:ring-slate-600 object-cover"
-                />
+      <div className="hidden md:block overflow-scroll scrollbar-hide fixed top-30 left-0 h-full w-[30%] xl:w-1/4 pl-14">
+        <LeftMenu type='profile' />
+      </div>
+      <div className="w-full md:w-[70%] xl:w-1/2 xl:mx-auto">
+        <div className="flex flex-col gap-6">
+          <div className="flex flex-col items-center justify-center">
+            <div className="w-full h-64 relative">
+              <Image
+                // src={"/banner.jpg"}
+                src={user.cover || "/noCover.jpeg"}
+                alt=""
+                fill
+                className="rounded-md object-cover"
+              />
+              <Image
+                src={user.avatar || "/noAvatar.png"}
+                alt=""
+                width={128}
+                height={128}
+                className="w-32 h-32 rounded-full absolute left-0 right-0 m-auto -bottom-16 ring-4 ring-white dark:ring-slate-600 object-cover"
+              />
+            </div>
+            <h1 className="mt-20 mb-4 text-2xl dark:text-gray-200 font-medium">
+              {(user.name && user.surname) ? user.name + ' ' + user.surname : user.username}
+            </h1>
+            <div className="flex items-center dark:text-gray-200 justify-center gap-12 mb-4">
+              <div className="flex flex-col items-center">
+                <span className="font-medium">{user._count.posts}</span>
+                <span className="text-sm">Posts</span>
               </div>
-              <h1 className="mt-20 mb-4 text-2xl dark:text-gray-200 font-medium">
-                {(user.name && user.surname) ? user.name + ' ' + user.surname : user.username}
-              </h1>
-              <div className="flex items-center dark:text-gray-200 justify-center gap-12 mb-4">
-                <div className="flex flex-col items-center">
-                  <span className="font-medium">{user._count.posts}</span>
-                  <span className="text-sm">Posts</span>
-                </div>
-                <div className="flex flex-col items-center">
-                  <span className="font-medium">{user._count.follower}</span>
-                  <span className="text-sm">Followers</span>
-                </div>
-                <div className="flex flex-col items-center">
-                  <span className="font-medium">{user._count.following}</span>
-                  <span className="text-sm">Following</span>
-                </div>
+              <div className="flex flex-col items-center">
+                <span className="font-medium">{user._count.follower}</span>
+                <span className="text-sm">Followers</span>
+              </div>
+              <div className="flex flex-col items-center">
+                <span className="font-medium">{user._count.following}</span>
+                <span className="text-sm">Following</span>
               </div>
             </div>
-
-            {user.id === currentUser && <AddPost />}
-            <div className='xl:hidden'> <UserMediaCard user={user} /></div>
-            <div className='xl:hidden'> <UserInfoCard user={user} /></div>
-            <Feed searchParams={searchParams} username={user.username} />
           </div>
+
+          {user.id === currentUser && <AddPost />}
+          <div className='xl:hidden'> <UserMediaCard user={user} /></div>
+          <div className='xl:hidden'> <UserInfoCard user={user} /></div>
+          <Feed searchParams={searchParams} username={user.username} />
         </div>
-        <div className="hidden xl:block overflow-scroll scrollbar-hide fixed top-30 right-0 h-full w-1/4 max-xl:w-1/3 pr-14">
-          <RightMenu user={user} />
-        </div>
-      </Suspense>
+      </div>
+      <div className="hidden xl:block overflow-scroll scrollbar-hide fixed top-30 right-0 h-full w-1/4 max-xl:w-1/3 pr-14">
+        <RightMenu user={user} />
+      </div>
     </div>
   )
 }

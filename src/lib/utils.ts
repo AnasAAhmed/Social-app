@@ -27,7 +27,7 @@ export const calculateTimeDifference = (date: number|Date) => {
     }
     // If difference is less than 60 minutes, show in minutes
     if (minutesDifference < 60) {
-        return `${minutesDifference} min ago`;
+        return `${minutesDifference} minute${minutesDifference>1?'s':''} ago`;
     }
 
     // If difference is less than 24 hours, show in hours
@@ -49,7 +49,7 @@ export const calculateTimeDifference = (date: number|Date) => {
     }
 
     const monthDifference = Math.floor(weekDifference / 4);
-    return `${monthDifference} mth ago`;
+    return `${monthDifference} month${monthDifference>1?'s':''} ago`;
 }
 
 export function formUrlQuery({ params, key, value }: UrlQueryParams) {
