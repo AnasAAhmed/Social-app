@@ -10,7 +10,7 @@ import { LoaderGif } from "@/components/Loader";
 import NotLoggedIn from "@/components/NotLoggedIn";
 
 
-const Friends = async ({ searchParams }: SearchParamProps) => {
+const FriendRequests = async ({ searchParams }: { searchParams: { page?: string } }) => {
 
   const { userId } = await auth.protect();
   if (!userId) return <NotLoggedIn />;
@@ -49,4 +49,4 @@ const Friends = async ({ searchParams }: SearchParamProps) => {
   );
 }
 
-export default Friends;
+export default FriendRequests;

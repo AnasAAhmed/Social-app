@@ -20,7 +20,7 @@ type UserData = {
   following?: User;
 };
 
-const FriendsPage = async ({ searchParams }: SearchParamProps) => {
+const FriendsPage = async ({ searchParams }: { searchParams: { page?: string, filter?: string } }) => {
   const { userId } = await auth.protect();
 
   if (!userId) {
