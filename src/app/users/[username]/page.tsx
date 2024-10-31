@@ -84,7 +84,7 @@ const page = async ({ params, searchParams }: { params: Promise<{ username: stri
                                     </div>
                                 </div>
                             ))}
-                            <Pagination urlParamName='page' totalPages={totalPages} page={page} />
+                            <Pagination urlParamName='page' totalPages={totalPages} page={Number(page)||1} />
                         </div>
                     </div>
                 </div>
