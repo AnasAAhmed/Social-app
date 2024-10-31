@@ -9,7 +9,7 @@ import { LoaderGif } from "@/components/Loader"
 
 // import Feep from './Feep';
 const Feed = async ({ searchParams, username, blockedPostId }: { username?: string, blockedPostId?: number[], searchParams: any }) => {
-  const { userId } = auth();
+  const { userId } = await auth.protect();
   if (!userId) return null;
   const page = Number(searchParams?.page) || 1;
   const filter = searchParams?.filter || 'friends';
@@ -83,9 +83,6 @@ const Feed = async ({ searchParams, username, blockedPostId }: { username?: stri
       const followingIds = new Set(
         followersAndFollowings.map(f => f.followingId)
       );
-
-      console.log('ffff');
-
       // Combine userId, followerIds, and followingIds into a single array of unique IDs
       ids = Array.from(
         new Set([userId, ...followerIds, ...followingIds])
@@ -95,6 +92,10 @@ const Feed = async ({ searchParams, username, blockedPostId }: { username?: stri
         select: {
           id: true
         },
+        take:4,
+        orderBy: {
+          createdAt: "desc",
+        },
       });
 
       const allUsersIds = new Set(
@@ -103,7 +104,6 @@ const Feed = async ({ searchParams, username, blockedPostId }: { username?: stri
       ids = Array.from(
         new Set([userId, ...allUsersIds])
       );
-      console.log('ssss');
 
     }
     // Fetch posts and total post count in parallel

@@ -6,7 +6,7 @@ import FriendRequestList from './FriendRequestList'
 
 const FriendRequest = async () => {
 
-    const { userId } = auth();
+    const { userId } = await auth.protect();
     if (!userId) return null;
 
     const requestsCount = await prisma.followRequest.count({

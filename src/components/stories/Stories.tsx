@@ -6,7 +6,7 @@ import StoryList from './StoryList';
 import NotLoggedIn from '../NotLoggedIn';
 
 const Stories = async () => {
-    const { userId: currentUser } = auth();
+    const { userId: currentUser } = await auth.protect();
     if (!currentUser) return <NotLoggedIn />;
     // Fetch the stories
 

@@ -1,7 +1,6 @@
 import { SearchParamProps } from '@/app/friends/page';
 import AddPost from '@/components/forms/AddPost';
 import { Blocked, NotFound } from '@/components/NotLoggedIn';
-import { LoaderGif } from '@/components/Loader';
 import NotLoggedIn from '@/components/NotLoggedIn';
 import Feed from '@/components/feed/Feed';
 import LeftMenu from '@/components/leftMenu/LeftMenu';
@@ -11,13 +10,13 @@ import UserMediaCard from '@/components/rightMenu/UserMediaCard';
 import prisma from '@/lib/client';
 import { auth } from '@clerk/nextjs/server';
 import Image from 'next/image';
-import { notFound } from 'next/navigation';
 import React, { Suspense } from 'react'
 
 const ProfilePage = async ({ searchParams, params }: { searchParams: SearchParamProps, params: { username: string } }) => {
-  const { userId: currentUser } = auth();
+  const { userId: currentUser } = await auth.protect();
   if (!currentUser) return <NotLoggedIn />;
-  const username = params.username;
+  const { username } = await params;
+  const searchParam = await searchParams;
   if (!username) return;
   const user = await prisma.user.findFirst({
     where: {
@@ -95,7 +94,7 @@ const ProfilePage = async ({ searchParams, params }: { searchParams: SearchParam
           {user.id === currentUser && <AddPost />}
           <div className='xl:hidden'> <UserMediaCard user={user} /></div>
           <div className='xl:hidden'> <UserInfoCard user={user} /></div>
-          <Feed searchParams={searchParams} username={user.username} />
+          <Feed searchParams={searchParam} username={user.username} />
         </div>
       </div>
       <div className="hidden xl:block overflow-scroll scrollbar-hide fixed top-30 right-0 h-full w-1/4 max-xl:w-1/3 pr-14">

@@ -5,7 +5,7 @@ import prisma from "./client";
 import { revalidatePath } from "next/cache";
 
 export const switchFollow = async (userId: string) => {
-  const { userId: currentUser } = auth();
+  const { userId: currentUser } = await auth.protect();
   if (!currentUser) throw new Error("UserId is not authneticated");
   try {
     const existingFollow = await prisma.follower.findFirst({
@@ -51,7 +51,7 @@ export const switchFollow = async (userId: string) => {
 };
 
 export const switchBlock = async (userId: string) => {
-  const { userId: currentUserId } = auth();
+  const { userId: currentUserId } = await auth.protect();
 
   if (!currentUserId) {
     throw new Error("User is not Authenticated!!");
@@ -87,7 +87,7 @@ export const switchBlock = async (userId: string) => {
 };
 
 export const acceptFollowRequest = async (userId: string) => {
-  const { userId: currentUserId } = auth();
+  const { userId: currentUserId } = await auth.protect();
 
   if (!currentUserId) {
     throw new Error("User is not Authenticated!!");
@@ -121,7 +121,7 @@ export const acceptFollowRequest = async (userId: string) => {
   }
 };
 export const declineFollowRequest = async (userId: string) => {
-  const { userId: currentUserId } = auth();
+  const { userId: currentUserId } = await auth.protect();
 
   if (!currentUserId) {
     throw new Error("User is not Authenticated!!");
@@ -149,7 +149,7 @@ export const declineFollowRequest = async (userId: string) => {
   }
 };
 export const switchLike = async (postId: number) => {
-  const { userId } = auth();
+  const { userId } = await auth.protect();
   if (!userId) {
     throw new Error("User is not Authenticated!!");
   }
@@ -180,7 +180,7 @@ export const switchLike = async (postId: number) => {
   }
 };
 export const switchCommentLike = async (commentId: number) => {
-  const { userId } = auth();
+  const { userId } = await auth.protect();
   if (!userId) {
     throw new Error("User is not Authenticated!!");
   }

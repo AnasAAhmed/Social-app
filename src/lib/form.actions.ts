@@ -41,7 +41,7 @@ export const updateProfile = async (
         return { success: false, error: true };
     }
 
-    const { userId } = auth();
+    const { userId } = await auth.protect();
 
     if (!userId) {
         return { success: false, error: true };
@@ -74,7 +74,7 @@ export const addPost = async (formData: FormData, img: string) => {
         console.log("description is not valid");
         throw new Error(`description is not valid it must be less than 255`);
     }
-    const { userId } = auth();
+    const { userId } = await auth.protect();
 
     if (!userId) throw new Error("User is not authenticated!");
 
@@ -107,7 +107,7 @@ export const updatePost = async (formData: FormData, img: string, postId: number
         console.log("description is not valid");
         throw new Error(`description is not valid it must be less than 255`);
     }
-    const { userId } = auth();
+    const { userId } = await auth.protect();
 
     if (!userId) throw new Error("User is not authenticated!");
 
@@ -144,7 +144,7 @@ export const updatePost = async (formData: FormData, img: string, postId: number
 };
 
 export const addStory = async (img: string) => {
-    const { userId } = auth();
+    const { userId } = await auth.protect();
     if (!userId) {
         throw new Error("User is not Authenticated!!");
     };
@@ -180,7 +180,7 @@ export const addStory = async (img: string) => {
 };
 
 export const addComments = async (postId: number, desc: string) => {
-    const { userId } = auth();
+    const { userId } = await auth.protect();
     if (!userId) {
         throw new Error("User is not Authenticated!!");
     };
@@ -196,7 +196,7 @@ export const addComments = async (postId: number, desc: string) => {
             }
         });
 
-        revalidatePath('/')
+        // revalidatePath('/')
 
         return createComment;
     } catch (error) {

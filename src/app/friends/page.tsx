@@ -21,16 +21,15 @@ type UserData = {
 };
 
 const FriendsPage = async ({ searchParams }: SearchParamProps) => {
-  const { userId } = auth();
+  const { userId } = await auth.protect();
 
   if (!userId) {
     return <NotLoggedIn />;
   }
-
-  const page = Number(searchParams?.page) || 1;
-  const filter = searchParams?.filter === 'followings' ? 'followings' : 'followers';
+  const { page, filter } = await searchParams
+  const isFilter = filter === 'followings' ? 'followings' : 'followers';
   const perPage = 8;
-  const offset = (page - 1) * perPage;
+  const offset = (Number(page) || 1 - 1) * perPage;
 
   const [totalCount, userData]: [number, UserData[]] = filter === 'followers'
     ? await Promise.all([
@@ -88,11 +87,11 @@ const FriendsPage = async ({ searchParams }: SearchParamProps) => {
         <div className="flex flex-col gap-6 w-full lg:w-4/5">
           <h1 className="text-3xl font-bold mb-4 dark:text-gray-300 text-slate-600">Friends </h1>
           <div className="flex justify-center mb-4">
-            <Link href="?filter=followers" className={`mr-4 ${filter === 'followers' ? 'text-blue-500' : 'text-gray-500'}`}>
-              Followers {filter === 'followers' && `(${totalCount})`}
+            <Link href="?filter=followers" className={`mr-4 ${isFilter === 'followers' ? 'text-blue-500' : 'text-gray-500'}`}>
+              Followers {isFilter === 'followers' && `(${totalCount})`}
             </Link>
-            <Link href="?filter=followings" className={`${filter === 'followings' ? 'text-blue-500' : 'text-gray-500'}`}>
-              Followings {filter === 'followings'&& `(${totalCount})`}
+            <Link href="?filter=followings" className={`${isFilter === 'followings' ? 'text-blue-500' : 'text-gray-500'}`}>
+              Followings {isFilter === 'followings' && `(${totalCount})`}
             </Link>
           </div>
           {totalCount > 0 ? (
@@ -100,7 +99,7 @@ const FriendsPage = async ({ searchParams }: SearchParamProps) => {
           ) : (
             <p className="text-gray-600 dark:text-gray-300 text-center font-medium text-2xl">You don&apos;t have {filter || 'Followers'} yet.</p>
           )}
-          <Pagination urlParamName="page" totalPages={totalPages} page={page} />
+          <Pagination urlParamName="page" totalPages={totalPages} page={String(page)} />
         </div>
       </Suspense>
     </div>

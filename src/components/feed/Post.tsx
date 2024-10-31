@@ -10,6 +10,7 @@ import Link from 'next/link'
 import UpdatePost from '../forms/UpdatePost'
 import FullImage from './FullImage'
 import Truncate from '@/lib/truncate'
+import { ClerkProvider } from '@clerk/nextjs'
 type feedPostsType = PostsType & { user: User } & { likes: { userId: string }[] } & {
     _count: { comments: number }
 }
@@ -52,20 +53,23 @@ const Post = ({ post, userId }: { post: feedPostsType, userId: string }) => {
                                 </div>
                             }
                         </div>
-                   </FullImage>
+                    </FullImage>
 
                 }
             </div>
             {/* interaction */}
             <Suspense fallback={<PostIntractionLoader />}>
-                <PostIntraction
-                    postId={post.id}
-                    likes={post.likes.map((like: any) => like.userId)}
-                    commentNumber={post._count.comments}
-                    author={post.userId}
-                     />
+                <ClerkProvider dynamic>
+
+                    <PostIntraction
+                        postId={post.id}
+                        likes={post.likes.map((like: any) => like.userId)}
+                        commentNumber={post._count.comments}
+                        author={post.userId}
+                    />
                     {/* <Comment postId={post.id} author={post.userId} /> */}
-                     
+                </ClerkProvider>
+
             </Suspense>
         </div >
     )

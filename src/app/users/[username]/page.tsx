@@ -1,9 +1,6 @@
-import { SearchParamProps } from '@/app/friends/page';
 import { LoaderGif } from '@/components/Loader';
 import NotLoggedIn from '@/components/NotLoggedIn';
 import Pagination from '@/components/Pagination';
-import Feed from '@/components/feed/Feed';
-import Post from '@/components/feed/Post';
 import LeftMenu from '@/components/leftMenu/LeftMenu';
 import RightMenu from '@/components/rightMenu/RightMenu';
 import prisma from '@/lib/client';
@@ -13,15 +10,13 @@ import Link from 'next/link';
 import React, { Suspense } from 'react'
 
 const page = async ({ params, searchParams }: { params: { username: string }, searchParams: { page: string } }) => {
-    const { userId } = auth();
+    const { userId } = await auth.protect();
     if (!userId) return <NotLoggedIn />;
-    const page = Number(searchParams?.page) || 1;
+    const { page } = await searchParams
+    const { username } = await params
     const perPage = 4;
-    const offset = (page - 1) * perPage;
-    const query = params.username;
-    console.log(query);
-
-    const decodedQuery = decodeURIComponent(query);
+    const offset = (Number(page) || 1 - 1) * perPage;
+    const decodedQuery = decodeURIComponent(username);
 
     const users = await prisma.user.findMany({
         where: {

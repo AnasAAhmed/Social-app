@@ -5,7 +5,7 @@ import { revalidatePath } from "next/cache";
 
 
 export const deleteStory = async (storyId: number) => {
-    const { userId } = auth();
+    const { userId } = await auth.protect();
     if (!userId) {
         throw new Error("User is not Authenticated!!");
     };
@@ -17,7 +17,6 @@ export const deleteStory = async (storyId: number) => {
                 userId
             }
         });
-        revalidatePath('/');
     } catch (error) {
         const typeError = error as Error
         console.log(typeError);
@@ -25,7 +24,7 @@ export const deleteStory = async (storyId: number) => {
     }
 }
 export const deletePost = async (postId: number) => {
-    const { userId } = auth();
+    const { userId } = await auth.protect();
     if (!userId) {
         throw new Error("User is not Authenticated!!");
     };
@@ -45,7 +44,7 @@ export const deletePost = async (postId: number) => {
     }
 }
 export const deleteComment = async (commentId: number) => {
-    const { userId } = auth();
+    const { userId } = await auth.protect();
     if (!userId) {
         throw new Error("User is not Authenticated!");
     };
@@ -56,8 +55,7 @@ export const deleteComment = async (commentId: number) => {
                 id: commentId,
                 userId
             }
-        })
-        revalidatePath('/');
+        });
     } catch (error) {
         const typeError = error as Error
         console.log(typeError);

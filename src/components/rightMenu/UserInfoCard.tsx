@@ -24,7 +24,7 @@ const UserInfoCard = async ({ user }: { user: User }) => {
   let isFollowingSent = false;
   let isFollowingBack = false;
 
-  const { userId: currentUser } = auth()
+  const { userId: currentUser } = await auth.protect()
   if (currentUser) {
     const blockRes = await prisma.block.findFirst({
       where: {

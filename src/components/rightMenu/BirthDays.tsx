@@ -52,7 +52,7 @@ const isToday = (date: Date) => {
 };
 
 const BirthDays = async () => {
-    const { userId } = auth();
+    const { userId } = await auth.protect();
     if (!userId) return;
 
     // Fetch followers with their birthdates

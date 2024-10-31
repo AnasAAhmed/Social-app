@@ -11,12 +11,12 @@ import { auth } from '@clerk/nextjs/server';
 import React, { Suspense } from 'react'
 
 const page = async ({ params, searchParams }: { params: { query: string }, searchParams: { page: string } }) => {
-    const { userId } = auth();
+    const { userId } = await auth.protect();
     if (!userId) return <NotLoggedIn />;
-    const page = Number(searchParams?.page) || 1;
+    const { page } = await searchParams
+    const { query } = await params
     const perPage = 4;
-    const offset = (page - 1) * perPage;
-    const query = params.query || '';
+    const offset = (Number(page) || 1 - 1) * perPage;
     const decodedQuery = decodeURIComponent(query);
 
     const posts = await prisma.post.findMany({

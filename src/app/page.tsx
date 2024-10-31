@@ -9,8 +9,9 @@ import { SearchParamProps } from "./friends/page"
 import { auth } from "@clerk/nextjs/server"
 import NotLoggedIn from "@/components/NotLoggedIn"
 
-const Homepage = ({ searchParams }: SearchParamProps) => {
-  const { userId } = auth()
+const Homepage = async ({ searchParams }: SearchParamProps) => {
+  const { userId } = await auth.protect()
+  const searchParam = await searchParams
   if (!userId) return <NotLoggedIn />;
   return (
     <div className='flex justify-end'>
@@ -21,7 +22,7 @@ const Homepage = ({ searchParams }: SearchParamProps) => {
         <div className="flex flex-col gap-6">
           <Stories />
           <AddPost />
-          <Feed searchParams={searchParams} />
+          <Feed searchParams={searchParam} />
         </div>
       </div>
       <div className="hidden xl:block overflow-scroll scrollbar-hide fixed right-0 h-full w-1/4 max-xl:w-1/3 pr-14">

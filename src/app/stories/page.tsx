@@ -10,7 +10,7 @@ import React, { Suspense } from 'react'
 
 const page = async ({ searchParams }: { searchParams: { page: string } }) => {
 
-  const { userId: currentUser } = auth();
+  const { userId: currentUser } = await auth.protect();
   if (!currentUser) return <NotLoggedIn />;
   const page = Number(searchParams?.page) || 1;
   const perPage = 4;

@@ -7,7 +7,7 @@ import { ProfileCardError } from '../Loader'
 
 const ProfileCard = async () => {
 
-  const { userId } = auth();
+  const { userId } = await auth.protect();
   if (!userId) return;
   const user = await prisma.user.findFirst({
     where: {

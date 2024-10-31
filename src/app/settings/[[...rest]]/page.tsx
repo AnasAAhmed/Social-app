@@ -7,7 +7,7 @@ import { auth } from "@clerk/nextjs/server";
 import { Suspense } from "react";
 
 const SettingsPage = async () => {
-  const { userId } = auth()
+  const { userId } = await auth.protect()
   if (!userId) return <NotLoggedIn />;
 
   return (
