@@ -11,8 +11,8 @@ import Link from 'next/link';
 import { Suspense } from 'react';
 
 export type SearchParamProps = {
-  params: { id: string };
-  searchParams: { [key: string]: string | string[] | undefined };
+  params: Promise<{ id: string }>;
+  searchParams: Promise<{ page?: string, filter?: string, query?: string }>;
 };
 
 type UserData = {
@@ -20,18 +20,18 @@ type UserData = {
   following?: User;
 };
 
-const FriendsPage = async ({ searchParams }: { searchParams: { page?: string, filter?: string } }) => {
+const FriendsPage = async ({ searchParams }: { searchParams: Promise<{ page?: string, filter?: string }> }) => {
   const { userId } = await auth.protect();
 
   if (!userId) {
     return <NotLoggedIn />;
   }
   const { page, filter } = await searchParams
-  const isFilter = filter === 'followings' ? 'followings' : 'followers';
+  const isFilter = filter && filter === 'followings' ? 'followings' : 'followers';
   const perPage = 8;
   const offset = (Number(page) || 1 - 1) * perPage;
 
-  const [totalCount, userData]: [number, UserData[]] = filter === 'followers'
+  const [totalCount, userData]: [number, UserData[]] = isFilter === 'followers'
     ? await Promise.all([
       prisma.follower.count({
         where: { followerId: userId },
@@ -99,7 +99,7 @@ const FriendsPage = async ({ searchParams }: { searchParams: { page?: string, fi
           ) : (
             <p className="text-gray-600 dark:text-gray-300 text-center font-medium text-2xl">You don&apos;t have {filter || 'Followers'} yet.</p>
           )}
-          <Pagination urlParamName="page" totalPages={totalPages} page={String(page)} />
+          <Pagination urlParamName="page" totalPages={totalPages} page={Number(page)|| 1} />
         </div>
       </Suspense>
     </div>

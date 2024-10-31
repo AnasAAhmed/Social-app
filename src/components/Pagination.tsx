@@ -6,7 +6,7 @@ import { useInView } from 'react-intersection-observer';
 import { Spinner } from './Loader';
 
 type PaginationProps = {
-  page: number | string,
+  page: number ,
   totalPages: number,
   urlParamName?: string
   isFeed?: boolean
@@ -46,8 +46,8 @@ const Pagination = ({ isFeed = false, page, totalPages, urlParamName }: Paginati
   const onClick = (btnType: string) => {
     setLoad(true)
     const pageValue = btnType === 'next'
-      ? Number(page) + 1
-      : Number(page) - 1;
+      ? page + 1
+      : page - 1;
 
     const newUrl = formUrlQuery({
       params: searchParams.toString(),

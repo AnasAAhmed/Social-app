@@ -1,7 +1,6 @@
 import { auth } from "@clerk/nextjs/server";
 import prisma from "@/lib/client";
 import FriendRequestList from "@/components/rightMenu/FriendRequestList";
-import { SearchParamProps } from "../page";
 import Pagination from "@/components/Pagination";
 import MenuBar from "@/components/MenuBar";
 import Ad from "@/components/Ad";
@@ -10,7 +9,7 @@ import { LoaderGif } from "@/components/Loader";
 import NotLoggedIn from "@/components/NotLoggedIn";
 
 
-const FriendRequests = async ({ searchParams }: { searchParams: { page?: string } }) => {
+const FriendRequests = async ({ searchParams }: { searchParams: Promise<{ page?: string, filter?: string }> }) => {
 
   const { userId } = await auth.protect();
   if (!userId) return <NotLoggedIn />;
@@ -42,7 +41,7 @@ const FriendRequests = async ({ searchParams }: { searchParams: { page?: string 
         <div className="flex flex-col gap-6 w-full lg:w-4/5">
           <h1 className="text-3xl font-bold mb-4 dark:text-gray-300 text-slate-600">Friend Requests</h1>
           <FriendRequestList requests={requests} isPage={true} />
-          <Pagination urlParamName="page" totalPages={totalPages} page={String(page)} />
+          <Pagination urlParamName="page" totalPages={totalPages} page={Number(page)|| 1} />
         </div>
       </Suspense>
     </div>

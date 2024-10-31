@@ -9,7 +9,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import React, { Suspense } from 'react'
 
-const page = async ({ params, searchParams }: { params: { username: string }, searchParams: { page: string } }) => {
+const page = async ({ params, searchParams }: { params: Promise<{ username: string }>, searchParams: Promise<{ page: string }> }) => {
     const { userId } = await auth.protect();
     if (!userId) return <NotLoggedIn />;
     const { page } = await searchParams

@@ -10,7 +10,7 @@ import prisma from '@/lib/client';
 import { auth } from '@clerk/nextjs/server';
 import React, { Suspense } from 'react'
 
-const page = async ({ params, searchParams }: { params: { query: string }, searchParams: { page: string } }) => {
+const page = async ({ params, searchParams }: { params: Promise<{ query: string }>, searchParams: Promise<{ page: string }> }) => {
     const { userId } = await auth.protect();
     if (!userId) return <NotLoggedIn />;
     const { page } = await searchParams
@@ -75,7 +75,7 @@ const page = async ({ params, searchParams }: { params: { query: string }, searc
                             {posts && posts.map(post => (
                                 <Post userId={userId} key={post.id} post={post} />
                             ))}
-                            <Pagination urlParamName='page' totalPages={totalPages} page={page} />
+                            <Pagination urlParamName='page' totalPages={totalPages} page={Number(page) || 1} />
                         </div>
                     </div>
                 </div>

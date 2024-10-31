@@ -8,13 +8,13 @@ import prisma from '@/lib/client';
 import { auth } from '@clerk/nextjs/server';
 import React, { Suspense } from 'react'
 
-const page = async ({ searchParams }: { searchParams: { page: string } }) => {
+const page = async ({ searchParams }: { searchParams: Promise<{ page?: string}> }) => {
 
   const { userId: currentUser } = await auth.protect();
   if (!currentUser) return <NotLoggedIn />;
-  const page = Number(searchParams?.page) || 1;
+  const { page } = await searchParams
   const perPage = 4;
-  const offset = (page - 1) * perPage;
+  const offset = (Number(page)||1 - 1) * perPage;
   // Fetch the stories
   const stories = await prisma.story.findMany({
     where: {
@@ -86,7 +86,7 @@ const page = async ({ searchParams }: { searchParams: { page: string } }) => {
           <Suspense fallback={<LoaderStories />}>
             <StoryList stories={stories} userId={currentUser} />
           </Suspense>
-          <Pagination totalPages={totalPages} page={page} />
+          <Pagination totalPages={totalPages} page={Number(page)|| 1} />
         </div>
       </Suspense >
 

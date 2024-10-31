@@ -4,17 +4,22 @@ import { auth } from '@clerk/nextjs/server'
 import prisma from '@/lib/client';
 import Pagination from '../Pagination';
 import Link from 'next/link';
-import { Suspense } from "react"
-import { LoaderGif } from "@/components/Loader"
 
 // import Feep from './Feep';
-const Feed = async ({ searchParams, username, blockedPostId }: { username?: string, blockedPostId?: number[], searchParams: any }) => {
+const Feed = async ({
+  page, filter, username, blockedPostId
+}: {
+  username?: string,
+  blockedPostId?: number[],
+  page: number, 
+  filter?: string
+}
+) => {
   const { userId } = await auth.protect();
   if (!userId) return null;
-  const page = Number(searchParams?.page) || 1;
-  const filter = searchParams?.filter || 'friends';
+  const isFilter = filter || 'friends';
   const perPage = 8;
-  const offset = (page - 1) * perPage;
+  const offset = ( page - 1) * perPage;
   let posts: any[] = [];
   let totalPosts: number = 0;
   if (username) {
@@ -61,7 +66,7 @@ const Feed = async ({ searchParams, username, blockedPostId }: { username?: stri
 
   if (!username && userId) {
     let ids: string[] = [];
-    if (filter === 'friends') {
+    if (isFilter === 'friends') {
 
       const followersAndFollowings = await prisma.follower.findMany({
         where: {
@@ -92,7 +97,7 @@ const Feed = async ({ searchParams, username, blockedPostId }: { username?: stri
         select: {
           id: true
         },
-        take:4,
+        take: 4,
         orderBy: {
           createdAt: "desc",
         },
@@ -152,7 +157,7 @@ const Feed = async ({ searchParams, username, blockedPostId }: { username?: stri
   const totalPages = Math.ceil(totalPosts / perPage);
 
   return (
-    <Suspense fallback={<LoaderGif />}>
+  
       <div className="mb-4 dark:bg-slate-800 bg-slate-100 rounded-lg flex flex-col gap-4">
         {/* <Feep
         totalPages={totalPages}
@@ -167,7 +172,7 @@ const Feed = async ({ searchParams, username, blockedPostId }: { username?: stri
             {posts.map(post => (
               <Post userId={userId} key={post.id} post={post} />
             ))}
-            <Pagination urlParamName="page" totalPages={totalPages} page={page} />
+            <Pagination urlParamName="page" totalPages={totalPages} page={page|| 1} />
           </>
         ) : (
           !username &&
@@ -185,9 +190,7 @@ const Feed = async ({ searchParams, username, blockedPostId }: { username?: stri
           </div>
         )}
       </div>
-      </Suspense >
-
-      )
+  )
 }
 
-      export default Feed
+export default Feed
