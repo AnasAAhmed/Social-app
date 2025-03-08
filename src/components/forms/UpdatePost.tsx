@@ -10,6 +10,7 @@ import { EmojiClickData } from "emoji-picker-react";
 import dynamic from "next/dynamic";
 import FocusLock from "react-focus-lock";
 import { Spinner } from "../Loader";
+import { useRouter } from "next/navigation";
 const EmojiPicker = dynamic(() => import('emoji-picker-react'), {
     ssr: false,
     loading: () => <div className="bg-white dark:bg-gray-900 p-8 rounded-md shadow-md"><Spinner w={20} h={20} /></div>
@@ -18,6 +19,7 @@ const EmojiPicker = dynamic(() => import('emoji-picker-react'), {
 
 const UpdatePost = ({ post }: { post: Post }) => {
 
+    const router = useRouter();
 
     const [desc, setDesc] = useState(post.desc || '');
     const [img, setImg] = useState<any>({ secure_url: '' });
@@ -75,7 +77,7 @@ const UpdatePost = ({ post }: { post: Post }) => {
                                 )}
                             </div>
                             <div className="flex-1 flex flex-col gap-4">
-                                <form action={(formData) => updatePost(formData, img?.secure_url || "", post.id)} className="flex flex-col gap-4">
+                                <form action={(formData) => {updatePost(formData, img?.secure_url || "", post.id);router.refresh();}} className="flex flex-col gap-4">
                                     <textarea
                                         placeholder="What's on your mind?"
                                         className="flex-1 w-full dark:bg-slate-800 dark:text-gray-200 bg-slate-100 rounded-lg p-2"

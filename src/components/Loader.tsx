@@ -1,5 +1,6 @@
+
 import Image from 'next/image';
-import React from 'react'
+import React, { useEffect } from 'react'
 
 const Lodaer = () => {
   return (
@@ -170,6 +171,7 @@ export const LoaderStories = () => {
 }
 
 export const ProfileCardError = () => {
+ 
   return (
     <div className='max-xl:hidden p-4 bg-white rounded-lg shadow-md text-sm flex flex-col gap-6'>
       <div className="h-20 relative">

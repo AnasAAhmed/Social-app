@@ -87,7 +87,6 @@ export const addPost = async (formData: FormData, img: string) => {
             },
         });
 
-        revalidatePath("/");
     } catch (err) {
         const typeError = err as Error
         console.log(typeError);
@@ -135,7 +134,6 @@ export const updatePost = async (formData: FormData, img: string, postId: number
                 },
             });
         }
-        revalidatePath("/");
     } catch (err) {
         const typeError = err as Error
         console.log(typeError);

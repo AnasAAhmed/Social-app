@@ -9,6 +9,7 @@ const Truncate = ({ desc, numOfChar, textSize=14 }: { desc: string, numOfChar: n
     };
 
     const truncateText = (text: string, length: number) => {
+        if(!text) return null;
         if (text.length <= length) return text;
         return text.substring(0, length) + '...';
     };
@@ -17,7 +18,7 @@ const Truncate = ({ desc, numOfChar, textSize=14 }: { desc: string, numOfChar: n
             <p style={{fontSize:`${textSize}`}} className='dark:text-gray-200'>
                 {isExpanded ? desc : truncateText(desc, numOfChar)}
             </p>
-            {desc.length > numOfChar && (
+            {desc&&desc.length > numOfChar && (
                 <button onClick={toggleExpand} className="text-blue-500 self-start text-xs">
                     {isExpanded ? 'See less' : 'See more'}
                 </button>

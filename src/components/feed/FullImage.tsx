@@ -2,7 +2,7 @@
 import Image from 'next/image'
 import React, { useState } from 'react'
 
-const FullImage = ({ src, isVideo, children }: { src: string, isVideo: boolean, children: any }) => {
+const FullImage = ({ src, isVideo, children }: { src: string, isVideo: boolean, children: React.ReactNode }) => {
     const [open, setOpen] = useState<boolean>(false);
 
     return (

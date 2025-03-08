@@ -2,6 +2,7 @@ import { Webhook } from 'svix'
 import { headers } from 'next/headers'
 import { WebhookEvent } from '@clerk/nextjs/server'
 import prisma from '@/lib/client'
+import { NextResponse } from 'next/server'
 
 export async function POST(req: Request) {
 
@@ -20,7 +21,7 @@ export async function POST(req: Request) {
 
     // If there are no headers, error out
     if (!svix_id || !svix_timestamp || !svix_signature) {
-        return new Response('Error occured -- no svix headers', {
+        return new NextResponse('Error occured -- no svix headers', {
             status: 400
         })
     }
@@ -43,7 +44,7 @@ export async function POST(req: Request) {
         }) as WebhookEvent
     } catch (err) {
         console.error('Error verifying webhook:', err);
-        return new Response('Error occured', {
+        return new NextResponse('Error occured', {
             status: 400
         })
     }
@@ -53,23 +54,6 @@ export async function POST(req: Request) {
     const { id } = evt.data;
     const eventType = evt.type;
 
-    if (eventType === 'user.created') {
-        try {
-            await prisma.user.create({
-                data: {
-                    id: evt.data.id,
-                    username: JSON.parse(body).data.username,
-                    avatar: JSON.parse(body).data.image_url || '/noAvatar.png',
-                    cover: '/noCover.png'
-                }
-            });
-            return new Response("User has been created", { status: 200 })
-        } catch (error) {
-            console.log(error);
-            return new Response("Failed to created user", { status: 500 })
-        }
-
-    }
     if (eventType === 'user.updated') {
         try {
             await prisma.user.update({
@@ -81,10 +65,10 @@ export async function POST(req: Request) {
                     avatar: JSON.parse(body).data.image_url || '/noAvatar.png',
                 }
             });
-            return new Response("User has been created", { status: 200 })
+            return new NextResponse("User has been created", { status: 200 })
         } catch (error) {
             console.log(error);
-            return new Response("Failed to created user", { status: 500 })
+            return new NextResponse("Failed to created user", { status: 500 })
         }
 
     }
@@ -96,12 +80,12 @@ export async function POST(req: Request) {
                 }
             });
 
-            return new Response("User has been deleted", { status: 200 });
+            return new NextResponse("User has been deleted", { status: 200 });
         } catch (error) {
             console.log(error);
-            return new Response("Failed to delete user", { status: 500 });
+            return new NextResponse("Failed to delete user", { status: 500 });
         }
     }
 
-    return new Response('', { status: 200 })
+    return new NextResponse('', { status: 200 })
 }

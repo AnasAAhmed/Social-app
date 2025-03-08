@@ -46,8 +46,8 @@ const UpdateUser = ({ user, isSetting }: { user: User | any, isSetting?: boolean
         </span>
       )}
       {open && (
-        <div className={`${isSetting ? "" : "fixed w-screen h-screen top-0 bottom-0 left-0 bg-black bg-opacity-65 flex items-center justify-center z-30"}`}>
-          <FocusLock className="p-4 sm:p-6 bg-white dark:bg-slate-900 animate-modal rounded-lg shadow-md flex flex-col gap-2 scrollbar-hide overflow-scroll w-full sm:w-3/4 lg:w-1/2 relative">
+        <div className={`${isSetting ? "" : "fixed w-screen px-6 top-0 bottom-0 left-0 bg-black bg-opacity-65 flex items-center justify-center z-30"}`}>
+          <FocusLock className="p-4 sm:p-6 bg-white dark:bg-slate-900 animate-modal rounded-lg shadow-md flex flex-col gap-2 scrollbar-hide overflow-scroll w-sfull sm:w-3s/4 lg:ws-1/2 relative">
             <form
               action={(formData) =>
                 formAction({ formData, cover: cover?.secure_url || user.cover || "/noCover.jpeg" })
@@ -80,9 +80,9 @@ const UpdateUser = ({ user, isSetting }: { user: User | any, isSetting?: boolean
                       <Image
                         src={user.cover || "/noCover.jpeg"}
                         alt="Cover Picture"
-                        width={48}
+                        width={90}
                         height={32}
-                        className="w-12 h-8 rounded-md object-cover"
+                        className="w-s12 h-s8 rounded-md object-cover"
                       />
                       <span className="text-xs underline dark:text-gray-200 text-gray-600">Change</span>
                     </div>
@@ -95,9 +95,9 @@ const UpdateUser = ({ user, isSetting }: { user: User | any, isSetting?: boolean
                   <Image
                     src={cover.secure_url}
                     alt="Cover Preview"
-                    width={48}
+                    width={90}
                     height={32}
-                    className="w-12 h-8 rounded-md object-cover"
+                    className="ws-12 hs-8 rounded-md object-cover"
                   />
                   <span onClick={() => setCover('')} className="text-xs underline cursor-pointer dark:text-gray-200 text-gray-600">
                     Remove
@@ -110,6 +110,7 @@ const UpdateUser = ({ user, isSetting }: { user: User | any, isSetting?: boolean
                   <label htmlFor="name" className="text-xs dark:text-gray-200 text-gray-500">First Name</label>
                   <input
                     type="text"
+                    id="name"
                     placeholder={user.name || "John"}
                     className="ring-1 dark:text-gray-200 dark:bg-slate-800 p-2 sm:p-[13px] rounded-md text-sm"
                     name="name"
@@ -123,6 +124,7 @@ const UpdateUser = ({ user, isSetting }: { user: User | any, isSetting?: boolean
                     placeholder={user.surname || "Doe"}
                     className="ring-1 dark:text-gray-200 dark:bg-slate-800 p-2 sm:p-[13px] rounded-md text-sm"
                     name="surname"
+                    id="surname"
                     max={8}
                   />
                 </div>
@@ -133,6 +135,7 @@ const UpdateUser = ({ user, isSetting }: { user: User | any, isSetting?: boolean
                     placeholder={user.description || "Life is beautiful..."}
                     className="ring-1 dark:text-gray-200 dark:bg-slate-800 p-2 sm:p-[13px] rounded-md text-sm"
                     name="description"
+                    id="description"
                   />
                 </div>
                 <div className="flex flex-col gap-2 sm:gap-4">
@@ -142,6 +145,7 @@ const UpdateUser = ({ user, isSetting }: { user: User | any, isSetting?: boolean
                     placeholder={user.city || "New York"}
                     className="ring-1 dark:text-gray-200 dark:bg-slate-800 p-2 sm:p-[13px] rounded-md text-sm"
                     name="city"
+                    id="city"
                   />
                 </div>
                 <div className="flex flex-col gap-2 sm:gap-4">
@@ -151,6 +155,7 @@ const UpdateUser = ({ user, isSetting }: { user: User | any, isSetting?: boolean
                     placeholder={user.school || "MIT"}
                     className="ring-1 dark:text-gray-200 dark:bg-slate-800 p-2 sm:p-[13px] rounded-md text-sm"
                     name="school"
+                    id="school"
                   />
                 </div>
                 <div className="flex flex-col gap-2 sm:gap-4">
@@ -159,6 +164,7 @@ const UpdateUser = ({ user, isSetting }: { user: User | any, isSetting?: boolean
                     type="text"
                     placeholder={user.work || "Apple Inc."}
                     className="ring-1 dark:text-gray-200 dark:bg-slate-800 p-2 sm:p-[13px] rounded-md text-sm"
+                    id="work"
                     name="work"
                   />
                 </div>
@@ -169,6 +175,7 @@ const UpdateUser = ({ user, isSetting }: { user: User | any, isSetting?: boolean
                     placeholder={user.website || "https://your-domain.com"}
                     className="ring-1 dark:text-gray-200 dark:bg-slate-800 p-2 sm:p-[13px] rounded-md text-sm"
                     name="website"
+                    id="website"
                   />
                 </div>
                 <div className="flex flex-col gap-2 sm:gap-4">
@@ -179,6 +186,7 @@ const UpdateUser = ({ user, isSetting }: { user: User | any, isSetting?: boolean
                     type="date"
                     className="ring-1 dark:text-gray-200 dark:bg-slate-800 p-2 sm:p-[13px] rounded-md text-sm"
                     name="dob"
+                    id="dob"
                   />
                 </div>
               </div>

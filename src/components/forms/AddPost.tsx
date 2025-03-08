@@ -9,6 +9,7 @@ import { LoaderAddPost, Spinner } from "../Loader";
 import dynamic from "next/dynamic";
 import { EmojiClickData } from "emoji-picker-react";
 import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 const EmojiPicker = dynamic(() => import('emoji-picker-react'), {
   ssr: false,
@@ -17,6 +18,7 @@ const EmojiPicker = dynamic(() => import('emoji-picker-react'), {
 
 const AddPost = () => {
   const { user, isLoaded } = useUser();
+  const router = useRouter();
   const [desc, setDesc] = useState("");
   const [img, setImg] = useState<any>();
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
@@ -36,6 +38,7 @@ const AddPost = () => {
       setImg(null);
       setShowEmojiPicker(false);
       toast.success('Posted Successfully');
+      router.refresh();
     } catch (error) {
       const typerror=error as Error;
       console.error("Failed to add post:", typerror.message);

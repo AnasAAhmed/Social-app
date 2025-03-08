@@ -28,7 +28,7 @@ const Homepage = async ({ searchParams }: { searchParams: Promise<{ page?: strin
             </Suspense>
             <AddPost />
             <Suspense fallback={<LoaderGif />}>
-              <Feed page={Number(page) || 1} />
+              <Feed page={Number(page) || 1} filter={filter}/>
             </Suspense>
           </div>
         </div>

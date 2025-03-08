@@ -6,7 +6,6 @@ import Link from 'next/link'
 import React from 'react'
 import UserInfoCardIntraction from './UserInfoCardIntraction'
 import UpdateUser from '../forms/UpdateUser'
-import { Truculenta } from 'next/font/google'
 import Truncate from '@/lib/truncate'
 
 const UserInfoCard = async ({ user }: { user: User }) => {
@@ -62,8 +61,8 @@ const UserInfoCard = async ({ user }: { user: User }) => {
     }
     
     // Optional: Limit the length of the displayed URL
-    if (strippedUrl.length > 25) {
-      strippedUrl = strippedUrl.slice(0, 25) + "...";
+    if (strippedUrl.length > 13) {
+      strippedUrl = strippedUrl.slice(0, 13) + "...";
     }
     
     return strippedUrl;
