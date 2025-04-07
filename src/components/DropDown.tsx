@@ -49,7 +49,7 @@ const DropDown = ({ options }: DropSearchProps) => {
                 className="absolute z-30 animate-modal p-2 w-44 left-20 top-6 bg-white dark:bg-slate-900 border border-gray-300 dark:border-slate-700 divide-y divide-gray-100 dark:divide-slate-700 rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
             >
                 {options.map((option, index) => (
-                    <Link onClick={toggleClose} key={index} href={option.value} className="block w-full rounded-md p-2 text-left text-md font-semibold text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-slate-800 hover:text-gray-900 dark:hover:text-white">
+                    <Link onClick={()=>setTimeout(()=>toggleClose(),160)} key={index} href={option.value} className="block w-full rounded-md p-2 text-left text-md font-semibold text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-slate-800 hover:text-gray-900 dark:hover:text-white">
                         {option.key}
                     </Link>
                 ))}

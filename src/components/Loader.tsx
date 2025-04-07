@@ -186,6 +186,22 @@ export const ProfileCardError = () => {
   )
 }
 
+export const ProfileCardLoad= () => {
+ 
+  return (
+    <div className='max-xl:hidden p-4 bg-white rounded-lg shadow-md text-sm flex flex-col gap-6'>
+      <div className="h-20 relative">
+        <Image src={'/noCover.jpeg'} alt='' fill className='rounded-md' />
+        <Image src={'/noAvatar.png'} alt='' width={48} height={48} className='rounded-full w-12 h-12 absolute left-0 right-0 m-auto -bottom-6 ring-1 ring-white z-10' />
+      </div>
+      <div className="h-36d flex flex-col items-center">
+        <p className="font-semibold bg-gray-300 animate-pulse w-full my-2 rounded-full py-2"/>
+        <div className='bg-gray-300 text-white text-xs py-4 px-8 animate-pulse cursor-pointer rounded-md'/>
+      </div>
+    </div>
+  )
+}
+
 
 export const LoaderAddPost = () => {
   return (

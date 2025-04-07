@@ -81,3 +81,10 @@ export function formUrlQuery({ params, key, value }: UrlQueryParams) {
       { skipNull: true }
     )
   }
+
+  export const extractUrl = (text: string) => {
+    const urlRegex = /(https?:\/\/[^\s]+)/;
+    const match = text.match(urlRegex);
+    return match ? match[0] : null;
+  };
+  

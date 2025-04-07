@@ -1,11 +1,46 @@
-'use client'
+// import Image from 'next/image'
+// import Link from 'next/link'
+// import React from 'react'
+
+// const BirthDays = async () => {
+
+//     return (
+//         <div className='p-4 bg-white rounded-lg text-sm shadow-md flex flex-col gap-4'>
+//             <div className=" flex justify-between items-center font-medium">
+//                 <span className="text-gray-500">Birthdays</span>
+//                 <Link href={'/'} className='text-blue-500 text-xs'>See all</Link>
+//             </div>
+//             {/* bottom */}
+//             <div className="flex justify-between items-center">
+//                 <div className="flex items-center gap-4">
+//                     <Image src={'/noAvatar.png'} alt='' width={40} height={40} className='w-10 h-10 rounded-full object-cover' />
+//                      <span className="">john doe</span>
+
+//                 </div>
+//                 <div className="flex justify-end gap-3">
+//                     <button className='bg-blue-500 text-white text-xs rounded-md px-2 py-1'>Celebrate</button>
+//                 </div>
+//             </div>
+//             {/* upcoming */}
+//             <div className="p-4 bg-slate-100 rounded-lg flex items-center gap-4">
+//                 <Image src={'/gift.png'} alt='' width={24} height={24} />
+//                 <Link href={'/'} className='flex flex-col gap-1 text-xs'>
+//                     <span className="text-gray-700 font-semibold"> Upcoming Birthdays</span>
+//                     <span className="text-gray-500"> See other 16 have upcoming birthdays</span>
+//                 </Link>
+//             </div>
+//         </div>
+
+//     )
+// }
+
+// export default BirthDays
+
+import prisma from '@/lib/client';
+import { auth } from '@clerk/nextjs/server';
 import Image from 'next/image';
 import Link from 'next/link';
-import React, { useEffect, useState } from 'react';
-import { Loader1 } from '../Loader';
-import { useMediaQuery } from '@/lib/truncate';
-import { toast } from 'sonner';
-import { useAuth } from '@clerk/nextjs';
+import React from 'react';
 
 // Helper function to format dates
 const formatDate = (date: Date) => date.toISOString().split('T')[0];
@@ -16,74 +51,55 @@ const isToday = (date: Date) => {
     return date.getDate() === today.getDate() && date.getMonth() === today.getMonth();
 };
 
-const BirthDays =  () => {
-    const { userId } = useAuth();
-       const [data, setData] = useState<{
-        followers: ({
+const BirthDays = async () => {
+    const { userId } = await auth.protect();
+    if (!userId) return;
+
+    // Fetch followers with their birthdates
+    const followers = await prisma.follower.findMany({
+        where: {
+            followingId: userId,
+        },
+        include: {
             follower: {
-                dob: Date | null;
-                username: string;
-                avatar: string | null;
-            };
-        } & {
-            id: number;
-            createdAt: Date;
-            followerId: string;
-            followingId: string;
-        })[], followings:({
+                select: {
+                    username: true,
+                    avatar: true,
+                    dob: true
+                }
+            }, // To include the follower user details
+        },
+        take: 12
+    });
+    const followings = await prisma.follower.findMany({
+        where: {
+            followerId: userId,
+        },
+        include: {
             following: {
-                username: string;
-                avatar: string | null;
-                dob: Date | null;
-            };
-        } & {
-            id: number;
-            createdAt: Date;
-            followerId: string;
-            followingId: string;
-        })[]
-       } | null>(null);
-       const [loading, setLoading] = useState(false);
-   
-       const isDesktop = useMediaQuery('(min-width: 1280px)');
-   
-       useEffect(() => {
-           if (!isDesktop) return;
-   
-           const fetchInfo = async () => {
-               try {
-                   setLoading(true);
-                   const res = await fetch(`/api/user/${userId}/birthdays`);
-                   const json = await res.json();
-                   setData(json);
-               } catch (err) {
-                   console.error(err);
-                   toast.error((err as Error).message)
-               } finally {
-                   setLoading(false);
-               }
-           };
-   
-           fetchInfo();
-       }, [userId, isDesktop]);
-   
-       if (!isDesktop) return <Loader1 />;
-       if (loading) return <Loader1 />;
-       if (!data) return <div>Failed to load reminders.</div>;
+                select: {
+                    username: true,
+                    avatar: true,
+                    dob: true
+                }
+            }, // To include the follower user details
+        },
+        take: 12
+    });
 
     // Filter followers whose birthday is today
-    const todayBirthdays = data.followers.filter(follower => follower.follower.dob && isToday(new Date(follower.follower.dob)));
-    const todayBirthdays2 = data.followings.filter(following => following.following.dob && isToday(new Date(following.following.dob)));
+    const todayBirthdays = followers.filter(follower => follower.follower.dob && isToday(new Date(follower.follower.dob)));
+    const todayBirthdays2 = followings.filter(following => following.following.dob && isToday(new Date(following.following.dob)));
 
     // Filter upcoming birthdays (in the next 30 days)
     const today = new Date();
-    const upcomingBirthdays = data.followers.filter(follower => {
+    const upcomingBirthdays = followers.filter(follower => {
         if (!follower.follower.dob) return false;
         const dob = new Date(follower.follower.dob);
         dob.setFullYear(today.getFullYear());
         return dob > today && dob <= new Date(today.getTime() + 30 * 24 * 60 * 60 * 1000);
     });
-    const upcomingBirthdays2 = data.followings.filter(following => {
+    const upcomingBirthdays2 = followings.filter(following => {
         if (!following.following.dob) return false;
         const dob = new Date(following.following.dob);
         dob.setFullYear(today.getFullYear());
@@ -94,7 +110,7 @@ const BirthDays =  () => {
         <div className='p-4 bg-white dark:bg-slate-900 rounded-lg text-sm shadow-md flex flex-col gap-4'>
             <div className="flex justify-between items-center font-medium">
                 <span className="text-gray-500 dark:text-white">Birthdays</span>
-                <Link href={'/http://localhost:3000/friends/reminders'} className='text-blue-500 text-xs'>See all</Link>
+                <Link href={'/'} className='text-blue-500 text-xs'>See all</Link>
             </div>
 
             {/* Today's Birthdays */}

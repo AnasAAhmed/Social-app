@@ -1,29 +1,46 @@
-import prisma from '@/lib/client'
-import { auth } from '@clerk/nextjs/server'
+'use client'
 import Image from 'next/image'
 import Link from 'next/link'
-import React from 'react'
-import { ProfileCardError } from '../Loader'
+import React, { useEffect, useState } from 'react'
+import { ProfileCardError, ProfileCardLoad } from '../Loader'
+import { useMediaQuery } from '@/lib/truncate'
+import { useAuth } from '@clerk/nextjs'
+import { toast } from 'sonner';
 
-const ProfileCard = async () => {
+const ProfileCard = () => {
 
-  const { userId } = await auth.protect();
-  if (!userId) return;
-  const user = await prisma.user.findFirst({
-    where: {
-      id: userId,
-    },
-    include: {
-      _count: {
-        select: {
-          follower: true,
-          following: true
-        }
+  const { userId } = useAuth();
+  const [user, setUser] = useState<any>(null);
+  const [loading, setLoading] = useState(false);
+
+  const isDesktop = useMediaQuery('(min-width: 1280px)');
+
+  useEffect(() => {
+    if (!isDesktop) return;
+
+    const fetchInfo = async () => {
+      try {
+        setLoading(true);
+        const res = await fetch(`/api/user/${userId}/profile-card`);
+        const json = await res.json();
+        setUser(json);
+        console.log(json);
+        
+      } catch (err) {
+        console.error(err);
+        toast.error((err as Error).message);
+      } finally {
+        setLoading(false);
       }
-    }
-  })
+    };
 
+    fetchInfo();
+  }, [userId, isDesktop]);
+
+  if (!isDesktop) return <ProfileCardLoad />;
+  if (loading) return <ProfileCardLoad />;
   if (!user) return <ProfileCardError />;
+
   return (
     <div className='max-xl:hidden p-4 bg-white dark:bg-slate-900 rounded-lg shadow-md text-sm flex flex-col gap-6'>
       <div className="h-20 relative">

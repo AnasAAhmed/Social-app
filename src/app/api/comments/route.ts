@@ -55,7 +55,12 @@ export async function GET(req: NextRequest) {
             likes: comment.likes.map(like => like.userId),
         }));
 
-        return NextResponse.json(transformedComments, { status: 200 });
+        return NextResponse.json(transformedComments, {
+            status: 200, headers: {
+                'Content-Type': 'application/json',
+                'Cache-Control': 'public, max-age=60',
+            },
+        });
     } catch (error) {
         return NextResponse.json({ error: 'Failed to fetch comments' }, { status: 500 });
     }

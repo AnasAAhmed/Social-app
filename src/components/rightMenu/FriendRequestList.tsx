@@ -49,14 +49,12 @@ const FriendRequestList = ({ requests, isPage }: { requests: RequestWithUser[], 
           />
           <div className="flex-grow text-center sm:text-left">
             <h3 className="font-semibold dark:text-white">
-              {request.sender.name && request.sender.surname
-                ? `${request.sender.name} ${request.sender.surname}`
-                : request.sender.username}
+              { request.sender.username}
             </h3>
-            <p className="text-gray-600 dark:text-gray-300">mutual friends</p>
+            {/* <p className="text-gray-600 dark:text-gray-300">mutual friends</p> */}
           </div>
           <div className="flex gap-3">
-            <form action={() => handleAction(request.id, request.sender.id, 'accept')}>
+            <form action={() => handleAction(request.id, request.senderId, 'accept')}>
               <button type="submit"className={`${isPage&&"bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700"}`}>
               {isPage?"Accept": <Image
                   src="/accept.png"
@@ -67,7 +65,7 @@ const FriendRequestList = ({ requests, isPage }: { requests: RequestWithUser[], 
                 />} 
               </button>
             </form>
-            <form action={() => handleAction(request.id, request.sender.id, 'decline')}>
+            <form action={() => handleAction(request.id, request.senderId, 'decline')}>
               <button type="submit" className={`${isPage&&"bg-gray-300 dark:bg-slate-700 dark:text-white text-gray-700 px-4 py-2 rounded hover:bg-slate-400 dark:hover:bg-slate-500"}`}>
                {isPage?"Decline": <Image
                   src="/reject.png"

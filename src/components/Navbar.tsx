@@ -25,7 +25,8 @@ const Navbar = () => {
           <DropDown options={[
             { key: 'Friends', value: '/friends' },
             { key: 'Friends Requests', value: '/friends/friend-requests' },
-            { key: 'Suggestions', value: '/friends/suggestions' }
+            { key: 'Suggestions', value: '/friends/suggestions' },
+            { key: 'Reminders', value: '/friends/reminders' }
           ]} />
           <Link href={'/stories'} className='flex items-center gap-2'>
             <Image src={'/stories.png'} alt='Home' width={18} height={16} className='w-4 h-4' />

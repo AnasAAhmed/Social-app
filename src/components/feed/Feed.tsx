@@ -11,7 +11,7 @@ const Feed = async ({
 }: {
   username?: string,
   blockedPostId?: number[],
-  page: number, 
+  page: number,
   filter?: string
 }
 ) => {
@@ -19,7 +19,7 @@ const Feed = async ({
   if (!userId) return null;
   const isFilter = filter || 'friends';
   const perPage = 8;
-  const offset = ( page - 1) * perPage;
+  const offset = (page - 1) * perPage;
   let posts: any[] = [];
   let totalPosts: number = 0;
   if (username) {
@@ -157,9 +157,9 @@ const Feed = async ({
   const totalPages = Math.ceil(totalPosts / perPage);
 
   return (
-  
-      <div className="mb-4 dark:bg-slate-800 bg-slate-100 rounded-lg flex flex-col gap-4">
-        {/* <Feep
+
+    <div className="mb-4 dark:bg-slate-800 bg-slate-100 rounded-lg flex flex-col gap-4">
+      {/* <Feep
         totalPages={totalPages}
         page={page}
         posts={posts}
@@ -167,15 +167,15 @@ const Feed = async ({
         username={username}
         userId={userId}
         /> */}
-        {posts?.length ? (
-          <>
-            {posts.map(post => (
-              <Post userId={userId} key={post.id} post={post} />
-            ))}
-            <Pagination urlParamName="page" totalPages={totalPages} page={page|| 1} />
-          </>
-        ) : (
-          !username &&
+      {posts?.length ? (
+        <>
+          {posts.map(post => (
+            <Post userId={userId} key={post.id} post={post} />
+          ))}
+          <Pagination urlParamName="page" totalPages={totalPages} page={page || 1} />
+        </>
+      ) : (
+        !username ?
           <div>
             <p className="text-gray-600 text-center font-medium text-xl">No Posts yet. make friends to see thier posts or switch to public.</p>
             <div className="flex justify-center gap-2">
@@ -188,8 +188,12 @@ const Feed = async ({
               </Link>
             </div>
           </div>
-        )}
-      </div>
+          :
+          <div>
+            <p className="text-gray-600 text-center font-medium text-xl">No Posts.This user is yet to Post.</p>
+
+          </div>)}
+    </div>
   )
 }
 

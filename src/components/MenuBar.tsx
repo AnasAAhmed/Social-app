@@ -44,7 +44,8 @@ const MenuBar = () => {
       <DropDown options={[
         { key: 'Friends', value: '/friends' },
         { key: 'Friends Requests', value: '/friends/friend-requests' },
-        { key: 'Suggestions', value: '/friends/suggestions' }
+        { key: 'Suggestions', value: '/friends/suggestions' },
+        { key: 'Reminders', value: '/friends/reminders' }
       ]} />
       <hr className="border-t-1 border-gray-50 dark:border-gray-800 w-36 self-center" />
       <Link

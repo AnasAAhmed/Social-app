@@ -62,7 +62,7 @@ const page = async ({ params, searchParams }: { params: Promise<{ query: string 
 
     return (
         <div className='flex justify-end'>
-            <Suspense fallback={<LoaderGif />}>
+            {/* <Suspense fallback={<LoaderGif />}> */}
                 <div className="hidden md:block overflow-scroll scrollbar-hide fixed top-30 left-0 h-full w-[30%] xl:w-1/4 pl-14">
                     <LeftMenu type='profile' />
                 </div>
@@ -82,7 +82,7 @@ const page = async ({ params, searchParams }: { params: Promise<{ query: string 
                 <div className="hidden xl:block overflow-scroll scrollbar-hide fixed top-30 right-0 h-full w-1/4 max-xl:w-1/3 pr-14">
                     <RightMenu />
                 </div>
-            </Suspense>
+            {/* </Suspense> */}
         </div>
     )
 }

@@ -8,11 +8,13 @@ const UserInfoCardInteraction = ({
   isUserBlocked,
   isFollowing,
   isFollowingSent,
+  isFollowedByThem
 }: {
   userId: string;
   isUserBlocked: boolean;
   isFollowing: boolean;
   isFollowingSent: boolean;
+  isFollowedByThem:boolean
 }) => {
   const [userState, setUserState] = useState({
     following: isFollowing,
@@ -64,7 +66,7 @@ const UserInfoCardInteraction = ({
             ? "Following"
             : optimisticState.followingRequestSent
             ? "Friend Request Sent"
-            : "Follow"}
+            : isFollowedByThem?"Follow Back":"Follow"}
         </button>
       </form>
       <form action={block} className="self-end ">

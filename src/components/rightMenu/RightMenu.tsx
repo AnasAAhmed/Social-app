@@ -2,21 +2,16 @@ import React, { Suspense } from 'react'
 import FriendRequest from './FriendRequest'
 import BirthDays from './BirthDays'
 import Ad from '../Ad'
-import UserInfoCard from './UserInfoCard'
-import UserMediaCard from './UserMediaCard'
-import Loader, { Loader1 } from '../Loader'
+import UserInfoCard from '../userInfo/UserInfoCard'
+import UserMediaCard from '../userMedia/UserMediaCard'
 import { User } from '@prisma/client'
 
 const RightMenu = ({ user }: { user?: User }) => {
   return (
-    <div className='flex flex-col gap-6'>
+    <div className='flex flex-col gap-6 maxs-xl:hidden'>
       {user ? (<>
-        <Suspense fallback={<Loader />}>
-          <UserInfoCard user={user} />
-        </Suspense>
-        <Suspense fallback={<Loader1 />}>
-          <UserMediaCard user={user} />
-        </Suspense>
+          <UserInfoCard userId={user.id} />
+          <UserMediaCard userId={user.id} />
 
       </>
       ) : 

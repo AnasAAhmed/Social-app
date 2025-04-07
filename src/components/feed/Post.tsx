@@ -12,6 +12,7 @@ import UpdatePost from '../forms/UpdatePost'
 import FullImage from './FullImage'
 import Truncate from '@/lib/truncate'
 import { ClerkProvider } from '@clerk/nextjs'
+import LinkPReview from './LinkPReview'
 type feedPostsType = PostsType & { user: User } & { likes: { userId: string }[] } & {
     _count: { comments: number }
 }
@@ -41,7 +42,7 @@ const Post = ({ post, userId }: { post: feedPostsType, userId: string }) => {
             {/* desc */}
             <div className='mx-4 text-xs md:text-sm dark:text-gray-300'><Truncate desc={post.desc} numOfChar={100} /></div>
             <div className="flex flex-col gap-4 sm:mx-4">
-                {post.img &&
+                {post.img ?
                     <FullImage isVideo={isVideo} src={post.img!}>
                         <div>
                             {isVideo ?
@@ -56,7 +57,7 @@ const Post = ({ post, userId }: { post: feedPostsType, userId: string }) => {
                         </div>
                     </FullImage>
 
-                }
+                :<LinkPReview desc={post.desc} img={post.img!} />}
             </div>
             {/* interaction */}
             <Suspense fallback={<PostIntractionLoader />}>

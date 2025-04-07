@@ -1,71 +1,58 @@
-import prisma from '@/lib/client'
-import { auth } from '@clerk/nextjs/server'
-import { User } from '@prisma/client'
-import Image from 'next/image'
-import Link from 'next/link'
-import React from 'react'
-import UserInfoCardIntraction from './UserInfoCardIntraction'
-import UpdateUser from '../forms/UpdateUser'
-import Truncate from '@/lib/truncate'
+'use client'
 
-const UserInfoCard = async ({ user }: { user: User }) => {
+import React, { useEffect, useState } from 'react';
+import Image from 'next/image';
+import Loader from '../Loader'
+import UserInfoCardIntraction from './UserInfoCardIntraction';
+import UpdateUser from '../forms/UpdateUser';
+import Truncate, { useMediaQuery } from '@/lib/truncate';
+import { useAuth } from '@clerk/nextjs';
+import { toast } from 'sonner';
 
-  const createdAt = new Date(user.createdAt);
+const UserInfoCardForMob = ({ userId }: { userId: string }) => {
+  const { userId: currentUser } = useAuth();
+  const [data, setData] = useState<any>(null);
+  const [loading, setLoading] = useState(false);
 
-  const formatedDate = createdAt.toLocaleDateString("en-us", {
+  const isMobile = useMediaQuery('(max-width: 1279px)'); // 👈 Mobile check
+
+  useEffect(() => {
+    if (!isMobile) return;
+
+    const fetchInfo = async () => {
+      try {
+        setLoading(true);
+        const res = await fetch(`/api/user/${userId}/info?currentUser=${currentUser}`);
+        const json = await res.json();
+        setData(json);
+      } catch (err) {
+        toast.error((err as Error).message);
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchInfo();
+  }, [userId, currentUser, isMobile]);
+
+  if (!isMobile) return <Loader />;
+  if (loading) return <Loader />;
+  if (!data) return null;
+
+  const { user, isUserBlocked, isFollowing, isFollowingSent, isFollowedByThem } = data;
+
+  const createdAt = new Date(user.createdAt).toLocaleDateString("en-us", {
     year: "numeric",
     month: "long",
     day: "numeric"
-  })
+  });
 
-  let isUserBlocked = false;
-  let isFollowing = false;
-  let isFollowingSent = false;
-  let isFollowingBack = false;
-
-  const { userId: currentUser } = await auth.protect()
-  if (currentUser) {
-    const blockRes = await prisma.block.findFirst({
-      where: {
-        blockerId: currentUser,
-        blockedId: user.id,
-      }
-    })
-    blockRes && (isUserBlocked = true);
-  } if (currentUser) {
-    const FollowRes = await prisma.followRequest.findFirst({
-      where: {
-        senderId: currentUser,
-        receiverId: user.id,
-      }
-    })
-    FollowRes && (isFollowingSent = true);
-  } if (currentUser) {
-    const followingRes = await prisma.follower.findFirst({
-      where: {
-        followerId: user.id,
-        followingId: currentUser,
-      }
-    })
-    followingRes && (isFollowing = true);
-  }
-  const stripURL = (url:string) => {
+  const stripURL = (url: string) => {
     if (!url) return "";
-    
-    let strippedUrl = url;
-    
-    if (url.startsWith("https")) {
-      strippedUrl = url.slice(8);
-    } else if (url.startsWith("www.")) {
-      strippedUrl = url.slice(4);
-    }
-    
-    // Optional: Limit the length of the displayed URL
-    if (strippedUrl.length > 13) {
-      strippedUrl = strippedUrl.slice(0, 13) + "...";
-    }
-    
-    return strippedUrl;
+    let strippedUrl = url.startsWith("https") ? url.slice(8) : url;
+    if (strippedUrl.startsWith("www.")) strippedUrl = strippedUrl.slice(4);
+    return strippedUrl.length > 13 ? strippedUrl.slice(0, 13) + "..." : strippedUrl;
   };
 
   return (
@@ -73,7 +60,7 @@ const UserInfoCard = async ({ user }: { user: User }) => {
       {/* top */}
       <div className=" flex justify-between items-center font-medium">
         <span className="text-gray-500 dark:text-gray-300">User Information</span>
-       {currentUser===user.id?<UpdateUser user={user}/>: <div className='text-blue-500 cursor-pointer text-xs'>See all</div>}
+        {currentUser === user.id ? <UpdateUser user={user} /> : <div className='text-blue-500 cursor-pointer text-xs'>See all</div>}
       </div>
       <div className="flex flex-col gap-4 text-gray-500 dark:text-gray-300">
         <div className="flex items-center gap-2">
@@ -92,7 +79,7 @@ const UserInfoCard = async ({ user }: { user: User }) => {
         </div>}
         {user.dob && <div className="flex items-center gap-2">
           <Image src={"/school.png"} alt='' width={16} height={16} />
-          <span className="">D.O.B <b>{new Date(user.dob).toISOString().split('T')[0] }</b></span>
+          <span className="">D.O.B <b>{new Date(user.dob).toISOString().split('T')[0]}</b></span>
         </div>}
         {user.work && <div className="flex items-center gap-2">
           <Image src={"/work.png"} alt='' width={16} height={16} />
@@ -105,7 +92,7 @@ const UserInfoCard = async ({ user }: { user: User }) => {
           </div>}
           <div className="flex gap-1 items-center">
             <Image src={"/date.png"} alt='' width={16} height={16} />
-            {formatedDate}
+            {createdAt}
           </div>
         </div>
         {currentUser && currentUser !== user.id && < UserInfoCardIntraction
@@ -113,10 +100,11 @@ const UserInfoCard = async ({ user }: { user: User }) => {
           isFollowing={isFollowing}
           isUserBlocked={isUserBlocked}
           isFollowingSent={isFollowingSent}
+          isFollowedByThem={isFollowedByThem}
         />}
       </div>
     </div>
   )
 }
 
-export default UserInfoCard
+export default UserInfoCardForMob

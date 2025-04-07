@@ -11,6 +11,7 @@ import dynamic from "next/dynamic";
 import FocusLock from "react-focus-lock";
 import { Spinner } from "../Loader";
 import { useRouter } from "next/navigation";
+import LinkPReview from "../feed/LinkPReview";
 const EmojiPicker = dynamic(() => import('emoji-picker-react'), {
     ssr: false,
     loading: () => <div className="bg-white dark:bg-gray-900 p-8 rounded-md shadow-md"><Spinner w={20} h={20} /></div>
@@ -63,7 +64,7 @@ const UpdatePost = ({ post }: { post: Post }) => {
                                         </>
                                     )
                                 )}
-                                {!img.secure_url && post.img && ((post.img.endsWith('.mp4') || post.img.endsWith('.webm') || post.img.endsWith('.ogg')) ? (
+                                {!img.secure_url && post.img ? ((post.img.endsWith('.mp4') || post.img.endsWith('.webm') || post.img.endsWith('.ogg')) ? (
                                     <>
                                         <video autoPlay controls src={post.img} className="rounded-md w-full max-h-64"></video>
                                         <span className="text-gray-900 text-center rounded-full file block mt-2" >Current Media</span>
@@ -74,7 +75,7 @@ const UpdatePost = ({ post }: { post: Post }) => {
                                         <span className="text-gray-900 text-center rounded-full block mt-2" >Current Media</span>
                                     </>
                                 )
-                                )}
+                                ):<LinkPReview desc={post.desc} img={post.img!} />}
                             </div>
                             <div className="flex-1 flex flex-col gap-4">
                                 <form action={(formData) => {updatePost(formData, img?.secure_url || "", post.id);router.refresh();}} className="flex flex-col gap-4">

@@ -47,6 +47,7 @@ const Search = ({ placeholder = 'Search...' }: { placeholder?: string }) => {
       <input
         type="text"
         placeholder={placeholder}
+        name={route==='users'?route:"post"}
         onChange={(e) => setQuery(e.target.value)}
         onKeyDown={handleKeyDown}
         className="max-sm:w-full border-0 bg-transparent outline-none focus:border-0 focus-visible:ring-0 focus-visible:ring-offset-0"
