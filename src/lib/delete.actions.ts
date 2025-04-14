@@ -1,20 +1,19 @@
 'use server'
-import { auth } from "@clerk/nextjs/server";
+import { auth } from "@/auth";
 import prisma from "./client";
-import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 
 
 export const deleteStory = async (storyId: number) => {
-    const { userId } = await auth.protect();
-    if (!userId) {
-        throw new Error("User is not Authenticated!!");
-    };
-
+   const { user } =  (await auth()) as Session;
+   
+   
+     if (!user.id) throw new Error("User is not authenticated!");
     try {
         await prisma.story.delete({
             where: {
                 id: storyId,
-                userId
+                userId:user.id
             }
         });
     } catch (error) {
@@ -24,19 +23,17 @@ export const deleteStory = async (storyId: number) => {
     }
 }
 export const deletePost = async (postId: number) => {
-    const { userId } = await auth.protect();
-    if (!userId) {
-        throw new Error("User is not Authenticated!!");
-    };
+   const { user } =  (await auth()) as Session;
+   
+     if (!user.id) throw new Error("User is not authenticated!");
 
     try {
         await prisma.post.delete({
             where: {
                 id: postId,
-                userId
+                userId:user.id
             }
         });
-        revalidatePath('/');
     } catch (error) {
         const typeError = error as Error
         console.log(typeError);
@@ -44,16 +41,16 @@ export const deletePost = async (postId: number) => {
     }
 }
 export const deleteComment = async (commentId: number) => {
-    const { userId } = await auth.protect();
-    if (!userId) {
-        throw new Error("User is not Authenticated!");
-    };
+   const { user } =  (await auth()) as Session;
+   
+   
+     if (!user.id) throw new Error("User is not authenticated!");
 
     try {
         await prisma.comments.delete({
             where: {
                 id: commentId,
-                userId
+                userId:user.id
             }
         });
     } catch (error) {

@@ -11,7 +11,7 @@ type RequestWithUser = FollowRequest & {
 };
 
 const FriendRequestList = ({ requests, isPage }: { requests: RequestWithUser[], isPage?: boolean }) => {
-  const [requestState, setRequestState] = useState(requests);
+  const [requestState, setRequestState] = useState(requests||[]);
 
   const handleAction = async (requestId: number, userId: string, action: 'accept' | 'decline') => {
     removeOptimisticRequest(requestId);

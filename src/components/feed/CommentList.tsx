@@ -1,7 +1,6 @@
 'use client';
 
 import { addComments } from "@/lib/form.actions";
-import { useUser } from "@clerk/nextjs";
 import { Comments, User } from "@prisma/client";
 import Image from "next/image";
 import { useEffect, useState } from "react";
@@ -15,6 +14,7 @@ import { EmojiClickData } from "emoji-picker-react";
 import dynamic from "next/dynamic";
 import { Spinner } from "../Loader";
 import { deleteComment } from "@/lib/delete.actions";
+import { useSession } from "next-auth/react";
 
 const EmojiPicker = dynamic(() => import('emoji-picker-react'), {
     ssr: false,
@@ -32,9 +32,10 @@ const CommentList = ({
     comments: CommentWithUser[];
     postId: number;
     author: string;
-    sort?:string;
+    sort?: string;
 }) => {
-    const { user } = useUser();
+    const { data: session } = useSession();
+    const user =session? session?.user:null
     const [commentState, setCommentState] = useState<CommentWithUser[]>(comments);
     const [desc, setDesc] = useState("");
     const [showEmojiPicker, setShowEmojiPicker] = useState(false);
@@ -53,21 +54,19 @@ const CommentList = ({
             desc,
             createdAt: new Date(Date.now()),
             updatedAt: new Date(Date.now()),
-            userId: user.id,
+            userId: user.id!,
             postId,
             user: {
-                id: user.id,
+                id: user.id!,
                 username: "Sending Please Wait...",
                 avatar: "/noAvatar.png",
+                email:'',
+                googleId:'',
+                password:'',
                 cover: "",
-                description: "",
-                dob: null,
-                name: "",
-                surname: "",
-                city: "",
-                work: "",
-                school: "",
-                website: "",
+                updatedAt:new Date(Date.now()),
+                resetToken:'',
+                resetTokenExpiry:null,
                 createdAt: new Date(Date.now()),
             },
             likes: []
@@ -95,10 +94,10 @@ const CommentList = ({
         const updatedComments = [...commentState];
         const updatedComment = { ...updatedComments[commentIndex] };
 
-        if (updatedComment.likes && updatedComment.likes.includes(user.id)) {
+        if (updatedComment.likes && updatedComment.likes.includes(user.id!)) {
             updatedComment.likes = updatedComment.likes.filter((id: string) => id !== user.id);
         } else {
-            updatedComment.likes = [...(updatedComment.likes || []), user.id];
+            updatedComment.likes = [...(updatedComment.likes || []), user.id!];
         }
 
         updatedComments[commentIndex] = updatedComment;
@@ -127,7 +126,7 @@ const CommentList = ({
             {user && (
                 <div className="flex items-center gap-4">
                     <Image
-                        src={user.imageUrl || "noAvatar.png"}
+                        src={user.image || "noAvatar.png"}
                         alt=""
                         width={32}
                         height={32}
@@ -166,13 +165,11 @@ const CommentList = ({
                 {commentState.length > 0 && commentState.map((comment) => (
                     <div className="flex gap-4 justify-between mt-6 px-4" key={comment.id}>
                         <Link href={`/profile/${comment.user.username}`}>
-                            <Image src={comment.user.avatar || "/noAvatar.png"} alt='' width={40} height={40} className='w-7 h-7 rounded-full' />
+                            <img src={comment.user.avatar || "/noAvatar.png"} alt='avatar' className='w-7 h-7 rounded-full' />
                         </Link>
                         <div className="flex flex-col gap-2 flex-1">
                             <span className="font-medium text-sm dark:text-gray-100">
-                                {comment.user.name && comment.user.surname
-                                    ? comment.user.name + ' ' + comment.user.surname
-                                    : comment.user.username}
+                                {comment.user.username}
                                 <span className='font-medium text-xs text-gray-600 dark:text-gray-400 ml-3'>{calculateTimeDifference(comment.createdAt)}</span>
                                 {author === comment.userId && <span className='font-medium text-xs text-gray-600 dark:text-gray-400 ml-2'>&#9998; author</span>}
                             </span>

@@ -1,12 +1,10 @@
 'use client'
 import { useRouter, useSearchParams } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
-import { formUrlQuery } from '@/lib/utils';
-import { useInView } from 'react-intersection-observer';
 import { Spinner } from './Loader';
 
 type PaginationProps = {
-  page: number ,
+  page: number,
   totalPages: number,
   urlParamName?: string
   isFeed?: boolean
@@ -25,37 +23,18 @@ const Pagination = ({ isFeed = false, page, totalPages, urlParamName }: Paginati
     setLoad(false);
 
   }, [page, totalPages]);
-  // useEffect(() => {
-  //   if (Number(page) < totalPages) {
-  //     setLoad(true)
-  //     const pageValue = Number(page) + 1;
-
-  //     const newUrl = formUrlQuery({
-  //       params: searchParams.toString(),
-  //       key: urlParamName || 'page',
-  //       value: pageValue.toString(),
-  //     });
-  //     // alert('ssss');
-
-  //     router.push(newUrl, { scroll: false });
-  //   }
-  // }, [inView]);
 
   if (totalPages < 2) return null;
 
   const onClick = (btnType: string) => {
     setLoad(true)
+    const query = new URLSearchParams(window.location.search);
     const pageValue = btnType === 'next'
       ? page + 1
       : page - 1;
-
-    const newUrl = formUrlQuery({
-      params: searchParams.toString(),
-      key: urlParamName || 'page',
-      value: pageValue.toString(),
-    });
-
-    router.push(newUrl, { scroll: false });
+    query.set('page', pageValue.toString());
+    const newUrl = `?${query.toString()}`;
+    router.push(newUrl)
   };
 
   return (

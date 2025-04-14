@@ -1,25 +1,33 @@
-import React, { Suspense } from 'react'
+import React from 'react'
 import FriendRequest from './FriendRequest'
 import BirthDays from './BirthDays'
 import Ad from '../Ad'
-import UserInfoCard from '../userInfo/UserInfoCard'
 import UserMediaCard from '../userMedia/UserMediaCard'
 import { User } from '@prisma/client'
 
-const RightMenu = ({ user }: { user?: User }) => {
+const RightMenu = ({
+  user,
+  isBlocked,
+  currentUser
+}: {
+  user?: any
+  currentUser?: string
+  isBlocked?: boolean
+}) => {
+
   return (
     <div className='flex flex-col gap-6 maxs-xl:hidden'>
-      {user ? (<>
-          <UserInfoCard userId={user.id} />
+      {currentUser && user && !isBlocked ? (
+        <>
+          <BirthDays />
           <UserMediaCard userId={user.id} />
-
-      </>
-      ) : 
-      <>
-      <BirthDays />
-      <FriendRequest />
-      </>
-      }
+        </>
+      ) : (
+        currentUser && <>
+          <BirthDays />
+          <FriendRequest userId={currentUser}/>
+        </>
+      )}
       <Ad size='sm' />
     </div>
   )

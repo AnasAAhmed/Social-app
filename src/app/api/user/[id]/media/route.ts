@@ -1,4 +1,4 @@
-import { auth } from '@clerk/nextjs/server';
+
 import prisma from '@/lib/client';
 
 export const GET = async (req: Request, { params }: { params: Promise<{ id: string }> }) => {

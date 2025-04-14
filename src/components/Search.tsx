@@ -6,6 +6,7 @@
 import Image from 'next/image';
 import { useState } from 'react'
 import { useRouter } from 'next/navigation';
+import { SearchIcon } from 'lucide-react';
 
 const Search = ({ placeholder = 'Search...' }: { placeholder?: string }) => {
   const [query, setQuery] = useState('');
@@ -36,25 +37,28 @@ const Search = ({ placeholder = 'Search...' }: { placeholder?: string }) => {
   //   return () => clearTimeout(delayDebounceFn);
   // }, [query, searchParams, router])
 
-  const handleKeyDown = (e: any) => {
-    if (e.key === 'Enter') {
+  const handleSubmit = (e: any) => {
+    e.preventDefault()
+    if (query !== '') {
       router.push(`/${route}/${query}`);
     }
   }
 
   return (
     <div className="flex p-2 rounded-xl dark:bg-slate-700 bg-slate-100 items-center">
-      <input
-        type="text"
-        placeholder={placeholder}
-        name={route==='users'?route:"post"}
-        onChange={(e) => setQuery(e.target.value)}
-        onKeyDown={handleKeyDown}
-        className="max-sm:w-full border-0 bg-transparent outline-none focus:border-0 focus-visible:ring-0 focus-visible:ring-offset-0"
-      />
-      <button onClick={() => router.push(`/${route}/${query}`)} disabled={query === ''}>
-        <Image src="/search.png" alt="search" width={14} height={14} />
-      </button>
+      <form onSubmit={(e) => handleSubmit(e)} className='flex justify-between'>
+
+        <input
+          type="text"
+          placeholder={placeholder}
+          name={route === 'users' ? route : "post"}
+          onChange={(e) => setQuery(e.target.value)}
+          className="max-sm:w-full border-0 bg-transparent outline-none "
+        />
+        <button type='submit' disabled={query === ''}>
+          <SearchIcon size={'1.1rem'}/>
+        </button>
+      </form>
       <select onChange={(e) => setRoute(e.target.value)} className='ml-1 bg-transparent cursor-pointer dark:bg-slate-700 dark:text-white outline-none'>
         <option value="search">Posts</option>
         <option value="users">Users</option>

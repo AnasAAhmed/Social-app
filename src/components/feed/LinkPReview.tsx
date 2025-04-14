@@ -2,9 +2,12 @@
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { extractUrl } from '@/lib/utils';
+import { Spinner } from '../Loader';
 
 
-const LinkPReview = ({ desc, img }: { desc: string; img?: string }) => {
+const LinkPReview = ({ desc, img,postId,postBy }: { desc: string; img?: string ;postBy:string;postId:number}) => {
+    const [loader, setLoader] = useState<boolean>(false)
+
     const [preview, setPreview] = useState<null | {
         title: string;
         description: string;
@@ -16,33 +19,33 @@ const LinkPReview = ({ desc, img }: { desc: string; img?: string }) => {
         if (!img) {
             const url = extractUrl(desc);
             if (url) {
-                console.log("Extracted URL:", url);
-                fetch("/api/link-preview", {
+                setLoader(true)
+                fetch(`/api/link-preview?url=${url}`, {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ url })
                 })
                     .then(res => res.json())
                     .then(data => {
                         if (!data.error) {
                             setPreview(data);
                         }
+                        setLoader(false)
                     })
-                    .catch(err => console.error("Failed to fetch preview:", err));
+                    .catch(err => { console.error("Failed to fetch preview:", err); setLoader(false) });
             }
         }
     }, [desc, img]);
     return (
         <div>
-            {preview && (
-                <a href={preview.url} title={"Preview of "+preview.url} target="_blank" rel="noopener noreferrer" className="block border rounded-md overflow-hidden dark:border-slate-700">
+            {loader ? <Spinner /> : preview && (
+                <a href={preview.url+`?utm_source=anas-social.vercel.app&utm_medium=referral&utm_campaign=${postBy}-post-${postId}`} title={"Preview of " + preview.url} target="_blank" rel="noopener noreferrer" className="block border rounded-md overflow-hidden dark:border-slate-700">
                     {preview.image && (
                         <div className="relative w-full">
-                            <img src={preview.image} alt={"Preview of "+preview.url} className="object-cover" />
+                            <img title={"Preview of " + preview.url} src={preview.image} alt={"Preview of " + preview.url} className="object-cover" />
                         </div>
                     )}
                     <div className="p-3 dark:bg-slate-800 bg-white">
-                        <h3 className="text-sm font-semibold dark:text-white">{preview.title}</h3>
+                        <h3 title={preview.title} className="text-sm font-semibold dark:text-white">{preview.title}</h3>
                         <p title={preview.description} className="text-xs text-gray-600 dark:text-gray-400">{preview.description}</p>
                     </div>
                 </a>

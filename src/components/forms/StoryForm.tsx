@@ -1,7 +1,7 @@
 'use client'
 import { addStory } from '@/lib/form.actions';
-import { useUser } from '@clerk/nextjs';
 import { Story } from '@prisma/client';
+import { useSession } from 'next-auth/react';
 import { CldUploadWidget } from 'next-cloudinary';
 import Image from 'next/image';
 import React, { useState } from 'react'
@@ -11,7 +11,7 @@ const StoryForm = ({ userId, addOptimisticStory, setStoryList }: { userId: strin
     const [img, setImg] = useState<any>();
     const isVideo = /\.(mp4|webm|mkv|avi|mov)$/i.test(img);
 
-    const { user } = useUser();
+    const { data: session } = useSession();
 
     const add = async () => {
         if (!img?.secure_url) return;
@@ -25,7 +25,7 @@ const StoryForm = ({ userId, addOptimisticStory, setStoryList }: { userId: strin
             user: {
                 id: userId,
                 username: "Sending...",
-                avatar: user?.imageUrl || "/noAvatar.png",
+                avatar: session?.user?.image || "/noAvatar.png",
                 cover: "",
                 description: "",
                 name: "",
@@ -65,14 +65,21 @@ const StoryForm = ({ userId, addOptimisticStory, setStoryList }: { userId: strin
         <div className="h-40 w-28 flex flex-col items-center justify-end rounded-md gap-1">
             <div className="relative w-full h-full">
                 {isVideo ?
-                    <video src={img?.secure_url || user?.imageUrl || "/noAvatar.png"}
+                    <video src={img?.secure_url || session?.user?.image || "/noAvatar.png"}
                         muted
+                        about='story media'
                         className='w-full h-full rounded-md object-cover'
                     />
                     :
-                    <Image src={img?.secure_url || user?.imageUrl || "/noAvatar.png"} alt='s'
-                        fill className='object-cover rounded-md'
-                    />}
+                    img?.secure_url ?
+                        <Image src={img?.secure_url } alt='story media'
+                            fill className='object-cover rounded-md'
+                        />
+                        :
+                        <img src={session?.user?.image || "/noAvatar.png"} alt='avatar'
+                             className='object-cover h-40 rounded-md self-center'
+                        />
+                }
                 <div className="absolute flex flex-col rounded-b-md z-20 items-center bottom-0 right-0 left-0 ">
                     <CldUploadWidget
                         uploadPreset="anas_social"
@@ -88,7 +95,7 @@ const StoryForm = ({ userId, addOptimisticStory, setStoryList }: { userId: strin
                         {({ open }) => {
                             return (
                                 <div onClick={() => open()} className="bg-blue-500 text-2xl text-white rounded-full w-8 h-8 flex justify-center items-center cursor-pointer">
-                                    +
+                                +
                                 </div>
                             );
                         }}

@@ -1,16 +1,20 @@
 'use server'
 
-import { auth } from "@clerk/nextjs/server"
+import { auth } from "@/auth";
 import prisma from "./client";
 import { revalidatePath } from "next/cache";
 
+
 export const switchFollow = async (userId: string) => {
-  const { userId: currentUser } = await auth.protect();
-  if (!currentUser) throw new Error("UserId is not authneticated");
+  const { user } =  (await auth()) as Session;
+
+
+  if (!user.id) throw new Error("User is not authenticated!");
+
   try {
     const existingFollow = await prisma.follower.findFirst({
       where: {
-        followerId: currentUser,
+        followerId: user.id,
         followingId: userId
       }
     })
@@ -23,7 +27,7 @@ export const switchFollow = async (userId: string) => {
     } else {
       const existingFollowRequest = await prisma.followRequest.findFirst({
         where: {
-          senderId: currentUser,
+          senderId: user.id,
           receiverId: userId
         }
       })
@@ -36,7 +40,7 @@ export const switchFollow = async (userId: string) => {
       } else {
         await prisma.followRequest.create({
           data: {
-            senderId: currentUser,
+            senderId: user.id,
             receiverId: userId
           }
         })
@@ -51,16 +55,15 @@ export const switchFollow = async (userId: string) => {
 };
 
 export const switchBlock = async (userId: string) => {
-  const { userId: currentUserId } = await auth.protect();
+  const { user } =  (await auth()) as Session;
 
-  if (!currentUserId) {
-    throw new Error("User is not Authenticated!!");
-  }
+
+  if (!user.id) throw new Error("User is not authenticated!");
 
   try {
     const existingBlock = await prisma.block.findFirst({
       where: {
-        blockerId: currentUserId,
+        blockerId: user.id,
         blockedId: userId,
       },
     });
@@ -74,7 +77,7 @@ export const switchBlock = async (userId: string) => {
     } else {
       await prisma.block.create({
         data: {
-          blockerId: currentUserId,
+          blockerId: user.id,
           blockedId: userId,
         },
       });
@@ -87,17 +90,16 @@ export const switchBlock = async (userId: string) => {
 };
 
 export const acceptFollowRequest = async (userId: string) => {
-  const { userId: currentUserId } = await auth.protect();
+  const { user } =  (await auth()) as Session;
 
-  if (!currentUserId) {
-    throw new Error("User is not Authenticated!!");
-  };
+
+  if (!user.id) throw new Error("User is not authenticated!");
   try {
 
     const existingFollowRequests = await prisma.followRequest.findFirst({
       where: {
         senderId: userId,
-        receiverId: currentUserId,
+        receiverId: user.id,
       },
     })
     if (existingFollowRequests) {
@@ -108,7 +110,7 @@ export const acceptFollowRequest = async (userId: string) => {
       });
       await prisma.follower.create({
         data: {
-          followerId: currentUserId,
+          followerId: user.id,
           followingId: userId,
         },
       });
@@ -121,17 +123,16 @@ export const acceptFollowRequest = async (userId: string) => {
   }
 };
 export const declineFollowRequest = async (userId: string) => {
-  const { userId: currentUserId } = await auth.protect();
+  const { user } =  (await auth()) as Session;
 
-  if (!currentUserId) {
-    throw new Error("User is not Authenticated!!");
-  }
+
+  if (!user.id) throw new Error("User is not authenticated!");
 
   try {
     const existingFollowRequest = await prisma.followRequest.findFirst({
       where: {
         senderId: userId,
-        receiverId: currentUserId,
+        receiverId: user.id,
       },
     });
 
@@ -149,15 +150,15 @@ export const declineFollowRequest = async (userId: string) => {
   }
 };
 export const switchLike = async (postId: number) => {
-  const { userId } = await auth.protect();
-  if (!userId) {
-    throw new Error("User is not Authenticated!!");
-  }
+  const { user } =  (await auth()) as Session;
+
+
+  if (!user.id) throw new Error("User is not authenticated!");
   try {
     const existingLke = await prisma.like.findFirst({
       where: {
         postId,
-        userId
+        userId:user.id
       }
     })
     if (existingLke) {
@@ -169,7 +170,7 @@ export const switchLike = async (postId: number) => {
     } else {
       await prisma.like.create({
         data: {
-          postId, userId
+          postId, userId:user.id
         }
       })
     }
@@ -180,15 +181,15 @@ export const switchLike = async (postId: number) => {
   }
 };
 export const switchCommentLike = async (commentId: number) => {
-  const { userId } = await auth.protect();
-  if (!userId) {
-    throw new Error("User is not Authenticated!!");
-  }
+  const { user } =  (await auth()) as Session;
+
+
+  if (!user.id) throw new Error("User is not authenticated!");
   try {
     const existingLke = await prisma.like.findFirst({
       where: {
         commentId,
-        userId
+        userId:user.id
       }
     })
     if (existingLke) {
@@ -201,7 +202,7 @@ export const switchCommentLike = async (commentId: number) => {
       await prisma.like.create({
         data: {
           commentId,
-          userId
+          userId:user.id
         }
       })
     }

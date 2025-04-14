@@ -2,15 +2,15 @@
 import { Story, User } from '@prisma/client';
 import Image from 'next/image';
 import React, { useEffect, useRef, useState } from 'react';
-import { useUser } from '@clerk/nextjs';
 import ActionButton from '../feed/ActionButton';
+import { useSession } from 'next-auth/react';
 
 type StoryWithUser = Story & {
     user: User;
 };
 
 const StoryCard = ({ story, onDelete }: { story: StoryWithUser, onDelete: (storyId: number) => void }) => {
-    const { user } = useUser();
+    const { data:session} = useSession();
     const [isOpen, setIsOpen] = useState(false);
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const [videoDuration, setVideoDuration] = useState(6);
@@ -31,7 +31,7 @@ const StoryCard = ({ story, onDelete }: { story: StoryWithUser, onDelete: (story
         };
     }, []);
 
-    if (!user) return null;
+    if (!session) return null;
 
     const openModal = () => {
         if (isVideo) {
@@ -85,7 +85,7 @@ const StoryCard = ({ story, onDelete }: { story: StoryWithUser, onDelete: (story
                                 height={40}
                                 className="w-8 h-8 rounded-full ring-4"
                             />
-                            {user.id === story.userId && (
+                            {session.user?.id === story.userId && (
                                 <div onClick={(e) => e.stopPropagation()} className="relative" ref={dropdownRef}>
                                     <Image
                                         src="/more.png"
@@ -106,7 +106,7 @@ const StoryCard = ({ story, onDelete }: { story: StoryWithUser, onDelete: (story
                             )}
                         </div>
                         <span className="font-medium text-white backdrop-blur-[1.5px] px-2 rounded-b-md blackOverlay">
-                            {story.user.name || story.user.username}
+                            {story.user.username}
                         </span>
                     </div>
                 </div>
@@ -138,14 +138,12 @@ const Modal = ({
                 <div className="absolute boom top-0 right-0 left-0 p-2 bg-black bg-opacity-40 z-10 sm:rounded-t-md w-full">
                     <div className="flex justify-between items-center gap-2">
                         <div className="flex items-center gap-2">
-                            <Image
+                            <img
                                 src={story.user.avatar || '/noAvatar.png'}
-                                alt=""
-                                width={80}
-                                height={80}
+                                alt="avatar"
                                 className="w-10 h-10 rounded-full"
                             />
-                            <span className="font-medium text-white">{story.user.name || story.user.username}</span>
+                            <span className="font-medium text-white">{story.user.username}</span>
                         </div>
                         <button onClick={closeModal} className="text-white text-3xl px-2">
                             &times;

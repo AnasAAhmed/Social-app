@@ -1,21 +1,22 @@
 'use client';
 
 import { switchLike } from '@/lib/action';
-import { useAuth } from '@clerk/nextjs';
 import Image from 'next/image';
 import React, { useState } from 'react';
 import { toast } from 'sonner';
-import { PostIntractionLoader } from '../Loader';
+import { PostIntractionLoader, Spinner } from '../Loader';
 import Comment from './Comment';
+import { useSession } from 'next-auth/react';
 
 const PostIntraction = ({ postId, likes, commentNumber, author }: { postId: number; likes: string[]; commentNumber: number; author: string; }) => {
-    const { userId, isLoaded } = useAuth();
+    const { data: session } = useSession();
     const [likeState, setLikeState] = useState({
         likeCount: likes.length,
-        isLiked: userId ? likes.includes(userId) : false
+        isLiked: session ? likes.includes(session?.user?.id!) : false
     });
     const [open, setOpen] = useState(false);
     const [open2, setOpen2] = useState(true);
+    const [loading, setLoading] = useState(false);
     const [buttonDisabled, setButtonDisabled] = useState(false);
     const [optimisticLike, switchOptimisticLike] = useState(likeState);
 
@@ -27,6 +28,7 @@ const PostIntraction = ({ postId, likes, commentNumber, author }: { postId: numb
             isLiked: !state.isLiked
         }));
         try {
+            setLoading(true);
             await switchLike(postId);
             setLikeState((state) => ({
                 likeCount: state.isLiked ? state.likeCount - 1 : state.likeCount + 1,
@@ -38,10 +40,11 @@ const PostIntraction = ({ postId, likes, commentNumber, author }: { postId: numb
             toast.error(`Something went wrong ${typeError.message}`);
         } finally {
             setButtonDisabled(false);
+            setLoading(false);
         }
     };
 
-    if (!isLoaded) return <PostIntractionLoader />;
+    if (!session) return <PostIntractionLoader />;
 
     return (
         <>
@@ -50,8 +53,7 @@ const PostIntraction = ({ postId, likes, commentNumber, author }: { postId: numb
                     <div className="flex items-center gap-4 bg-slate-50 dark:bg-slate-800 rounded-lg p-2">
                         <form action={likeAction}>
                             <button disabled={buttonDisabled} className='disabled:cursor-not-allowed'>
-                                <Image src={optimisticLike.isLiked ? '/liked.png' : '/like.png'} alt='' width={16} height={16} />
-                            </button>
+                                {loading ?<Spinner />: <Image src={optimisticLike.isLiked ? '/liked.png' : '/like.png'} alt='' width={16} height={16} />}                            </button>
                         </form>
                         <span className="text-gray-300 dark:text-gray-300">|</span>
                         <span className="text-gray-500 dark:text-gray-200 lg:text-xs">{optimisticLike.likeCount}<span className="hidden md:inline ml-1">Likes</span> </span>
@@ -59,7 +61,7 @@ const PostIntraction = ({ postId, likes, commentNumber, author }: { postId: numb
                 </div>
                 <div className="flex items-center gap-3">
                     {open ?
-                        <div onClick={() => {setOpen2(!open2)}} className="flex items-center gap-3 bg-slate-50 dark:bg-slate-800 rounded-lg p-2">
+                        <div onClick={() => { setOpen2(!open2) }} className="flex items-center gap-3 bg-slate-50 dark:bg-slate-800 rounded-lg p-2">
                             <Image src={'/comment.png'} alt='' width={16} height={16} className='cursor-pointer' />
                             <span className="text-gray-300 dark:text-gray-300">|</span>
                             <span className="text-gray-500 dark:text-gray-200 lg:text-xs">{commentNumber} <span className="hidden md:inline cursor-pointer hover:underline">Comments</span> </span>

@@ -1,8 +1,7 @@
 'use client'
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useActionState, useEffect, useState } from "react";
 import { CldUploadWidget } from "next-cloudinary";
-import AddPostButton from "../AddPostButton";
 import { updatePost } from "@/lib/form.actions";
 import { Post } from "@prisma/client";
 import React from "react";
@@ -10,14 +9,21 @@ import { EmojiClickData } from "emoji-picker-react";
 import dynamic from "next/dynamic";
 import FocusLock from "react-focus-lock";
 import { Spinner } from "../Loader";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import LinkPReview from "../feed/LinkPReview";
+import { useFormStatus } from "react-dom";
+import AddPostButton from "../AddPostButton";
+import { toast } from "sonner";
 const EmojiPicker = dynamic(() => import('emoji-picker-react'), {
     ssr: false,
     loading: () => <div className="bg-white dark:bg-gray-900 p-8 rounded-md shadow-md"><Spinner w={20} h={20} /></div>
 });
 
-
+type UpdatePostState = {
+    success: boolean;
+    error: boolean;
+    message: string;
+};
 const UpdatePost = ({ post }: { post: Post }) => {
 
     const router = useRouter();
@@ -26,11 +32,27 @@ const UpdatePost = ({ post }: { post: Post }) => {
     const [img, setImg] = useState<any>({ secure_url: '' });
     const [open, setOpen] = useState<boolean>(false);
     const [showEmojiPicker, setShowEmojiPicker] = useState(false);
+    const [message, setMessage] = useState('');
+    const searchParams = useSearchParams();
 
     const handleImageRemove = () => setImg('');
     const handleEmojiClick = (event: EmojiClickData) => {
         setDesc(prevDesc => prevDesc + event.emoji);
     };
+    const [state, formAction] = useActionState(updatePost, { success: false, error: false, message: '' } satisfies UpdatePostState);
+
+    useEffect(() => {
+        if (state.success) {
+            const params = new URLSearchParams(searchParams.toString());
+            params.set('postId', state.message);
+            router.push(`?${params}`, { scroll: false });
+            toast.success('Post updated Successfully and will show in feed after reload');
+            setMessage('Post updated Successfully and will show in feed after reload');
+        } else if (state.error) {
+            toast.success(state.message);
+            setMessage(state.message);
+        }
+    }, [state.success, state.error, state.message]);
 
     return (
         <div className="">
@@ -75,10 +97,12 @@ const UpdatePost = ({ post }: { post: Post }) => {
                                         <span className="text-gray-900 text-center rounded-full block mt-2" >Current Media</span>
                                     </>
                                 )
-                                ):<LinkPReview desc={post.desc} img={post.img!} />}
+                                ) : <LinkPReview postBy={post.userId} postId={post.id} desc={post.desc} img={post.img!} />}
                             </div>
                             <div className="flex-1 flex flex-col gap-4">
-                                <form action={(formData) => {updatePost(formData, img?.secure_url || "", post.id);router.refresh();}} className="flex flex-col gap-4">
+                                <form
+                                    action={formAction}
+                                    className="flex flex-col gap-4">
                                     <textarea
                                         placeholder="What's on your mind?"
                                         className="flex-1 w-full dark:bg-slate-800 dark:text-gray-200 bg-slate-100 rounded-lg p-2"
@@ -86,6 +110,8 @@ const UpdatePost = ({ post }: { post: Post }) => {
                                         value={desc}
                                         onChange={(e) => setDesc(e.target.value)}
                                     ></textarea>
+                                    <input type="hidden" name="img" value={img.secure_url || ''} />
+                                    <input type="hidden" name="postId" value={post.id} />
                                     <div className="relative hidden lg:block">
                                         <Image
                                             src="/emoji.png"
@@ -101,7 +127,7 @@ const UpdatePost = ({ post }: { post: Post }) => {
                                         )}
                                     </div>
                                     <div className="flex justisfy-center gap-3">
-                                        <AddPostButton desc={desc} text="Update" />
+                                       <AddPostButton desc={post.desc} text="Update"/>
                                         <button
                                             className="bg-blue-500 w-full text-white text-center p-1 mt-2 rounded-md disabled:bg-opacity-50 disabled:cursor-not-allowed"
                                             onClick={() => setOpen(false)}
@@ -109,6 +135,10 @@ const UpdatePost = ({ post }: { post: Post }) => {
                                             Close
                                         </button>
                                     </div>
+                                        {state.message&&<>
+                                            {state.success && <span className="text-green-500">{message}</span>}
+                                            {state.error && <span className="text-red-500">{state.message}</span>}
+                                        </>}
                                 </form>
                                 <div className="flex items-center gap-2">
                                     <CldUploadWidget

@@ -3,11 +3,14 @@ import React, { useEffect, useState } from 'react'
 
 interface TruncateProps {
   desc: string;
+  isProfilePage?: boolean;
   numOfChar: number;
   textSize?: number;
+  postBy?: string;
+  postId?: number
 }
 
-const Truncate = ({ desc, numOfChar, textSize = 14 }: TruncateProps) => {
+const Truncate = ({ desc, numOfChar, isProfilePage = false, textSize = 14, postId, postBy }: TruncateProps) => {
   const [isExpanded, setIsExpanded] = useState(false);
 
   const toggleExpand = () => setIsExpanded(!isExpanded);
@@ -19,7 +22,7 @@ const Truncate = ({ desc, numOfChar, textSize = 14 }: TruncateProps) => {
         return (
           <a
             key={i}
-            href={word}
+            href={word + `?utm_source=anas-social.vercel.app&utm_medium=referral&utm_campaign=${postBy}-post-${postId}`} title={word}
             target="_blank"
             rel="noopener noreferrer"
             className="text-blue-500 hover:underline break-all"
@@ -52,7 +55,7 @@ const Truncate = ({ desc, numOfChar, textSize = 14 }: TruncateProps) => {
 
   return (
     <div className="flex flex-col gap-1 text-sm" style={{ fontSize: `${textSize}px` }}>
-      <p className="dark:text-gray-200 whitespace-pre-wrap break-words">
+      <p className={`dark:text-gray-200 whitespace-pre-wrap break-words ${isProfilePage ? 'text-center' : ""}`}>
         {isExpanded ? convertToElements(desc) : truncateText(desc, numOfChar)}
       </p>
       {desc && desc.length > numOfChar && (

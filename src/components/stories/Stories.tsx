@@ -1,15 +1,13 @@
 import prisma from '@/lib/client';
-import { auth } from '@clerk/nextjs/server';
 import React, { Suspense } from 'react';
 import { LoaderStories } from '../Loader';
 import StoryList from './StoryList';
 import NotLoggedIn from '../NotLoggedIn';
+import { auth } from '@/auth';
 
 const Stories = async () => {
-    const { userId: currentUser } = await auth.protect();
+    const { user: currentUser } = (await auth()) as Session;
     if (!currentUser) return <NotLoggedIn />;
-    // Fetch the stories
-
     const stories = await prisma.story.findMany({
         where: {
             expiresAt: {
@@ -20,7 +18,7 @@ const Stories = async () => {
                     user: {
                         follower: {
                             some: {
-                                followingId: currentUser,
+                                followingId: currentUser.id,
                             },
                         },
                     },
@@ -29,13 +27,13 @@ const Stories = async () => {
                     user: {
                         following: {
                             some: {
-                                followerId: currentUser,
+                                followerId: currentUser.id,
                             },
                         },
                     },
                 },
                 {
-                    userId: currentUser,
+                    userId: currentUser.id,
                 },
             ],
         },
@@ -48,10 +46,10 @@ const Stories = async () => {
         },
     });
     return (
-        <div className='p-4 bg-white dark:bg-slate-900 rounded-lg shadow-md overflow-scroll text-sm scrollbar-hide'>
+        <div className='p-4 bg-white dark:bg-slate-900 shadow-md rounded-lg overflow-scroll text-sm scrollbar-hide'>
             <div className="flex gap-2 w-max">
                 <Suspense fallback={<LoaderStories />}>
-                    <StoryList stories={stories} userId={currentUser} />
+                    <StoryList stories={stories} userId={currentUser.id} />
                 </Suspense>
                 {/* {load? <LoaderStories />:<StoryList stories={stories} userId={currentUser} />} */}
             </div>

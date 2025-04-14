@@ -61,7 +61,11 @@ const UserInfoCardInteraction = ({
   return (
     <>
       <form action={follow}>
-        <button className="w-full bg-blue-500 text-white text-sm rounded-md p-2">
+        <button title={optimisticState.following
+            ? "Already Following"
+            : optimisticState.followingRequestSent
+            ? "Friend Request Sent to this user"
+            : isFollowedByThem?"Follow Back this user":"Follow this user"} className="w-full bg-blue-500 text-white text-sm rounded-md p-2">
           {optimisticState.following
             ? "Following"
             : optimisticState.followingRequestSent
@@ -70,7 +74,7 @@ const UserInfoCardInteraction = ({
         </button>
       </form>
       <form action={block} className="self-end ">
-        <button>
+        <button title="Block this user so this user cant see your profile ">
           <span className="text-red-400 text-xs cursor-pointer">
             {optimisticState.blocked ? "Unblock User" : "Block User"}
           </span>

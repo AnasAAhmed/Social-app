@@ -1,14 +1,15 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // experimental: {
-  //   reactCompiler: true,
-  //   ppr: "incremental",
-  // },
+  reactStrictMode: true,
   images: {
     remotePatterns: [
       {
         protocol: "https",
         hostname: "images.pexels.com",
+      },
+       {
+        protocol: "https",
+        hostname: "ui-avatars.com",
       },
       {
         protocol: "https",

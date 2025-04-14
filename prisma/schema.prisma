@@ -15,22 +15,26 @@ datasource db {
 }
 
 model User {
-  id                     String          @id
-  username               String          @unique
-  avatar                 String?
-  cover                  String?
-  name                   String?
-  surname                String?
-  description            String?
-  city                   String?
-  school                 String?
-  work                   String?
-  dob                    DateTime?
-  website                String?
-  createdAt              DateTime        @default(now())
-  posts                  Post[]
-  likes                  Like[]
-  comments               Comments[]
+  id          String   @id @default(cuid())
+  username    String   @unique
+  email       String   @unique
+  password    String?  // nullable if using OAuth
+  googleId    String?  @unique
+  avatar      String?
+  cover       String?
+  resetToken       String?
+  resetTokenExpiry Int?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // 1:1 Relation to profile
+  userInfo   UserInfo?
+
+  // Relations
+  posts      Post[]
+  likes      Like[]
+  comments   Comments[]
+
   follower               Follower[]      @relation("UserFollowers")
   following              Follower[]      @relation("UserFollowings")
   followRequestsSent     FollowRequest[] @relation("FollowRequestsSent")
@@ -39,6 +43,7 @@ model User {
   blockBy                Block[]         @relation("BlocksReceived")
   stories                Story[]
 }
+
 
 model Post {
   id        Int        @id @default(autoincrement())
@@ -52,6 +57,21 @@ model Post {
   comments  Comments[]
 
   @@index([userId])
+}
+
+model UserInfo {
+  id          String    @id
+  user        User      @relation(fields: [id], references: [id])
+  name        String?
+  surname     String?
+  description String?   @db.Text
+  city        String?
+  school      String?
+  work        String?
+  dob         DateTime?
+  website     String?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
 }
 
 model Comments {

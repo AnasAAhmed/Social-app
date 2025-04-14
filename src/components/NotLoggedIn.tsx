@@ -1,14 +1,23 @@
+'use client'
 import React from 'react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 
 const NotLoggedIn = () => {
+    const pathname = usePathname();
     return (
         <div className="flex flex-col items-center pt-24 min-h-screen">
             <h1 className="text-3xl dark:text-gray-200 font-bold mb-4">You are not logged in</h1>
             <p className="text-lg mb-4 dark:text-gray-200">Please sign in to view this page.</p>
             <div className='flex items-center gap-3'>
-                <Link href={'/sign-in'} className='p-2 bg-blue-500 hover:bg-blue-600 text-white rounded-md'>SignIn</Link>
-                <Link href={'/sign-up'} className='p-2 bg-blue-500 hover:bg-blue-600 text-white rounded-md'>SignUp</Link>
+
+                <Link title="go to Login" className='p-2 bg-blue-500 hover:bg-blue-600 text-white rounded-md' prefetch={false} href={`/login?redirect_url=${decodeURIComponent(pathname)}`}>
+                    Login
+                </Link>
+                <Link title="go to signup" className='p-2 bg-blue-500 hover:bg-blue-600 text-white rounded-md' prefetch={false} href={`/sign-up?redirect_url=${decodeURIComponent(pathname)}`}>
+                    Signup
+                </Link>
+
             </div>
         </div>
     );
@@ -25,14 +34,14 @@ export const Blocked = () => {
     );
 }
 
-export const NotFound = ({text='Page Not Found'}:{text?:string}) => {
+export const NotFound = ({ currentUser=false,text = 'Page Not Found' }: {currentUser?:boolean; text?: string }) => {
     return (
         <div className="flex flex-col items-center pt-24 min-h-screen">
             <h1 className="text-3xl font-bold mb-4 dark:text-gray-200">404 - User Not Found.</h1>
             <h1 className="text-2xl font-bold mb-4 dark:text-gray-200 text-center">{text}</h1>
             <p className="text-lg mb-4  dark:text-gray-200">Sorry, we couldn&lsquo;t find the page you&lsquo;re looking for.</p>
             <div className='flex items-center gap-3'>
-                <Link href={'/'} className='p-2 bg-blue-500 hover:bg-blue-600 text-white rounded-md'>Go back to the homepage</Link>
+                <Link href={currentUser?'/feed':'/'} className='p-2 bg-blue-500 hover:bg-blue-600 text-white rounded-md'>Go back to the homepage</Link>
             </div>
         </div>
     );

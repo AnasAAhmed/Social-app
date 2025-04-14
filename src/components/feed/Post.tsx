@@ -1,21 +1,16 @@
 
 import Image from 'next/image'
 import React, { Suspense } from 'react'
-import Comment from './Comment'
-import { Post as PostsType, User } from '@prisma/client'
+import { Post as PostsType, User, UserInfo } from '@prisma/client'
 import PostIntraction from './PostIntraction'
-import { CommentLoader, PostIntractionLoader, Spinner } from '../Loader'
+import {  PostIntractionLoader, Spinner } from '../Loader'
 import PostInfo from './PostInfo'
 import { calculateTimeDifference } from '@/lib/utils'
 import Link from 'next/link'
 import UpdatePost from '../forms/UpdatePost'
 import FullImage from './FullImage'
 import Truncate from '@/lib/truncate'
-import { ClerkProvider } from '@clerk/nextjs'
 import LinkPReview from './LinkPReview'
-type feedPostsType = PostsType & { user: User } & { likes: { userId: string }[] } & {
-    _count: { comments: number }
-}
 
 const Post = ({ post, userId }: { post: feedPostsType, userId: string }) => {
     const isVideo = /\.(mp4|webm|mkv|avi|mov)$/i.test(post.img!);
@@ -24,14 +19,16 @@ const Post = ({ post, userId }: { post: feedPostsType, userId: string }) => {
             {/* user */}
             <div className="flex items-center justify-between">
                 <div className="flex items-center gap-4 mx-4">
-                    <Image src={post.user.avatar || '/noAvatar.png'} alt='' width={40} height={40} className='h-10 w-10 rounded-full' />
+                    <img src={post.user.avatar || '/noAvatar.png'} alt='avatar' className='h-10 w-10 rounded-full' />
                     <Link className='flex flex-col' href={`/profile/${post.user.username}`}>
                         <span className="font-medium text-xs sm:text-[1rem] dark:text-white">
-                            {post.user.name && post.user.surname
-                                ? post.user.name + ' ' + post.user.surname
+                            {post.user.userInfo.name && post.user.userInfo.surname
+                                ? post.user.userInfo.name + ' ' + post.user.userInfo.surname
                                 : post.user.username} <span className='text-xs text-gray-400'> @{post.user.username}</span>
                         </span>
-                        <span className='text-gray-500 text-xs lg:text-md dark:text-gray-400'>{calculateTimeDifference(post.createdAt)}</span>
+                        <span className='text-gray-500 text-xs lg:text-md dark:text-gray-400'>
+                            {calculateTimeDifference(post.updatedAt)}
+                            {new Date(post.createdAt).getTime() !== new Date(post.updatedAt).getTime() && ' · (edited)'}                        </span>
                     </Link>
                 </div>
                 <div className="flex items-center gap-2">
@@ -40,7 +37,7 @@ const Post = ({ post, userId }: { post: feedPostsType, userId: string }) => {
                 </div>
             </div>
             {/* desc */}
-            <div className='mx-4 text-xs md:text-sm dark:text-gray-300'><Truncate desc={post.desc} numOfChar={100} /></div>
+            <div className='mx-4 text-xs md:text-sm dark:text-gray-300'><Truncate postBy={post.user.username} postId={post.id} desc={post.desc} numOfChar={100} /></div>
             <div className="flex flex-col gap-4 sm:mx-4">
                 {post.img ?
                     <FullImage isVideo={isVideo} src={post.img!}>
@@ -57,20 +54,17 @@ const Post = ({ post, userId }: { post: feedPostsType, userId: string }) => {
                         </div>
                     </FullImage>
 
-                :<LinkPReview desc={post.desc} img={post.img!} />}
+                    : <LinkPReview postBy={post.user.username} postId={post.id || 0} desc={post.desc} img={post.img!} />}
             </div>
             {/* interaction */}
             <Suspense fallback={<PostIntractionLoader />}>
-                <ClerkProvider dynamic>
 
-                    <PostIntraction
-                        postId={post.id}
-                        likes={post.likes.map((like: any) => like.userId)}
-                        commentNumber={post._count.comments}
-                        author={post.userId}
-                    />
-                    {/* <Comment postId={post.id} author={post.userId} /> */}
-                </ClerkProvider>
+                <PostIntraction
+                    postId={post.id}
+                    likes={post.likes.map((like: any) => like.userId)}
+                    commentNumber={post._count.comments}
+                    author={post.userId}
+                />
 
             </Suspense>
         </div >

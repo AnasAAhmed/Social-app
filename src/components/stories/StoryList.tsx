@@ -6,7 +6,6 @@ import StoryCard from "./StoryCard";
 import StoryForm from "../forms/StoryForm";
 import { deleteStory } from "@/lib/delete.actions";
 import { toast } from "sonner";
-import Image from "next/image";
 import Link from "next/link";
 
 type StoryWithUser = Story & {
