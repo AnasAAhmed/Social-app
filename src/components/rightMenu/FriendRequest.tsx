@@ -11,7 +11,7 @@ import { useQuery } from '@tanstack/react-query'
 const FriendRequest = ({ userId }: { userId: string }) => {
     const isDesktop = useMediaQuery('(min-width: 1280px)');
     const shouldFetch = isDesktop && !!userId;
-    const { data, isLoading, isError } = useQuery({
+    const { data, isLoading, isError,refetch } = useQuery({
         queryKey: ['friend requests'],
         queryFn: async () => {
             const res = await fetch(`/api/user/${userId}/friend-requests`);
@@ -46,7 +46,7 @@ const FriendRequest = ({ userId }: { userId: string }) => {
                 <Link href={'/friends/friend-requests'} className='text-blue-500 text-xs'>See all {data && data.requestsCount > 4 && data.requestsCount}</Link>
             </div>
             {/* bottom */}
-            <FriendRequestList requests={data && data.requests} />
+            <FriendRequestList requests={data && data.requests} onUpdate={refetch}/>
         </div>
     )
 }

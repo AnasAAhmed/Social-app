@@ -5,9 +5,11 @@ import Image from "next/image";
 import { useActionState, useState, useEffect } from "react";
 import { CldUploadWidget } from "next-cloudinary";
 import { useRouter } from "next/navigation";
-import { updateProfile } from "@/lib/form.actions";
+import { deleteProfile, updateProfile } from "@/lib/form.actions";
 import FocusLock from "react-focus-lock";
 import UpdateButton from "../UpdateButton";
+import { toast } from "sonner";
+import { signOut } from "next-auth/react";
 
 type UpdateProfileState = {
   success: boolean;
@@ -35,9 +37,17 @@ const UpdateUser = (
     };
   }, [open]);
 
-  const [state, formAction] = useActionState(updateProfile, { success: false, error: false, message: 'ss' } satisfies UpdateProfileState);
+  const [state, formAction] = useActionState(updateProfile, { success: false, error: false, message: '' } satisfies UpdateProfileState);
+  const [state2,formAction2] = useActionState(deleteProfile, { success: false, error: false, message: '' } satisfies UpdateProfileState);
 
-
+  useEffect(() => {
+    if (state2.success) {
+        signOut()
+        toast.success(state.message);
+    } else if (state2.error) {
+        toast.success(state.message);
+    }
+}, [state2.success, state2.error, state2.message]);
   const handleClose = () => {
     setOpen(false);
     if (state.success) {
@@ -300,6 +310,9 @@ const UpdateUser = (
               >
                 &times;
               </div>}
+            </form>
+            <form action={formAction2}>
+            <UpdateButton state={state2} text='Delete Account'/>
             </form>
           </FocusLock >
         </div >

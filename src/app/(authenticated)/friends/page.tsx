@@ -4,12 +4,13 @@ import MenuBar from '@/components/MenuBar';
 import NotLoggedIn from '@/components/NotLoggedIn';
 import Pagination from '@/components/Pagination';
 import prisma from '@/lib/client';
-import { User } from '@prisma/client';
+import { User, UserInfo } from '@prisma/client';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Suspense } from 'react';
 import { Metadata } from "next";
 import { auth } from '@/auth';
+import UserInfoCardInteraction from '@/components/userInfo/UserInfoCardIntraction';
 
 export const metadata: Metadata = {
   title: "Anas Social | (Friends)",
@@ -21,11 +22,6 @@ export type SearchParamProps = {
   searchParams: Promise<{ page?: string, filter?: string, query?: string }>;
 };
 
-type UserData = {
-  follower?: User;
-  following?: User;
-};
-
 const FriendsPage = async ({ searchParams }: { searchParams: Promise<{ page?: string, filter?: string }> }) => {
   const session = (await auth()) as Session;
 
@@ -35,22 +31,51 @@ const FriendsPage = async ({ searchParams }: { searchParams: Promise<{ page?: st
   const { page, filter } = await searchParams
   const isFollowers = filter === 'followers';
   const perPage = 8;
-  const offset = (Number(page) || 1 - 1) * perPage;
+  const currentPage = Number(page) || 1;
+  const offset = (currentPage - 1) * perPage;
   const whereCondition = isFollowers ? { followerId: session.user.id } : { followingId: session.user.id }
 
   const totalCount = await prisma.follower.count({
     where: whereCondition,
   });
-  const includeCondition = isFollowers ? { following: true } : { follower: true };
+  const selectCondition = isFollowers ? {
+    following: {
+      select: {
+        id: true,
+        username: true,
+        avatar: true,
+        userInfo: {
+          select: {
+            name: true,
+            surname: true
+          }
+        }
+      }
+    },
+  } : {
+    follower: {
+      select: {
+        id: true,
+        username: true,
+        avatar: true,
+        userInfo: {
+          select: {
+            name: true,
+            surname: true
+          }
+        }
+      }
+    },
+  };
   const users = totalCount > 0 ? await prisma.follower.findMany({
-    where: { followerId: session.user.id },
+    where: whereCondition,
     skip: offset,
     take: perPage,
-    include: includeCondition,
+    select: selectCondition,
   }) : [];
 
   const totalPages = Math.ceil(totalCount / perPage);
-  const renderUser = (user: User) => (
+  const renderUser = (user: any, isFollower: boolean) => (
     <div key={user.id} className="bg-white dark:bg-slate-700 shadow-md rounded-lg p-4 w-full flex flex-col sm:flex-row items-center gap-4">
       <Image
         src={user.avatar || "/noAvatar.png"}
@@ -61,14 +86,22 @@ const FriendsPage = async ({ searchParams }: { searchParams: Promise<{ page?: st
       />
       <div className="flex-grow text-center sm:text-left">
         <h3 className="font-semibold dark:text-white">
-          {/* {user.name && user.surname ? `${user.name} ${user.surname}` : user.username} */}
+          {user.userInfo.name && user.userInfo.surname ? `${user.userInfo.name} ${user.userInfo.surname}` : user.username}
         </h3>
         <p className="text-gray-600 dark:text-gray-300">mutual friends 12</p>
       </div>
-      <div className="flex gap-3">
+      <div className="flex items-center gap-3">
         <Link href={`/profile/${user.username}`} className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700">
           Profile
         </Link>
+        < UserInfoCardInteraction
+          isFriendsPage={true}
+          userId={user.id}
+          isFollowing={isFollower ? false : true}
+          isUserBlocked={false}
+          isFollowingSent={false}
+          isFollowedByThem={isFollower ? true : false}
+        />
       </div>
     </div>
   );
@@ -80,16 +113,18 @@ const FriendsPage = async ({ searchParams }: { searchParams: Promise<{ page?: st
         <div className="flex flex-col gap-6 w-full lg:w-4/5">
           <h1 className="text-3xl font-bold mb-4 dark:text-gray-300 text-slate-600">Friends </h1>
           <div className="flex justify-center mb-4">
-          <Link href="?filter=followers" className={`mr-4 ${isFollowers ? 'text-blue-500' : 'text-gray-500'}`}>
-            Followers {isFollowers && `(${totalCount})`}
-          </Link>
-          <Link href="?filter=followings" className={`${!isFollowers ? 'text-blue-500' : 'text-gray-500'}`}>
-            Followings {!isFollowers && `(${totalCount})`}
-          </Link>
+            <Link href="?filter=followers" className={`mr-4 ${isFollowers ? 'text-blue-500' : 'text-gray-500'}`}>
+              Followers {isFollowers && `(${totalCount})`}
+            </Link>
+            <Link href="?filter=followings" className={`${!isFollowers ? 'text-blue-500' : 'text-gray-500'}`}>
+              Followings {!isFollowers && `(${totalCount})`}
+            </Link>
           </div>
           {totalCount > 0 && users ? (
-            users.map((data) => renderUser(data.follower || data.following!))
-          ) : (
+            users.map((data) => {
+              const user = isFollowers ? data.following : data.follower;
+              return renderUser(user, isFollowers);
+            })) : (
             <p className="text-gray-600 dark:text-gray-300 text-center font-medium text-2xl">You don&apos;t have {filter || 'Followers'} yet.</p>
           )}
           <Pagination urlParamName="page" totalPages={totalPages} page={Number(page) || 1} />

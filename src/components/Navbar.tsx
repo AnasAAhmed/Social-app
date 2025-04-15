@@ -66,6 +66,13 @@ const User = ({ session }: { session: Session | null }) => {
   const [open, setOpen] = useState(false);
   return (
     <>
+        <Link title='friends' className='max-sm:hidden' href={'/friends'}>
+          <Image src={"/friends.png"} alt='people' width={20} height={20} />
+        </Link>
+        <Link title='chat' className='max-sm:hidden text-blue-500' href={'/chat'}>
+          &#128172;
+        </Link>
+        <DarkModeToggle />
       <div className="relative" onBlur={() => setTimeout(() => setOpen(false), 170)}>
         {session?.user ? (
           <>
@@ -102,13 +109,6 @@ const User = ({ session }: { session: Session | null }) => {
           </div>
         )}
       </div>
-      <Link title='friends' className='max-sm:hidden' href={'/friends'}>
-        <Image src={"/friends.png"} alt='people' width={20} height={20} />
-      </Link>
-      <Link title='chat' className='max-sm:hidden text-blue-500' href={'/chat'}>
-        &#128172;
-      </Link>
-      <DarkModeToggle />
       <MobMenu />
     </>
   )

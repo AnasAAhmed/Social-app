@@ -61,7 +61,7 @@ model Post {
 
 model UserInfo {
   id          String    @id
-  user        User      @relation(fields: [id], references: [id])
+  user        User      @relation(fields: [id], references: [id], onDelete: Cascade)
   name        String?
   surname     String?
   description String?   @db.Text

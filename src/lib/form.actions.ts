@@ -3,7 +3,6 @@
 import { auth } from "@/auth";
 import { z } from "zod";
 import prisma from "./client";
-import { json } from "node:stream/consumers";
 import { Post } from "@prisma/client";
 
 
@@ -104,7 +103,44 @@ export const updateProfile = async (
         };
     }
 };
+export const deleteProfile = async (
+    prevState: { success: boolean; error: boolean; message: string },
+): Promise<{ success: boolean; error: boolean; message: string }> => {
+   
+    const { user } = (await auth()) as Session;
 
+    if (!user?.id) {
+        return {
+            success: false,
+            error: true,
+            message:
+                "User not authenticated. Please log in. If already logged in, try login again.",
+        };
+    }
+
+    try {
+        await prisma.userInfo.delete({
+            where: { id: user.id },
+          });
+          
+          await prisma.user.delete({
+            where: { id: user.id },
+          });
+        return {
+            success: true,
+            error: false,
+            message: "Account has been Deleted!",
+        };
+    } catch (err) {
+        const typeError = err as Error;
+        console.error(typeError);
+        return {
+            success: false,
+            error: true,
+            message: typeError.message || "Something went wrong.",
+        };
+    }
+};
 export const addPost = async (formData: FormData, img: string) => {
     const desc = formData.get("desc") as string;
 

@@ -10,6 +10,7 @@ export const switchFollow = async (userId: string) => {
 
 
   if (!user.id) throw new Error("User is not authenticated!");
+  console.log("up Following userId:", userId,user.id);
 
   try {
     const existingFollow = await prisma.follower.findFirst({
@@ -46,6 +47,37 @@ export const switchFollow = async (userId: string) => {
         })
       }
     }
+    console.log("down Following userId:", userId,user.id);
+
+  } catch (error) {
+    const typeError = error as Error
+    console.log(typeError);
+    throw new Error(`Something went wrong ${typeError.message}`)
+  }
+};
+
+export const switchUnFollow = async (userId: string) => {
+  const { user } =  (await auth()) as Session;
+
+
+  if (!user.id) throw new Error("User is not authenticated!");
+  console.log("up unFollow userId:", userId,user.id);
+
+  try {
+    const existingFollow = await prisma.follower.findFirst({
+      where: {
+        followerId: userId,
+        followingId: user.id
+      }
+    })
+    if (existingFollow) {
+      await prisma.follower.delete({
+        where: {
+          id: existingFollow.id
+        }
+      })
+    }
+    console.log("down unFollow userId:", userId,user.id);
 
   } catch (error) {
     const typeError = error as Error

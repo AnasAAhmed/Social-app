@@ -3,7 +3,7 @@
 import { useFormStatus } from "react-dom";
 import { Spinner } from "./Loader";
 
-const UpdateButton = ({ state }: { state: { success: boolean; error: boolean; message: string; } }) => {
+const UpdateButton = ({ state, text = 'save' }: { state: { success: boolean; error: boolean; message: string; }, text?: string }) => {
   const { pending } = useFormStatus();
 
   return (
@@ -13,10 +13,11 @@ const UpdateButton = ({ state }: { state: { success: boolean; error: boolean; me
         {state.error && <span className="text-red-500">{state.message}</span>}
       </>}
       <button
-        className="bg-blue-500 p-2 mt-2 rounded-md text-white disabled:bg-opacity-50 disabled:cursor-not-allowed"
+      style={{backgroundColor:text==='save'?'rgb(59 130 246)':'red'}}
+        className=" p-2 bg-blue-500 mt-2 rounded-md text-white disabled:bg-opacity-50 disabled:cursor-not-allowed"
         disabled={pending}
       >
-        {pending ? <Spinner /> : "Save"}
+        {pending ? <Spinner /> : text}
       </button>
     </div>
 

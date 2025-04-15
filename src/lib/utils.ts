@@ -11,14 +11,13 @@ export enum ResultCode {
 export function extractNameFromEmail(email: string): string {
   const [localPart] = email.split('@');
   const name = localPart
-    .replace(/[\._-]/g, ' ')  // Replace ".", "_", or "-" with spaces
-    .replace(/\d+/g, '')  // Remove numbers
-    .split(' ')  // Split the string by spaces
-    // .map(word => word.charAt(0).toUpperCase() + word.slice(1))  // Capitalize each word
-    .join(' ');  // Join the words back together with spaces
-
+    .replace(/[\._-]/g, '')  // Remove ".", "_", and "-"
+    .replace(/\d+/g, '')     // Remove numbers
+    .replace(/\s+/g, '')    // Remove any remaining spaces (precautionary)
+    .toLowerCase();
   return name;
 }
+
 export const PASSWORD_RESET_REQUEST_TEMPLATE = `
   <!DOCTYPE html>
   <html lang="en">

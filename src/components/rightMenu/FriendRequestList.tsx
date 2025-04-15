@@ -10,7 +10,7 @@ type RequestWithUser = FollowRequest & {
   sender: User;
 };
 
-const FriendRequestList = ({ requests, isPage }: { requests: RequestWithUser[], isPage?: boolean }) => {
+const FriendRequestList = ({ requests, isPage , onUpdate }: { requests: RequestWithUser[], isPage?: boolean ,onUpdate?: () => void }) => {
   const [requestState, setRequestState] = useState(requests||[]);
 
   const handleAction = async (requestId: number, userId: string, action: 'accept' | 'decline') => {
@@ -18,8 +18,10 @@ const FriendRequestList = ({ requests, isPage }: { requests: RequestWithUser[], 
     try {
       if (action === 'accept') {
         await acceptFollowRequest(userId);
+        onUpdate?.();
       } else {
         await declineFollowRequest(userId);
+        onUpdate?.();
       }
       setRequestState((prev) => prev.filter((req) => req.id !== requestId));
     } catch (err) {
@@ -58,7 +60,7 @@ const FriendRequestList = ({ requests, isPage }: { requests: RequestWithUser[], 
               <button type="submit"className={`${isPage&&"bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700"}`}>
               {isPage?"Accept": <Image
                   src="/accept.png"
-                  alt=""
+                  alt="accept req"
                   width={20}
                   height={20}
                   className="cursor-pointer"
@@ -69,7 +71,7 @@ const FriendRequestList = ({ requests, isPage }: { requests: RequestWithUser[], 
               <button type="submit" className={`${isPage&&"bg-gray-300 dark:bg-slate-700 dark:text-white text-gray-700 px-4 py-2 rounded hover:bg-slate-400 dark:hover:bg-slate-500"}`}>
                {isPage?"Decline": <Image
                   src="/reject.png"
-                  alt=""
+                  alt="reject req"
                   width={20}
                   height={20}
                   className="cursor-pointer"

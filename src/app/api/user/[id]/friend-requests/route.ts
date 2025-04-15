@@ -39,7 +39,7 @@ export const GET = async (req: Request, { params }: { params: Promise<{ id: stri
           }
         }
       },
-      take: 4,
+      take: 6,
     });
 
     return new Response(JSON.stringify({ requests, requestsCount }), {

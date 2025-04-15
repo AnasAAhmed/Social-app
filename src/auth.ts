@@ -56,25 +56,33 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     async signIn({ user, account }) {
       if (account?.provider === 'google') {
         try {
+          const fullName = user.name || '';
+      const [firstName, ...rest] = fullName.trim().split(' ');
+      const surname = rest.join(' ') || '';
+      const name = firstName || '';
           const googleUser = await getUser(user.email!);
 
           if (!googleUser) {
             const newUser = await prisma.user.create({
               data: {
                 email: user.email!,
-                username: extractNameFromEmail(user.email!),
+                username: extractNameFromEmail(user.name!||user.email!),
                 googleId: user.id,
                 avatar: user.image!,
                 userInfo: {
                   create: {
+                    name,
+                    surname,
                     createdAt: new Date(),
                   },
                 },
               }
             });
             (user as any).dbId = newUser.id;
+            (user as any).username = newUser.username;
           } else {
             (user as any).dbId = googleUser.id;
+            (user as any).username = googleUser.username;
           }
           return true;
         } catch (error) {
@@ -87,12 +95,14 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     jwt({ token, user }) {
       if (user) {
         token.id = (user as any).dbId || user.id; // fallback for credentials
+        token.name = (user as any).username || user.name; // fallback for credentials
       }
       return token;
     },
     async session({ session, token }) {
       if (token?.id) {
         session.user.id = token.id as string;
+        session.user.name = token.name
       }
       return session;
     },
