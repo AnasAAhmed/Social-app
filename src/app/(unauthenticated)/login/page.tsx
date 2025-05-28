@@ -34,8 +34,8 @@ export default async function LoginPage() {
     <div className="flex flex-col mt-14 sm:mt-8 h-screen items-center">
       <div className="sm:w-[400px]">
         <div className='pb-0'>
-          <h1 className='text-heading3-bold'>Login</h1>
-          <p className='text-body-medium mt-2'>Login with your account to continue.</p>
+          <h1 className='text-2xl sm:text-3xl font-semibold'>Login</h1>
+          <p className='text-[14px] sm:text-lg font-medium mt-2 text-gray-700'>Login with your account to continue.</p>
         </div>
         <div>
           <form

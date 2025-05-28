@@ -12,7 +12,7 @@ const page = async () => {
   }
 
   return (
-    <div className="flex flex-col items-center bg-white">
+    <div className="flex flex-col items-center bg-white px-6">
       <div className="relative flex flex-col items-start w-full px-6 md:px-12 pb-20 text-base text-gray-900 min-h-[761px]">
         <div className="absolute inset-0 z-0">
           <img

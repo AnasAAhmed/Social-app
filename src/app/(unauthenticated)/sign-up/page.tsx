@@ -33,8 +33,8 @@ export default async function LoginPage() {
 
       <div className="sm:w-[400px]">
         <div className='pb-0'>
-          <h1 className='text-heading3-bold'>Sign-up</h1>
-          <p className='text-body-medium mt-2'>Sign-up with your account to continue.</p>
+            <h1 className='text-2xl sm:text-3xl font-semibold'>Sign-up</h1>
+          <p className='text-[14px] sm:text-lg font-medium mt-2 text-gray-700'>Sign-up to create new account.</p>
         </div>
         <div>
           <form
