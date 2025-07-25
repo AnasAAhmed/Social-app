@@ -12,8 +12,8 @@ const page = async () => {
   }
 
   return (
-    <div className="flex flex-col items-center bg-white px-6">
-      <div className="relative flex flex-col items-start w-full px-6 md:px-12 pb-20 text-base text-gray-900 min-h-[761px]">
+    <div className="flex flex-col items-center bg-white">
+      <div className=" relative flex flex-col items-start w-full px-6 md:px-12 pb-20 text-base text-gray-900 min-h-[761px]">
         <div className="absolute inset-0 z-0">
           <img
             loading="lazy"
@@ -58,18 +58,18 @@ const page = async () => {
         </div>
       </div>
 
-      <div className="mt-32 text-4xl font-bold tracking-tighter leading-10 text-center text-gray-900 max-md:mt-10">
+      <div className="mx-6 mt-32 text-4xl font-bold tracking-tighter leading-10 text-center text-gray-900 max-md:mt-10">
         Big companies are here
       </div>
-      <div className="mt-11 text-xl tracking-normal leading-8 text-center text-gray-900 w-[686px] max-md:mt-10 max-md:max-w-full">
+      <div className="mx-6 mt-11 text-xl tracking-normal leading-8 text-center text-gray-900 w-[686px] max-md:mt-10 max-md:max-w-full">
         Discover a platform with intuitive tools that allow you to expand your network and find new opportunities with needing any technical skills. Create your professional presence on Anas Social today.
       </div>
       <img
         loading="lazy"
         src="https://cdn.builder.io/api/v1/image/assets/TEMP/2e778c93b4deaeabeebef0e94a909bfdeadca0b4c71073e40ee03c16d739a3c4?apiKey=74fb9a29a4a842cbb13bbfd7cb1d4d5f&"
-        className="mt-16 max-w-full aspect-[7.14] w-[766px] max-md:mt-10"
+        className="mx-6 mt-16 max-w-full aspect-[7.14] w-[766px] max-md:mt-10"
       />
-      <div className="flex overflow-hidden relative flex-col justify-center items-center self-stretch px-16 py-20 mt-32 w-full min-h-[746px] max-md:px-5 max-md:mt-10 max-md:max-w-full">
+      <div className="mx-6 flex overflow-hidden relative flex-col justify-center items-center self-stretch px-16 py-20 mt-32 w-full min-h-[746px] max-md:px-5 max-md:mt-10 max-md:max-w-full">
         <img
           loading="lazy"
           src="https://cdn.builder.io/api/v1/image/assets/TEMP/1695e404229816a0502978ac290c88765e9bec163f2dbde7d78bd07821617561?apiKey=74fb9a29a4a842cbb13bbfd7cb1d4d5f&"
@@ -189,14 +189,14 @@ const page = async () => {
           </div>
         </div>
       </div>
-      <div className="mt-32 text-4xl font-bold tracking-tighter leading-10 text-center text-gray-900 max-md:mt-10">
+      <div className="mx-6 mt-32 text-4xl font-bold tracking-tighter leading-10 text-center text-gray-900 max-md:mt-10">
         Connect people with 3 easy steps
       </div>
-      <div className="mt-7 text-xl tracking-normal leading-8 text-center text-gray-900 w-[589px] max-md:max-w-full">
+      <div className="mx-6 mt-7 text-xl tracking-normal leading-8 text-center text-gray-900 w-[589px] max-md:max-w-full">
         With lots of unique blocks, you can easily build a page with coding.
         Build your next landing page.
       </div>
-      <div className="mt-24 max-w-full w-[983px] max-md:mt-10">
+      <div className="mx-6 mt-24 max-w-full w-[983px] max-md:mt-10">
         <div className="flex gap-5 max-md:flex-col max-md:gap-0">
           <div className="flex flex-col w-[59%] max-md:ml-0 max-md:w-full">
             <img
@@ -256,9 +256,9 @@ const page = async () => {
       <img
         loading="lazy"
         src="https://cdn.builder.io/api/v1/image/assets/TEMP/8dc0e02d0f4f1b04274d023c4fe1d524a19ea81650adf08bf919baef4603f955?apiKey=74fb9a29a4a842cbb13bbfd7cb1d4d5f&"
-        className="self-stretch mt-28 w-full border border-gray-200 border-solid stroke-[1px] stroke-gray-200 max-md:mt-10 max-md:max-w-full"
+        className="mx-6 self-stretch mt-28 w-full border border-gray-200 border-solid stroke-[1px] stroke-gray-200 max-md:mt-10 max-md:max-w-full"
       />
-      <div className="flex overflow-hidden relative flex-col justify-center items-center self-stretch px-16 py-20 w-full min-h-[740px] max-md:px-5 max-md:max-w-full">
+      <div className="mx-6 flex overflow-hidden relative flex-col justify-center items-center self-stretch px-16 py-20 w-full min-h-[740px] max-md:px-5 max-md:max-w-full">
         <img
           loading="lazy"
           srcSet="https://cdn.builder.io/api/v1/image/assets/TEMP/e357972c734bfbdda1bf11075c1cdbc1676937fed47057d1a42a64d7934e64b8?apiKey=74fb9a29a4a842cbb13bbfd7cb1d4d5f&width=100 100w, https://cdn.builder.io/api/v1/image/assets/TEMP/e357972c734bfbdda1bf11075c1cdbc1676937fed47057d1a42a64d7934e64b8?apiKey=74fb9a29a4a842cbb13bbfd7cb1d4d5f&width=200 200w, https://cdn.builder.io/api/v1/image/assets/TEMP/e357972c734bfbdda1bf11075c1cdbc1676937fed47057d1a42a64d7934e64b8?apiKey=74fb9a29a4a842cbb13bbfd7cb1d4d5f&width=400 400w, https://cdn.builder.io/api/v1/image/assets/TEMP/e357972c734bfbdda1bf11075c1cdbc1676937fed47057d1a42a64d7934e64b8?apiKey=74fb9a29a4a842cbb13bbfd7cb1d4d5f&width=800 800w, https://cdn.builder.io/api/v1/image/assets/TEMP/e357972c734bfbdda1bf11075c1cdbc1676937fed47057d1a42a64d7934e64b8?apiKey=74fb9a29a4a842cbb13bbfd7cb1d4d5f&width=1200 1200w, https://cdn.builder.io/api/v1/image/assets/TEMP/e357972c734bfbdda1bf11075c1cdbc1676937fed47057d1a42a64d7934e64b8?apiKey=74fb9a29a4a842cbb13bbfd7cb1d4d5f&width=1600 1600w, https://cdn.builder.io/api/v1/image/assets/TEMP/e357972c734bfbdda1bf11075c1cdbc1676937fed47057d1a42a64d7934e64b8?apiKey=74fb9a29a4a842cbb13bbfd7cb1d4d5f&width=2000 2000w, https://cdn.builder.io/api/v1/image/assets/TEMP/e357972c734bfbdda1bf11075c1cdbc1676937fed47057d1a42a64d7934e64b8?apiKey=74fb9a29a4a842cbb13bbfd7cb1d4d5f&"
@@ -370,7 +370,7 @@ const page = async () => {
           </div>
         </div>
       </div>
-      <div className="flex justify-center items-center self-stretch px-16 py-20 w-full bg-slate-100 max-md:px-5 max-md:max-w-full">
+      <div className="mx-6 flex justify-center items-center self-stretch px-16 py-20 w-full bg-slate-100 max-md:px-5 max-md:max-w-full">
         <div className="flex duration-300 flex-col items-center mt-7 mb-8 w-full max-w-[1112px] max-md:max-w-full">
           <div className="text-4xl font-bold tracking-tighter leading-10 text-center text-gray-900">
             News that helps
@@ -439,16 +439,16 @@ const page = async () => {
       <img
         loading="lazy"
         src="https://cdn.builder.io/api/v1/image/assets/TEMP/e7c586b21e2e180fd291d36b318e18689d6acbe65ba6c7b797085c73dd1f8f6f?apiKey=74fb9a29a4a842cbb13bbfd7cb1d4d5f&"
-        className="mt-32 aspect-square w-[78px] max-md:mt-10"
+        className="mx-6 mt-32 aspect-square w-[78px] max-md:mt-10"
       />
-      <div className="mt-12 text-4xl font-bold tracking-tighter leading-10 text-center text-gray-900 max-md:mt-10">
+      <div className="mx-6 mt-12 text-4xl font-bold tracking-tighter leading-10 text-center text-gray-900 max-md:mt-10">
         Get our latest updates
       </div>
-      <div className="mt-8 text-xl tracking-normal leading-8 text-center text-gray-900 w-[502px] max-md:max-w-full">
+      <div className="mx-6 mt-8 text-xl tracking-normal leading-8 text-center text-gray-900 w-[502px] max-md:max-w-full">
         With lots of unique blocks, you can easily build a page with coding.
         Build your next landing page.
       </div>
-      <div className="flex flex-col justify-center mt-12 max-w-full bg-white rounded-lg w-[499px] max-md:mt-10">
+      <div className="mx-6 flex flex-col justify-center mt-12 max-w-full bg-white rounded-lg w-[499px] max-md:mt-10">
         <form className="flex gap-5 rounded-lg border border-gray-200 border-solid max-md:flex-wrap max-md:max-w-full">
           <input required placeholder='Enter your Email' type="email" className="flex-auto p-1.5 outline-none h-full my-auto text-base tracking-normal text-gray-900" />
           <button className="justify-center px-12 py-2 text-lg font-bold tracking-tight leading-8 text-center dark:text-white text-black whitespace-nowrap bg-indigo-600 rounded-lg max-md:px-5">
@@ -456,12 +456,12 @@ const page = async () => {
           </button>
         </form>
       </div>
-      <div className="mt-8 text-base tracking-normal leading-7 text-center text-gray-900 w-[365px]">
+      <div className="mx-6 mt-8 text-base tracking-normal leading-7 text-center text-gray-900 w-[365px]">
         We’ll never share your details with third parties.
         <br />
         View our Privacy Policy for more info.
       </div>
-      <div className="flex justify-center items-center self-stretch px-16 py-20 mt-32 w-full text-white dark:text-black bg-gray-900 max-md:px-5 max-md:mt-10 max-md:max-w-full">
+      <div className="mx-6 flex justify-center items-center self-stretch px-16 py-20 mt-32 w-full text-white dark:text-black bg-gray-900 max-md:px-5 max-md:mt-10 max-md:max-w-full">
         <div className="flex gap-5 justify-between items-start mt-12 mb-8 w-full max-w-[1093px] max-md:flex-wrap max-md:mt-10 max-md:max-w-full">
           <div className="flex flex-col">
             <div className="text-3xl font-bold tracking-normal">
