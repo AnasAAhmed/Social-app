@@ -41,7 +41,7 @@ const FriendRequestList = ({ requests, isPage , onUpdate }: { requests: RequestW
   return (
     <div className={`flex flex-col  w-full gap-4`}>
       {optimisticRequests.map((request) => (
-        <div key={request.id} className={`bg-white dark:bg-slate-900 ${isPage&&'shadow-md flex-col sm:flex-row'} rounded-lg p-4 w-full flex items-center gap-4`}>
+        <div key={request.id} className={`bg-white dark:bg-[#111] ${isPage&&'shadow-md flex-col sm:flex-row'} rounded-lg p-4 w-full flex items-center gap-4`}>
           <Image
             src={request.sender.avatar || "/noAvatar.png"}
             alt=""

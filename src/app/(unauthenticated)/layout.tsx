@@ -38,11 +38,25 @@ export default async function RootLayout({
 }>) {
   return (
     <SessionProvider >
-      <html lang="en">
+      <html lang="en" suppressHydrationWarning>
+        <head>
+          <script dangerouslySetInnerHTML={{
+            __html: `
+            (function() {
+              const theme = localStorage.getItem('theme')
+              if (theme === 'dark') {
+                document.documentElement.classList.add('dark');
+              } else {
+                document.documentElement.classList.remove('dark');
+              }
+            })()
+          `
+          }} />
+        </head>
         <body className={inter.className}>
           <Navbar />
-          <IsAuth />
-          <div className="dark:bg-gray-800 bg-slate-100 pt-14 min-h-[100vh]">
+          {/* <IsAuth /> */}
+          <div className="dark:bg-[#111] bg-slate-100 pt-14 min-h-[100vh]">
             {children}
             <Toaster />
           </div>

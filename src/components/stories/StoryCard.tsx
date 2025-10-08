@@ -96,7 +96,7 @@ const StoryCard = ({ story, onDelete }: { story: StoryWithUser, onDelete: (story
                                         className="cursor-pointer"
                                     />
                                     {isDropdownOpen && (
-                                        <div className="absolute right-0 top-4 w-32 bg-gray-50 dark:bg-slate-900 rounded-lg shadow-lg animate-modal ring-[0.5px] text-sm flex flex-col z-10">
+                                        <div className="absolute right-0 top-4 w-32 bg-gray-50 dark:bg-[#111] rounded-lg shadow-lg animate-modal ring-[0.5px] text-sm flex flex-col z-10">
                                             <form className="p-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700" action={handleDelete}>
                                                 <ActionButton text={'Delete'} />
                                             </form>

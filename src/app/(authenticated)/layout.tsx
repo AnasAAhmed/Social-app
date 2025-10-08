@@ -39,11 +39,25 @@ export default function RootLayout({
   return (
     <SessionProvider>
       <ReactQueryProvider>
-        <html lang="en">
+        <html lang="en" suppressHydrationWarning>
+          <head>
+            <script dangerouslySetInnerHTML={{
+              __html: `
+            (function() {
+              const theme = localStorage.getItem('theme')
+              if (theme === 'dark') {
+                document.documentElement.classList.add('dark');
+              } else {
+                document.documentElement.classList.remove('dark');
+              }
+            })()
+          `
+            }} />
+          </head>
           <body className={inter.className}>
             <Navbar />
             {/* <CreateUser /> */}
-            <div className="dark:bg-gray-800 bg-slate-100 md:px-8 xl:px-20 pt-20 min-h-[100vh]">
+            <div className="dark:bg-black bg-slate-100 md:px-8 xl:px-20 pt-20 min-h-[100vh]">
               {children}
               <Toaster />
             </div>

@@ -12,7 +12,7 @@ export default function ResetForm({ token, userId }: { token: string, userId: st
     const { data: session } = useSession();
     const searchParams = useSearchParams();
 
-    const redirectUrl = searchParams.get("redirect_url") || "/";
+    const redirectUrl = searchParams.get("redirect_url") || "/login";
     const router = useRouter();
     const [result, setResult] = useState<Result | null>({ type: '', resultCode: "" });
 
@@ -68,17 +68,17 @@ export default function ResetForm({ token, userId }: { token: string, userId: st
 
     useEffect(() => {
         async function updateSession() {
-        if (result && result.type) {
-          if (result.type === 'error') {
-            toast.error(result.resultCode)
-          } else {
-            toast.success(result.resultCode)
-            await getSession(); 
-          }
+            if (result && result.type) {
+                if (result.type === 'error') {
+                    toast.error(result.resultCode)
+                } else {
+                    toast.success(result.resultCode)
+                    await getSession();
+                }
+            }
         }
-      }
-      updateSession();
-      }, [result, router])
+        updateSession();
+    }, [result, router])
 
     if (session) {
         router.push(redirectUrl)
@@ -87,33 +87,35 @@ export default function ResetForm({ token, userId }: { token: string, userId: st
     return (
         <form
             action={(formData: FormData) => resetPassword(formData)}
+            className="space-y-4"
         >
+            {/* hidden inputs */}
             <input
-                className="peer hidden w-full rounded-md border bg-zinc-50 px-2 py-[9px] text-sm outline-none placeholder:text-zinc-500 dark:border-zinc-800 dark:bg-zinc-950"
+                className="hidden"
                 id="token"
                 type="text"
                 name="token"
-                placeholder="Enter token from url"
-                required
                 defaultValue={token}
+                required
             />
             <input
-                className="peer hidden w-full rounded-md border bg-zinc-50 px-2 py-[9px] text-sm outline-none placeholder:text-zinc-500 dark:border-zinc-800 dark:bg-zinc-950"
+                className="hidden"
                 id="userId"
                 type="text"
                 name="userId"
-                placeholder="Enter userId from url"
-                required
                 defaultValue={userId}
+                required
             />
+
+            {/* password input */}
             <label
-                className="block text-xs font-medium my-3 text-zinc-400"
+                className="block text-sm font-medium text-zinc-700 dark:text-zinc-300"
                 htmlFor="password"
             >
                 New Password
             </label>
             <input
-                className="peer block w-full valid:border-green-500 rounded-md border bg-zinc-50 px-2 py-[9px] text-sm outline-none placeholder:text-zinc-500 dark:border-zinc-800 dark:bg-zinc-950"
+                className="peer block w-full rounded-md border border-zinc-300 bg-white px-3 py-2 text-sm text-zinc-900 placeholder:text-zinc-500 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 dark:border-zinc-700 dark:bg-zinc-900 dark:text-white dark:placeholder:text-zinc-400 dark:focus:border-blue-400 dark:focus:ring-blue-400"
                 id="password"
                 type="password"
                 name="password"
@@ -121,14 +123,16 @@ export default function ResetForm({ token, userId }: { token: string, userId: st
                 required
                 minLength={6}
             />
+
+            {/* confirm password input */}
             <label
-                className="block text-xs font-medium my-3 text-zinc-400"
+                className="block text-sm font-medium text-zinc-700 dark:text-zinc-300"
                 htmlFor="cpassword"
             >
                 Confirm Password
             </label>
             <input
-                className="peer block w-full valid:border-green-500 rounded-md border bg-zinc-50 px-2 py-[9px] text-sm outline-none placeholder:text-zinc-500 dark:border-zinc-800 dark:bg-zinc-950"
+                className="peer block w-full rounded-md border border-zinc-300 bg-white px-3 py-2 text-sm text-zinc-900 placeholder:text-zinc-500 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 dark:border-zinc-700 dark:bg-zinc-900 dark:text-white dark:placeholder:text-zinc-400 dark:focus:border-blue-400 dark:focus:ring-blue-400"
                 id="cpassword"
                 type="password"
                 name="cpassword"
@@ -136,27 +140,30 @@ export default function ResetForm({ token, userId }: { token: string, userId: st
                 required
                 minLength={6}
             />
+
             <ResetBtn />
-            {result && result.type === 'succes' && <div className="bg-green-200 flex px-3 gap-3 items-center mt-4 py-3 w-full rounded-md">
-                <CheckCircleIcon />
-                <p className="text-primary">
-                    Password Reset successful you can close this tab.
-                </p>
-            </div>}
+
+            {result && result.type === 'success' && (
+                <div className="bg-green-100 dark:bg-green-800/40 flex px-3 gap-3 items-center mt-4 py-3 w-full rounded-md">
+                    <CheckCircleIcon className="text-green-600 dark:text-green-400" />
+                    <p className="text-green-800 dark:text-green-300">
+                        Password reset successful. You can close this tab.
+                    </p>
+                </div>
+            )}
         </form>
     )
 }
-
 function ResetBtn() {
     const { pending } = useFormStatus()
 
     return (
         <button
-            title='Click here to reset password'
-            className="w-full flex justify-center py-2 bg-black text-white rounded-md hover:opacity-65 mt-4 text-center"
+            title="Click here to reset password"
+            className="w-full flex justify-center py-2 rounded-md text-white bg-zinc-900 hover:bg-zinc-800 dark:bg-zinc-100 dark:text-black dark:hover:bg-zinc-200 disabled:opacity-50 mt-4"
             aria-disabled={pending}
         >
-            {pending ? <Loader className='animate-spin' /> : 'Confirm'}
+            {pending ? <Loader className="animate-spin" /> : "Confirm"}
         </button>
     )
 }

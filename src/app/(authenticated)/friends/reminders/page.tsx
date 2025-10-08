@@ -83,7 +83,7 @@ const BirthDays = async () => {
     );
 
     return (
-        <div className='p-4 bg-white dark:bg-slate-900 rounded-lg text-sm shadow-md flex flex-col gap-4'>
+        <div className='p-4 bg-white dark:bg-[#111] rounded-lg text-sm shadow-md flex flex-col gap-4'>
             <div className="flex justify-between items-center font-medium">
                 <span className="text-gray-500 dark:text-white max-sm:ml-4 ">Birthdays</span>
             </div>

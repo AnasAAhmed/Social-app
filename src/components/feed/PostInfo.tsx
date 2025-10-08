@@ -62,7 +62,7 @@ const PostInfo = ({ postId, userId, posterId }: { postId: number, userId: string
 
             />
             {open && (
-                <div className="absolute animate-modal dark:bg-slate-900 bg-gray-50 top-4 ring-[0.5px] right-0 w-32 rounded-lg flex flex-col text-sm shadow-lg z-10">
+                <div className="absolute animate-modal dark:bg-[#111] bg-gray-50 top-4 ring-[0.5px] right-0 w-32 rounded-lg flex flex-col text-sm shadow-lg z-10">
                     {userId === posterId ?
                         <>
                             <form onSubmit={handleSubmit} className="p-2 rounded-lg w-full dark:hover:bg-gray-700 hover:bg-gray-100" action={deletePostWithId}>

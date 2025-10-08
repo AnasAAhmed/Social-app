@@ -37,7 +37,7 @@ const page = async ({ params, searchParams }: { params: Promise<{ username: stri
                     <LeftMenu type='profile' />
                 </div>
                 <div className="w-full md:w-[70%] xl:w-1/2 xl:mx-auto">
-                    <div className="p-4 bg-white dark:bg-slate-900 shadow-md rounded-lg text-center text-gray-600 dark:text-gray-300">
+                    <div className="p-4 bg-white dark:bg-[#111] shadow-md rounded-lg text-center text-gray-600 dark:text-gray-300">
                         No User Fonud For ({decodedQuery}).
                     </div>
                 </div>
@@ -79,13 +79,13 @@ const page = async ({ params, searchParams }: { params: Promise<{ username: stri
             </div>
             <div className="w-full md:w-[70%] xl:w-1/2 xl:mx-auto">
                 <div className="flex flex-col gap-6">
-                    <div className="p-4 bg-white dark:bg-slate-900 shadow-md rounded-lg flex flex-col gap-8">
+                    <div className="p-4 bg-white dark:bg-[#111] shadow-md rounded-lg flex flex-col gap-8">
                         <h3 className="text-gray-600 dark:text-gray-300 text-center font-medium text-2xl">
                             User results for ({decodedQuery}).
                         </h3>
 
                         {users.map((user) => (
-                            <div key={user.id} className="bg-white dark:bg-slate-900 shadow-md ring-[0.5px] rounded-lg p-4 w-full flex flex-col sm:flex-row items-center gap-4">
+                            <div key={user.id} className="bg-white dark:bg-[#111] shadow-md ring-[0.5px] rounded-lg p-4 w-full flex flex-col sm:flex-row items-center gap-4">
                                 <Image
                                     src={user.avatar || "/noAvatar.png"}
                                     alt=""

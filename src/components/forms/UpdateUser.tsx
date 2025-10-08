@@ -38,16 +38,16 @@ const UpdateUser = (
   }, [open]);
 
   const [state, formAction] = useActionState(updateProfile, { success: false, error: false, message: '' } satisfies UpdateProfileState);
-  const [state2,formAction2] = useActionState(deleteProfile, { success: false, error: false, message: '' } satisfies UpdateProfileState);
+  const [state2, formAction2] = useActionState(deleteProfile, { success: false, error: false, message: '' } satisfies UpdateProfileState);
 
   useEffect(() => {
     if (state2.success) {
-        signOut()
-        toast.success(state.message);
+      signOut()
+      toast.success(state.message);
     } else if (state2.error) {
-        toast.success(state.message);
+      toast.success(state.message);
     }
-}, [state2.success, state2.error, state2.message]);
+  }, [state2.success, state2.error, state2.message]);
   const handleClose = () => {
     setOpen(false);
     if (state.success) {
@@ -57,7 +57,7 @@ const UpdateUser = (
 
 
   return (
-    <div className="">
+    <div className="flex">
       {!isSetting && (
         <span
           className="text-blue-500 text-xs cursor-pointer"
@@ -68,7 +68,7 @@ const UpdateUser = (
       )}
       {open && (
         <div className={isSetting ? "" : "fixed inset-0 w-screen px-6 bg-black bg-opacity-65 flex justify-center z-30 overflow-y-auto"}>
-          <FocusLock disabled={isSetting} className={isSetting ? 'p-4 sm:p-6 dark:bg-slate-900 animate-modal rounded-lg flex flex-col gap-2 max-md:w-[100vw] w-[70vw] relative max-h-[90vh] oversflow-y-auto' : 'p-4 sm:p-6 bg-white top-6 dark:bg-slate-900 animate-modal rounded-lg shadow-md flex flex-col gap-2 w-full sm:w-3/4 lg:w-1/2 relative max-h-[90vh] overflow-y-auto'}>
+          <FocusLock disabled={isSetting} className={isSetting ? 'p-4 sm:p-6 bg-white dark:bg-[#111] animate-modal rounded-lg flex flex-col gap-2 max-md:w-[100vw] w-[70vw] relative ' : 'p-4 sm:p-6 bg-white top-6 dark:bg-[#111] animate-modal rounded-lg shadow-md flex flex-col gap-2 w-full sm:w-3/4 lg:w-1/2 relative max-h-[90vh] overflow-y-auto'}>
             <form
               action={(formData) =>
                 formAction({
@@ -82,7 +82,7 @@ const UpdateUser = (
               <CldUploadWidget
                 uploadPreset="anas_social"
                 options={{
-                  clientAllowedFormats: ["jpg", "jpeg", "png",'webp','avif'],
+                  clientAllowedFormats: ["jpg", "jpeg", "png", 'webp', 'avif'],
                   maxFileSize: 5 * 1024 * 1024,
                 }}
                 onSuccess={(result) => setAvatar(result.info)}
@@ -92,7 +92,7 @@ const UpdateUser = (
                     className="flex flex-col gap-2 sm:gap-4 my-2 sm:my-4 cursor-pointer"
                     onClick={() => open()}
                   >
-                      <span className="text-sm text-gray-400">Note:you have relogin in order to update avatar in session/frontend if changed</span>
+                    <span className="text-sm text-gray-400">Note:you have relogin in order to update avatar in session/frontend if changed</span>
                     <div className="flex items-center gap-2">
                       <label className="dark:text-gray-200">Avatar Picture</label>
                       <img
@@ -109,7 +109,7 @@ const UpdateUser = (
               <CldUploadWidget
                 uploadPreset="anas_social"
                 options={{
-                  clientAllowedFormats: ["jpg", "jpeg", "png",'webp','avif'],
+                  clientAllowedFormats: ["jpg", "jpeg", "png", 'webp', 'avif'],
                   maxFileSize: 5 * 1024 * 1024,
                 }}
                 onSuccess={(result) => setCover(result.info)}
@@ -128,7 +128,7 @@ const UpdateUser = (
                         height={32}
                         className="w-s12 h-s8 rounded-md object-cover"
                       />
-                      <button  type="button" title="Change Cover" className="text-xs underline dark:text-gray-200 text-gray-600">Change</button>
+                      <button type="button" title="Change Cover" className="text-xs underline dark:text-gray-200 text-gray-600">Change</button>
                     </div>
                   </div>
                 )}
@@ -312,7 +312,7 @@ const UpdateUser = (
               </div>}
             </form>
             <form action={formAction2}>
-            <UpdateButton state={state2} text='Delete Account'/>
+              <UpdateButton state={state2} text='Delete Account' />
             </form>
           </FocusLock >
         </div >

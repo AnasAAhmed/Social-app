@@ -63,7 +63,7 @@ const Lodaer = () => {
 
 
 const SkeletonPost = () => (
-  <div className="flex flex-col animate-pulse dark:bg-slate-900 bg-white sm:rounded-md py-6 gap-4 border-b dark:border-slate-700">
+  <div className="flex flex-col animate-pulse dark:bg-[#111] bg-white sm:rounded-md py-6 gap-4 border-b dark:border-slate-700">
     {/* Header */}
     <div className="flex items-center justify-between px-4">
       <div className="flex items-center gap-4">
@@ -232,7 +232,7 @@ export const CommentLoader = ({commentNumber}:{commentNumber: number}) => {
   const length = commentNumber > 5 ? 5 : commentNumber;
   return (
     <>
-      <div className="flex items-center dark:bg-slate-800 gap-4 mb-6">
+      <div className="flex items-center dark:bg-[#111] gap-4 mb-6">
         <div className="w-8 h-8 rounded-full bg-gray-300 dark:bg-gray-700 animate-pulse"></div>
         <div className="flex-1 px-6 py-2 justify-between bg-gray-300 dark:bg-gray-700 rounded-xl animate-pulse">
           <div className="bg-transparent outline-none flex-1 w-full h-5 bg-gray-300 dark:bg-gray-700 animate-pulse rounded"></div>
@@ -240,7 +240,7 @@ export const CommentLoader = ({commentNumber}:{commentNumber: number}) => {
       </div>
       {[...Array(length)].map((_, index) => (
 
-        <div key={index} className="flex gap-4 dark:bg-slate-800 justify-between my-6 mx-4">
+        <div key={index} className="flex gap-4 dark:bg-[#111] justify-between my-6 mx-4">
           <div className="w-7 h-7 rounded-full bg-gray-300 dark:bg-gray-700 animate-pulse"></div>
           <div className="flex flex-col gap-2 flex-1">
             <div className="w-1/4 h-4 bg-gray-300 dark:bg-gray-700 rounded animate-pulse"></div>

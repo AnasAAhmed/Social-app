@@ -16,7 +16,7 @@ import AddPostButton from "../AddPostButton";
 import { toast } from "sonner";
 const EmojiPicker = dynamic(() => import('emoji-picker-react'), {
     ssr: false,
-    loading: () => <div className="bg-white dark:bg-gray-900 p-8 rounded-md shadow-md"><Spinner w={20} h={20} /></div>
+    loading: () => <div className="bg-white dark:bg-[#111] p-8 rounded-md shadow-md"><Spinner w={20} h={20} /></div>
 });
 
 type UpdatePostState = {
@@ -64,7 +64,7 @@ const UpdatePost = ({ post }: { post: Post }) => {
             </span>
             {open && (
                 <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-65 z-50">
-                    <FocusLock className="bg-white dark:bg-slate-900 p-4 md:p-8 rounded-lg shadow-md max-w-2xl w-full relative overflow-y-auto max-h-screen">
+                    <FocusLock className="bg-white dark:bg-[#111] p-4 md:p-8 rounded-lg shadow-md max-w-2xl w-full relative overflow-y-auto max-h-screen">
                         <button
                             className="absolute dark:text-white top-0 right-2 text-2xl"
                             onClick={() => setOpen(false)}
@@ -77,24 +77,24 @@ const UpdatePost = ({ post }: { post: Post }) => {
                                     img.secure_url.endsWith('.mp4') || img.secure_url.endsWith('.webm') || img.secure_url.endsWith('.ogg') ? (
                                         <>
                                             <video autoPlay controls src={img.secure_url} className="rounded-md w-full max-h-64"></video>
-                                            <span className="text-gray-900 text-center rounded-full cursor-pointer block mt-2" onClick={handleImageRemove}>Remove</span>
+                                            <span className="text-[#111] text-center rounded-full cursor-pointer block mt-2" onClick={handleImageRemove}>Remove</span>
                                         </>
                                     ) : (
                                         <>
                                             <Image src={img.secure_url} className="rounded-md w-full max-h-64" alt="Uploaded Image" width={300} height={300} />
-                                            <span className="text-gray-900 text-center rounded-full cursor-pointer block mt-2" onClick={handleImageRemove}>Remove</span>
+                                            <span className="text-[#111] text-center rounded-full cursor-pointer block mt-2" onClick={handleImageRemove}>Remove</span>
                                         </>
                                     )
                                 )}
                                 {!img.secure_url && post.img ? ((post.img.endsWith('.mp4') || post.img.endsWith('.webm') || post.img.endsWith('.ogg')) ? (
                                     <>
                                         <video autoPlay controls src={post.img} className="rounded-md w-full max-h-64"></video>
-                                        <span className="text-gray-900 text-center rounded-full file block mt-2" >Current Media</span>
+                                        <span className="text-[#111] text-center rounded-full file block mt-2" >Current Media</span>
                                     </>
                                 ) : (
                                     <>
                                         <Image src={post.img!} className="rounded-md w-full max-h-64" alt="Uploaded Image" width={300} height={300} />
-                                        <span className="text-gray-900 text-center rounded-full block mt-2" >Current Media</span>
+                                        <span className="text-[#111] text-center rounded-full block mt-2" >Current Media</span>
                                     </>
                                 )
                                 ) : <LinkPReview postBy={post.userId} postId={post.id} desc={post.desc} img={post.img!} />}

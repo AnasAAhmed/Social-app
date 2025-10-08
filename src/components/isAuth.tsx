@@ -6,7 +6,7 @@ import React from 'react'
 const IsAuth = () => {
     const { data } = useSession()
     if (data) {
-        location.href = '/feed'
+        location.href = '/'
     }
     return (
         <div>

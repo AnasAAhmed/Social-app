@@ -180,7 +180,7 @@ const ProfilePage = async ({ params }: {params: Promise<{ username: string }> })
             <h1 className="mt-20 mb-4 text-2xl dark:text-gray-200 font-medium">
               {(user.userInfo?.name && user.userInfo?.surname) ? user.userInfo?.name + ' ' + user.userInfo?.surname : user.username}
             </h1>
-            {!isBlocked && <div className="flex w-full rounded-lg p-3 items-center bg-white dark:bg-slate-900 dark:text-gray-200 justify-center gap-12">
+            {!isBlocked && <div className="flex w-full rounded-lg p-3 items-center bg-white dark:bg-[#111] dark:text-gray-200 justify-center gap-12">
               <div className="flex flex-col items-center">
                 <span className="font-medium">{user._count.posts}</span>
                 <span className="text-sm">Posts</span>

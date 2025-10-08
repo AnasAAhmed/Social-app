@@ -15,7 +15,7 @@ import LinkPReview from './LinkPReview'
 const Post = ({ post, userId }: { post: feedPostsType, userId: string }) => {
     const isVideo = /\.(mp4|webm|mkv|avi|mov)$/i.test(post.img!);
     return (
-        <div className="flex flex-col dark:bg-slate-900 bg-white sm:rounded-md py-6 gap-4 border-b dark:border-slate-700">
+        <div className="flex flex-col dark:bg-[#111] bg-white sm:rounded-md py-6 gap-4 border-b dark:border-slate-700">
             {/* user */}
             <div className="flex items-center justify-between">
                 <div className="flex items-center gap-4 mx-4">

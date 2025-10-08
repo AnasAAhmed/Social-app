@@ -82,10 +82,10 @@ const page = async ({ searchParams }: { searchParams: Promise<{ page?: string }>
         <Ad size="sm" />
       </div>
       <div className="flex flex-col gap-6 max-md:w-[90%] w-[80%]">
-        <div className="p-4 bg-white dark:bg-slate-900 shadow-md rounded-lg flex flex-col gap-8">
+        <div className="p-4 bg-white dark:bg-[#111] shadow-md rounded-lg flex flex-col gap-8">
           <h3 className="text-gray-600 dark:text-gray-300 text-center font-medium text-2xl">Suggestions</h3>
           {users.length > 0 && users.map((user) => (
-            <div key={user.username} className="bg-white dark:bg-slate-900 shadow-md ring-[0.5px] rounded-lg p-4 w-full flex flex-col sm:flex-row items-center gap-4">
+            <div key={user.username} className="bg-white dark:bg-[#111] shadow-md ring-[0.5px] rounded-lg p-4 w-full flex flex-col sm:flex-row items-center gap-4">
               <Image
                 src={user.avatar || "/noAvatar.png"}
                 alt=""

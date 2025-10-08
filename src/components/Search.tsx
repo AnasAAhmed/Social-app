@@ -45,7 +45,7 @@ const Search = ({ placeholder = 'Search...' }: { placeholder?: string }) => {
   }
 
   return (
-    <div className="flex p-2 rounded-xl dark:bg-slate-700 bg-slate-100 items-center">
+    <div className="flex p-2 rounded-xl dark:bg-[#202020] bg-slate-100 items-center">
       <form onSubmit={(e) => handleSubmit(e)} className='flex justify-between'>
 
         <input
@@ -59,7 +59,7 @@ const Search = ({ placeholder = 'Search...' }: { placeholder?: string }) => {
           <SearchIcon size={'1.1rem'}/>
         </button>
       </form>
-      <select onChange={(e) => setRoute(e.target.value)} className='ml-1 bg-transparent cursor-pointer dark:bg-slate-700 dark:text-white outline-none'>
+      <select onChange={(e) => setRoute(e.target.value)} className='ml-1 bg-transparent cursor-pointer dark:bg-[#202020] dark:text-white outline-none'>
         <option value="search">Posts</option>
         <option value="users">Users</option>
       </select>

@@ -2,6 +2,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
+import ProgressBar from "./ProgressBar";
 
 type DropSearchProps = {
     isLink?: boolean
@@ -47,12 +48,12 @@ const DropDown = ({ options }: DropSearchProps) => {
         </button>
         {open && (
             <div
-                className="absolute z-30 animate-modal p-2 w-44 left-20 top-6 bg-white dark:bg-slate-900 border border-gray-300 dark:border-slate-700 divide-y divide-gray-100 dark:divide-slate-700 rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
+                className="absolute z-30 animate-modal p-2 w-44 left-20 top-6 bg-white dark:bg-[#111] border border-gray-300 dark:border-slate-700  rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
             >
                 {options.map((option, index) => (
-                    <Link title={option.key} onClick={()=>setTimeout(()=>toggleClose(),160)} key={index} href={option.value} className="block w-full rounded-md p-2 text-left text-md font-semibold text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-slate-800 hover:text-gray-900 dark:hover:text-white">
+                    <ProgressBar title={option.key} onClick={()=>setTimeout(()=>toggleClose(),160)} key={index} href={option.value} className="block w-full rounded-md p-2 text-left text-md font-semibold text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-slate-800 hover:text-[#111] dark:hover:text-white">
                         {option.key}
-                    </Link>
+                    </ProgressBar>
                 ))}
             </div>
         )}

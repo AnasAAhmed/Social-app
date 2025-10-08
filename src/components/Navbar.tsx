@@ -9,6 +9,7 @@ import DarkModeToggle from './Toggle'
 import { useSession, signOut } from "next-auth/react";
 import { usePathname, useRouter } from 'next/navigation'
 import { Session } from 'next-auth'
+import ProgressBar from './ProgressBar'
 
 const Navbar = () => {
   const pathname = usePathname();
@@ -17,17 +18,17 @@ const Navbar = () => {
   const loading = status === "loading";
 
   return (
-    <div className='h-14 fixed bg-white dark:bg-gray-900 w-full z-30 left-0 px-4 sm:px-8 flex items-center justify-between'>
+    <div className='h-14 fixed bg-white dark:bg-[#111] w-full z-30 left-0 px-4 sm:px-8 flex items-center justify-between'>
       <div id='LEFT' className="md:hidden lg:block w-[20%]">
-        <Link title='home' href={session?.user ? '/feed' : '/'} className='font-bold text-xl text-blue-600'>ANAS_SOCIAL</Link>
+        <Link title='home' href={session?.user ? '/' : '/login'} className='font-bold text-xl text-blue-600'>ANAS_SOCIAL</Link>
       </div>
 
       <div id='CENTER' className="hidden md:flex w-[50%] text-sm items-center justify-between">
         <div className='flex gap-6 dark:text-white text-gray-600'>
-          <Link title='home' href={session?.user ? '/feed' : '/'} className='flex items-center  gap-2'>
+          <ProgressBar title='home' href={session?.user ? '/' : '/login'} className='flex items-center  gap-2'>
             <Image src={'/home.png'} alt='Home' width={18} height={16} className='w-4 h-4' />
             <span>Home</span>
-          </Link>
+          </ProgressBar>
 
           <DropDown options={[
             { key: 'Friends', value: '/friends' },
@@ -35,10 +36,10 @@ const Navbar = () => {
             { key: 'Suggestions', value: '/friends/suggestions' },
             { key: 'Reminders', value: '/friends/reminders' }
           ]} />
-          <Link title='Stories' href={'/stories'} className='flex items-center gap-2'>
+          <ProgressBar title='Stories' href={'/stories'} className='flex items-center gap-2'>
             <Image src={'/stories.png'} alt='Home' width={18} height={16} className='w-4 h-4' />
             <span>Stories</span>
-          </Link>
+          </ProgressBar>
           <Search />
         </div>
       </div>
@@ -66,12 +67,12 @@ const User = ({ session }: { session: Session | null }) => {
   const [open, setOpen] = useState(false);
   return (
     <>
-        <Link title='friends' className='max-sm:hidden' href={'/friends'}>
+        <ProgressBar title='friends' className='max-sm:hidden' href={'/friends'}>
           <Image src={"/friends.png"} alt='people' width={20} height={20} />
-        </Link>
-        <Link title='chat' className='max-sm:hidden text-blue-500' href={'/chat'}>
+        </ProgressBar>
+        <ProgressBar title='chat' className='max-sm:hidden text-blue-500' href={'/chat'}>
           &#128172;
-        </Link>
+        </ProgressBar>
         <DarkModeToggle />
       <div className="relative" onBlur={() => setTimeout(() => setOpen(false), 170)}>
         {session?.user ? (
@@ -89,8 +90,8 @@ const User = ({ session }: { session: Session | null }) => {
                 <div className='flex flex-col justify-start'>
 
                   <p className="text-sm rounded-md cursor-pointer hover:bg-gray-100 p-2 py-2 dark:text-gray-300 text-gray-700">{session.user.email}</p>
-                  <Link className="text-sm dark:text-gray-300 rounded-md cursor-pointer hover:bg-gray-100 p-2 py-2 text-gray-700" href={'/profile/' + session.user.name}>My Profile</Link>
-                  <Link className="text-sm dark:text-gray-300 rounded-md cursor-pointer hover:bg-gray-100 p-2 py-2 text-gray-700" href={'/settings'}>settings</Link>
+                  <ProgressBar className="text-sm dark:text-gray-300 rounded-md cursor-pointer hover:bg-gray-100 p-2 py-2 text-gray-700" href={'/profile/' + session.user.name}>My Profile</ProgressBar>
+                  <ProgressBar className="text-sm dark:text-gray-300 rounded-md cursor-pointer hover:bg-gray-100 p-2 py-2 text-gray-700" href={'/settings'}>settings</ProgressBar>
                   <button
                     className="w-full text-left p-2 py-2 text-sm dark:text-gray-300 font-bold text-red-600 hover:bg-gray-100 rounded-md"
                     onClick={() => signOut()}
@@ -102,10 +103,10 @@ const User = ({ session }: { session: Session | null }) => {
             )}
           </>
         ) : (
-          <div className="flex items-center gap-1 text-xs sm:text-sm">
+          <div className="flex items-center dark:text-white gap-1 text-xs sm:text-sm">
             <Image className='hidden sm:block' src={"/noAvatar.png"} alt='people' width={20} height={20} />
-            <Link title="go to Login" prefetch={false} href={`/login?redirect_url=${decodeURIComponent(pathname)}`}>Login</Link>/
-            <Link title="go to sign-up" prefetch={false} href={`/sign-up?redirect_url=${decodeURIComponent(pathname)}`}>Register</Link>
+            <ProgressBar title="go to Login" prefetch={false} href={`/login?redirect_url=${decodeURIComponent(pathname)}`}>Login</ProgressBar>/
+            <ProgressBar title="go to sign-up" prefetch={false} href={`/sign-up?redirect_url=${decodeURIComponent(pathname)}`}>Register</ProgressBar>
           </div>
         )}
       </div>

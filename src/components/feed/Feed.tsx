@@ -163,7 +163,7 @@ const Feed = ({
   return (
     <>
       {loading ? <LoaderAddPost /> :
-        session && <div className="p-4 bg-white dark:bg-slate-900 shadow-md rounded-lg flex gap-4 justify-between text-sm">
+        session && <div className="p-4 bg-white dark:bg-[#111] shadow-md rounded-lg flex gap-4 justify-between text-sm">
           <img
             src={session.user!.image || "/noAvatar.png"}
             alt="User avatar"
@@ -203,7 +203,7 @@ const Feed = ({
             <form onSubmit={handleSubmit} className="flex gap-4">
               <textarea
                 placeholder={`What's on your mind, ${session.user!.name}?`}
-                className="flex-1 bg-slate-100 dark:text-gray-200 dark:bg-slate-800 rounded-lg p-2 disabled:opacity-35 disabled:cursor-not-allowed"
+                className="flex-1 bg-slate-100 dark:text-gray-200 dark:bg-[#2a2a2b] rounded-lg p-2 disabled:opacity-35 disabled:cursor-not-allowed"
                 name="desc"
                 value={desc}
                 maxLength={230}
@@ -285,7 +285,7 @@ const Feed = ({
           <p className="text-gray-600 text-center font-medium text-xl">No Posts yet. make friends to see thier posts or switch to public.</p>
           <div className="flex justify-center gap-2">
 
-            <Link href="/feed" className={`mr-2 ${filter === 'friends' ? 'text-blue-500' : 'text-gray-500'}`}>
+            <Link href="/" className={`mr-2 ${filter === 'friends' ? 'text-blue-500' : 'text-gray-500'}`}>
               Friends
             </Link>
             <Link href="?filter=all" className={`${filter === 'all' ? 'text-blue-500' : 'text-gray-500'}`}>

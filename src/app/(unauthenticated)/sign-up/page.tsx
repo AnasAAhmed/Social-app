@@ -33,8 +33,8 @@ export default async function LoginPage() {
 
       <div className="sm:w-[400px]">
         <div className='pb-0'>
-            <h1 className='text-2xl sm:text-3xl font-semibold'>Sign-up</h1>
-          <p className='text-[14px] sm:text-lg font-medium mt-2 text-gray-700'>Sign-up to create new account.</p>
+            <h1 className='text-2xl sm:text-3xl font-semibold dark:text-white'>Sign-up</h1>
+          <p className='text-[14px] sm:text-lg font-medium mt-2 dark:text-gray-300 text-gray-700'>Sign-up to create new account.</p>
         </div>
         <div>
           <form
@@ -43,8 +43,7 @@ export default async function LoginPage() {
               await signIn('google')
             }}
           >
-            <button title='Sign-up With Goole' className='w-full bg-white border p-2 rounded-md flex items-center gap-4 mt-4 mb-2' >
-              <img alt='google logo' height="24" width="24" id="provider-logo" src="https://authjs.dev/img/providers/google.svg" />
+  <button title='Login with Google' className='w-full dark:text-white bg-white dark:bg-[#1b1b1b] justify-center border dark:border-gray-600 p-2 rounded-md flex items-center gap-4 mt-4 mb-2' >              <img alt='google logo' height="24" width="24" id="provider-logo" src="https://authjs.dev/img/providers/google.svg" />
               Sign up with Google
             </button>
           </form>

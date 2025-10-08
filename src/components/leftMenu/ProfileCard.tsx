@@ -43,7 +43,7 @@
 //   if (!user) return <ProfileCardError />;
 
 //   return (
-//     <div className='max-xl:hidden p-4 bg-white dark:bg-slate-900 rounded-lg shadow-md text-sm flex flex-col gap-6'>
+//     <div className='max-xl:hidden p-4 bg-white dark:bg-[#111] rounded-lg shadow-md text-sm flex flex-col gap-6'>
 //       <div className="h-20 relative">
 //         <Image src={data.cover || '/noCover.jpeg'} alt='cover photo' fill className='rounded-md' />
 //         <img src={data.avatar || '/noAvatar.png'} alt='avatar' className='rounded-full w-12 h-12 absolute left-0 right-0 m-auto -bottom-6 ring-1 ring-white z-10' />
@@ -70,13 +70,12 @@
 'use client'
 
 import Image from 'next/image'
-import Link from 'next/link'
 import React from 'react'
 import { ProfileCardError, ProfileCardLoad } from '../Loader'
 import { useMediaQuery } from '@/lib/truncate'
-import { toast } from 'sonner'
 import { useSession } from 'next-auth/react'
 import { useQuery } from '@tanstack/react-query'
+import ProgressBar from '../ProgressBar'
 
 const ProfileCard = () => {
   const { data: session, status } = useSession();
@@ -101,7 +100,7 @@ const ProfileCard = () => {
   if (isError || !data) return <ProfileCardError />
 
   return (
-    <div className='max-xl:hidden p-4 bg-white dark:bg-slate-900 rounded-lg shadow-md text-sm flex flex-col gap-6'>
+    <div className='max-xl:hidden p-4 bg-white dark:bg-[#111] rounded-lg shadow-md text-sm flex flex-col gap-6'>
       <div className="h-20 relative">
         <Image src={data.cover || '/noCover.jpeg'} alt='cover photo' fill className='rounded-md object-cover' />
         <img src={data.avatar || '/noAvatar.png'} alt='avatar' className='rounded-full w-12 h-12 absolute left-0 right-0 m-auto -bottom-6 ring-1 ring-white z-10' />
@@ -122,7 +121,7 @@ const ProfileCard = () => {
           <span className="text-xs dark:text-white text-gray-500">{data._count?.follower} Followers</span>
           <span className="text-xs dark:text-white text-gray-500">{data._count?.following} Following</span>
         </div>
-        <Link href={`/profile/${data.username}`} className='bg-blue-500 text-white text-xs p-2 rounded-md'>My Profile</Link>
+        <ProgressBar href={`/profile/${data.username}`} className='bg-blue-500 text-white text-xs p-2 rounded-md'>My Profile</ProgressBar>
       </div>
     </div>
   )

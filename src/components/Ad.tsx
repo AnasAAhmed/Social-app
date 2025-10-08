@@ -21,7 +21,7 @@ const Ad = ({ size }: { size: 'sm' | 'md' | 'lg' }) => {
         };
     }, []);
     return (
-        <div className='p-4 bg-white dark:bg-slate-900 rounded-lg text-sm shadow-md'>
+        <div className='p-4 bg-white dark:bg-[#111] rounded-lg text-sm shadow-md'>
         <div ref={dropdownRef} className="flex items-center justify-between text-gray-500 dark:text-gray-200 font-medium">
             <span>Sponsor Ads</span>
             <div className="relative">
@@ -34,7 +34,7 @@ const Ad = ({ size }: { size: 'sm' | 'md' | 'lg' }) => {
                     className="cursor-pointer"
                 />
                 {open && (
-                    <div className="absolute animate-modal bg-gray-50 dark:bg-slate-800 top-4 ring-[0.5px] dark:ring-slate-700 right-0 p-4 w-32 rounded-lg flex flex-col gap-2 text-sm shadow-lg z-30">
+                    <div className="absolute animate-modal bg-gray-50 dark:bg-[#111] top-4 ring-[0.5px] dark:ring-slate-700 right-0 p-4 w-32 rounded-lg flex flex-col gap-2 text-sm shadow-lg z-30">
                         <span className="cursor-pointer">Learn More</span>
                         <span className="cursor-pointer">Hide Ad</span>
                         <span className="text-red-500 cursor-pointer">Report</span>

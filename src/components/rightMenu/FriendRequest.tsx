@@ -39,7 +39,7 @@ const FriendRequest = ({ userId }: { userId: string }) => {
     if (isError) return <div>Failed to load friend requests.</div>;
 
     return (
-        <div className='p-4 bg-white dark:bg-slate-900 rounded-lg text-sm shadow-md flex flex-col gap-4'>
+        <div className='p-4 bg-white dark:bg-[#111] rounded-lg text-sm shadow-md flex flex-col gap-4'>
             {/* top */}
             <div className=" flex justify-between items-center font-medium">
                 <span className="text-gray-500 dark:text-white">Friend Request</span>

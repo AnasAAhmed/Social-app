@@ -52,7 +52,7 @@ const CommentInfo = ({ commentId, userId, commenterId, onDelete }: { commentId: 
                 className="cursor-pointer"
             />
             {open && (
-                <div className="absolute animate-modal bg-white dark:bg-slate-900 top-4 ring-[0.5px] right-0 py4 w-32 rounded-lg flex flex-col text-sm shadow-lg z-10">
+                <div className="absolute animate-modal bg-white dark:bg-[#111] top-4 ring-[0.5px] right-0 py4 w-32 rounded-lg flex flex-col text-sm shadow-lg z-10">
                     {userId === commenterId ?
                         <>
                             {/* <span className="cursor-pointer p-2 hover:bg-gray-100">View</span>

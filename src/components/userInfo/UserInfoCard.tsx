@@ -64,7 +64,7 @@ const UserInfoCard = ({ user }: { user: UserAndInfo }) => {
     return strippedUrl.length > 13 ? strippedUrl.slice(0, 13) + "..." : strippedUrl;
   };
   return (
-    <div className='p-4 bg-white dark:bg-slate-900 rounded-lg text-sm shadow-md flex flex-col gap-4'>
+    <div className='p-4 bg-white dark:bg-[#111] rounded-lg text-sm shadow-md flex flex-col gap-4'>
       {/* top */}
       <div className=" flex justify-between items-center font-medium">
         <span className="text-gray-500 dark:text-gray-300">User Information</span>
