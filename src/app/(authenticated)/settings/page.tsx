@@ -10,6 +10,7 @@ export const metadata: Metadata = {
   title: "Anas Social | (Settings)",
   description: "Settings Page of (Anas Social) A full-stack social media made with Nextjs, Neon PostgreSQl, Typescript, Cloudinary, clerk, Prisma and SSR streaming logic",
 };
+export const dynamic = 'force-dynamic';
 
 const SettingsPage = async () => {
 

@@ -1,5 +1,5 @@
 'use client'
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 import { Spinner } from './Loader';
 
@@ -12,8 +12,6 @@ type PaginationProps = {
 
 const Pagination = ({ isFeed = false, page, totalPages, urlParamName }: PaginationProps) => {
   const router = useRouter();
-  const searchParams = useSearchParams();
-  // const { inView, ref } = useInView()
   const [load, setLoad] = useState(false)
 
   useEffect(() => {

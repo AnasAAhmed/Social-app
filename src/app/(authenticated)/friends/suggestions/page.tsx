@@ -15,6 +15,7 @@ export const metadata: Metadata = {
   title: "Anas Social | (Suggestions)",
   description: "Suggestions Page of (Anas Social)...",
 };
+export const dynamic = 'force-dynamic';
 
 const page = async ({ searchParams }: { searchParams: Promise<{ page?: string }> }) => {
   const session = (await auth()) as Session;

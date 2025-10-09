@@ -6,6 +6,7 @@ import NotLoggedIn from "@/components/NotLoggedIn"
 import { Suspense } from "react"
 import { LoaderStories } from "@/components/Loader"
 import { auth } from "@/auth"
+export const dynamic = 'force-dynamic';
 
 const FeedPage = async ({ searchParams }: { searchParams: Promise<{ page?: string, filter?: string }> }) => {
   const session = (await auth()) as Session;

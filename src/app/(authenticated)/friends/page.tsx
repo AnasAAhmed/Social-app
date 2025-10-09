@@ -20,6 +20,7 @@ export type SearchParamProps = {
   params: Promise<{ id: string }>;
   searchParams: Promise<{ page?: string, filter?: string, query?: string }>;
 };
+export const dynamic = 'force-dynamic';
 
 const FriendsPage = async ({ searchParams }: { searchParams: Promise<{ page?: string, filter?: string }> }) => {
   const session = (await auth()) as Session;

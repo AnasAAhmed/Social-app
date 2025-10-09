@@ -7,6 +7,8 @@ import prisma from "@/lib/client";
 import Image from "next/image";
 import Link from "next/link";
 
+export const dynamic = 'force-dynamic';
+
 const page = async ({ params, searchParams }: { params: Promise<{ username: string }>, searchParams: Promise<{ page: string }> }) => {
     const session = (await auth()) as Session;
     

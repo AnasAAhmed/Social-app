@@ -46,6 +46,7 @@ export async function generateMetadata({ params }: { params: Promise<{ query: st
         }
     )
 }
+export const dynamic = 'force-dynamic';
 
 const page = async ({ params, searchParams }: { params: Promise<{ query: string }>, searchParams: Promise<{ page: string }> }) => {
     const session = (await auth()) as Session;

@@ -111,6 +111,7 @@ export async function generateMetadata({ params }: { params: Promise<{ username:
 }
 
 
+export const dynamic = 'force-dynamic';
 
 const ProfilePage = async ({ params }: {params: Promise<{ username: string }> }) => {
   const session = (await auth()) as Session;

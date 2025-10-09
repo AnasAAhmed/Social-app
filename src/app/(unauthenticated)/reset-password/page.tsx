@@ -1,10 +1,11 @@
 import { auth } from '@/auth'
 import { ForgetPassForm } from '@/components/auth/Forget-passwordForm'
 import ResetForm from '@/components/auth/reset-pass-form'
+import { LoaderGif } from '@/components/Loader'
 import { Metadata } from 'next'
 import { Session } from 'next-auth'
 import { redirect } from 'next/navigation'
-import * as React from "react"
+import { Suspense } from 'react'
 
 
 export const metadata: Metadata = {
@@ -30,26 +31,31 @@ export const metadata: Metadata = {
     }
 };
 
+export const dynamic = 'force-dynamic';
 export default async function ResetPassPage({ searchParams }: { searchParams: Promise<{ token: string, id: string }> }) {
     const session = (await auth()) as Session
     const { token, id } = await searchParams
-    if (session || !searchParams && token &&id) {
+    if (session || !searchParams && token && id) {
         redirect('/')
     }
 
     return (
-        <div className="flex flex-col mt-28 sm:mt-12 h-screen items-center">
-            <div className="sm:w-[400px]">
-                <div className='pb-0'>
-                    <h1 className='text-2xl sm:text-3xl font-semibold dark:text-white'>Reset Password</h1>
+        <Suspense fallback={<LoaderGif />}>
+
+            <div className="flex flex-col mt-28 sm:mt-12 h-screen items-center">
+                <div className="sm:w-[400px]">
+                    <div className='pb-0'>
+                        <h1 className='text-2xl sm:text-3xl font-semibold dark:text-white'>Reset Password</h1>
+                    </div>
+                    <div>
+
+                        <ResetForm token={token} userId={id} />
+                    </div>
                 </div>
-                <div>
-                    <ResetForm token={token} userId={id} />
+                <div className="flex items-center gap-1 mt-4 text-sm text-zinc-400">
+                    Expired Token? <div className="font-semibold underline"><ForgetPassForm btnText='Resend' /></div>
                 </div>
             </div>
-            <div className="flex items-center gap-1 mt-4 text-sm text-zinc-400">
-                Expired Token? <div className="font-semibold underline"><ForgetPassForm btnText='Resend' /></div>
-            </div>
-        </div>
+        </Suspense>
     )
 }

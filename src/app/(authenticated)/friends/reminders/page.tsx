@@ -11,7 +11,7 @@ export const metadata: Metadata = {
     title: "Anas Social | (reminders)",
     description: "reminders Page of (Anas Social) A full-stack social media made with Nextjs, Neon PostgreSQl, Typescript, Cloudinary, clerk, Prisma and SSR streaming logic",
 };
-
+export const dynamic = 'force-dynamic';
 const formatDate = (date: Date) => date.toISOString().split('T')[0];
 
 const isToday = (date: Date) => {
