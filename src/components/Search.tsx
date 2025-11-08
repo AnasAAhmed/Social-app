@@ -5,7 +5,7 @@
 // import { useRouter, useSearchParams } from 'next/navigation';
 import Image from 'next/image';
 import { useState } from 'react'
-import { useRouter } from 'next/navigation';
+import { useRouter } from 'nextjs-toploader/app';
 import { SearchIcon } from 'lucide-react';
 
 const Search = ({ placeholder = 'Search...' }: { placeholder?: string }) => {
@@ -49,7 +49,7 @@ const Search = ({ placeholder = 'Search...' }: { placeholder?: string }) => {
       <form onSubmit={(e) => handleSubmit(e)} className='flex justify-between'>
 
         <input
-          type="text"
+          type="search"
           placeholder={placeholder}
           name={route === 'users' ? route : "post"}
           onChange={(e) => setQuery(e.target.value)}

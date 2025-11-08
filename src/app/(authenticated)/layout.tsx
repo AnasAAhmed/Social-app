@@ -5,6 +5,7 @@ import Navbar from "@/components/Navbar";
 import { Toaster } from 'sonner';
 import { SessionProvider } from "next-auth/react";
 import ReactQueryProvider from "@/lib/QueryProvider";
+import NextTopLoader from "nextjs-toploader";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -55,6 +56,7 @@ export default function RootLayout({
             }} />
           </head>
           <body className={inter.className}>
+          <NextTopLoader/>
             <Navbar />
             {/* <CreateUser /> */}
             <div className="dark:bg-black bg-slate-100 md:px-8 xl:px-20 pt-20 min-h-[100vh]">

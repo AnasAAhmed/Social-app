@@ -75,7 +75,7 @@ import { ProfileCardError, ProfileCardLoad } from '../Loader'
 import { useMediaQuery } from '@/lib/truncate'
 import { useSession } from 'next-auth/react'
 import { useQuery } from '@tanstack/react-query'
-import ProgressBar from '../ProgressBar'
+import Link from 'next/link'
 
 const ProfileCard = () => {
   const { data: session, status } = useSession();
@@ -121,7 +121,7 @@ const ProfileCard = () => {
           <span className="text-xs dark:text-white text-gray-500">{data._count?.follower} Followers</span>
           <span className="text-xs dark:text-white text-gray-500">{data._count?.following} Following</span>
         </div>
-        <ProgressBar href={`/profile/${data.username}`} className='bg-blue-500 text-white text-xs p-2 rounded-md'>My Profile</ProgressBar>
+        <Link href={`/profile/${data.username}`} className='bg-blue-500 text-white text-xs p-2 rounded-md'>My Profile</Link>
       </div>
     </div>
   )

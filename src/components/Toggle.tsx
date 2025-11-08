@@ -1,4 +1,5 @@
 'use client'
+import { Moon, Sun } from 'lucide-react';
 import Image from 'next/image';
 import { useState, useEffect } from 'react';
 
@@ -33,7 +34,7 @@ const DarkModeToggle = () => {
                 title={darkMode?'toggle light theme':'toggle dark theme'}
                 className="text-black text-[22px] dark:text-white"
             >
-              {darkMode?<Image height={18} width={18} src="/sun.svg" alt="moon" />:<Image height={18} width={18} src="/Moon.svg" alt="moon" />} 
+              {!darkMode?<Sun size={18}/>:<Moon size={18}/>} 
             </button>
     );
 };

@@ -94,10 +94,12 @@ const page = async ({ searchParams }: { searchParams: Promise<{ page?: string }>
         <div className="hidden  flex-col md:flex gap-6 w-[20%]"> <MenuBar /><Ad size="md" /></div>
         <div className="flex flex-col gap-6 max-md:mx-4">
           <h1 className="text-3xl  font-bold mb-4 text-slate-600">Stories</h1>
-          <Suspense fallback={<LoaderStories />}>
-            <StoryList stories={stories} userId={session.user.id} />
-          </Suspense>
-          <Pagination totalPages={totalPages} page={Number(page) || 1} />
+          <div className="flex flsex-col gap-6 max-md:mx-4">
+            <Suspense fallback={<LoaderStories />}>
+              <StoryList stories={stories} userId={session.user.id} />
+            </Suspense>
+            <Pagination totalPages={totalPages} page={Number(page) || 1} />
+          </div>
         </div>
       </Suspense >
 
