@@ -11,7 +11,7 @@ import { Metadata } from "next";
 import UserInfoCard from '@/components/userInfo/UserInfoCard';
 import UserMediaCardForMob from '@/components/userMedia/UserMediaCardForMob';
 
-export async function generateMetadata({ params }: { params: Promise<{ username: string }> }): Promise<Metadata | JSX.Element | undefined> {
+export async function generateMetadata({ params }: { params: Promise<{ username: string }> }): Promise<Metadata | undefined> {
   const { username } = await params;
   if (!username) return;
 
@@ -113,7 +113,7 @@ export async function generateMetadata({ params }: { params: Promise<{ username:
 
 export const dynamic = 'force-dynamic';
 
-const ProfilePage = async ({ params }: {params: Promise<{ username: string }> }) => {
+const ProfilePage = async ({ params }: { params: Promise<{ username: string }> }) => {
   const session = (await auth()) as Session;
 
   const { username } = await params;
@@ -124,7 +124,7 @@ const ProfilePage = async ({ params }: {params: Promise<{ username: string }> })
     },
     select: {
       username: true,
-      email:true,
+      email: true,
       avatar: true,
       cover: true,
       id: true,
