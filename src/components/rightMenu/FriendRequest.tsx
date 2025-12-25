@@ -1,5 +1,5 @@
 'use client'
-import Link from 'next/link'
+import SmartLink from '@/components/SmartLink';
 import React, { useEffect } from 'react'
 import FriendRequestList from './FriendRequestList'
 import { useMediaQuery } from '@/lib/truncate'
@@ -43,7 +43,7 @@ const FriendRequest = ({ userId }: { userId: string }) => {
             {/* top */}
             <div className=" flex justify-between items-center font-medium">
                 <span className="text-gray-500 dark:text-white">Friend Request</span>
-                <Link href={'/friends/friend-requests'} className='text-blue-500 text-xs'>See all {data && data.requestsCount > 4 && data.requestsCount}</Link>
+                <SmartLink href={'/friends/friend-requests'} className='text-blue-500 text-xs'>See all {data && data.requestsCount > 4 && data.requestsCount}</SmartLink>
             </div>
             {/* bottom */}
             <FriendRequestList requests={data && data.requests} onUpdate={refetch}/>

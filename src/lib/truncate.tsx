@@ -54,12 +54,12 @@ const Truncate = ({ desc, numOfChar, isProfilePage = false, textSize = 14, postI
   };
 
   return (
-    <div className="flex flex-col gap-1 text-sm" style={{ fontSize: `${textSize}px` }}>
+    <div className="flex flex-col items-start gap-1 text-sm" style={{ fontSize: `${textSize}px` }}>
       <p className={`dark:text-gray-200 whitespace-pre-wrap break-words ${isProfilePage ? 'text-center' : ""}`}>
         {isExpanded ? convertToElements(desc) : truncateText(desc, numOfChar)}
       </p>
       {desc && desc.length > numOfChar && (
-        <button onClick={toggleExpand} className="text-blue-500 self-start text-xs mt-1">
+        <button onClick={toggleExpand} className="text-blue-500 w-16 self-start text-xs mt-1">
           {isExpanded ? 'See less' : 'See more'}
         </button>
       )}

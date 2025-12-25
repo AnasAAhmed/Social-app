@@ -8,7 +8,7 @@ import CommentInfo from "./CommentInfo";
 import { toast } from "sonner";
 import { switchCommentLike } from "@/lib/action";
 import Truncate from "@/lib/truncate";
-import Link from "next/link";
+import SmartLink from '@/components/SmartLink';
 import { calculateTimeDifference } from "@/lib/utils";
 import { EmojiClickData } from "emoji-picker-react";
 import dynamic from "next/dynamic";
@@ -164,9 +164,9 @@ const CommentList = ({
             <div className="">
                 {commentState.length > 0 && commentState.map((comment) => (
                     <div className="flex gap-4 justify-between mt-6 px-4" key={comment.id}>
-                        <Link href={`/profile/${comment.user.username}`}>
+                        <SmartLink href={`/profile/${comment.user.username}`}>
                             <img src={comment.user.avatar || "/noAvatar.png"} alt='avatar' className='w-7 h-7 rounded-full' />
-                        </Link>
+                        </SmartLink>
                         <div className="flex flex-col gap-2 flex-1">
                             <span className="font-medium text-sm dark:text-gray-100">
                                 {comment.user.username}

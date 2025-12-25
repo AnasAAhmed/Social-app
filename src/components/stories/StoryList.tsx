@@ -6,7 +6,7 @@ import StoryCard from "./StoryCard";
 import StoryForm from "../forms/StoryForm";
 import { deleteStory } from "@/lib/delete.actions";
 import { toast } from "sonner";
-import Link from "next/link";
+import SmartLink from '@/components/SmartLink';
 
 type StoryWithUser = Story & {
     user: User;
@@ -55,9 +55,9 @@ const StoryList = ({
                         />
                         <div className="absolute flex flex-col rounded-b-md z-20 items-center bottom-0 right-0 left-0 gap-a">
                             {/* make friend to see their stories */}
-                            <Link href={'/friends/suggestions'} className="text-xs bg-blue-500 p-1 rounded-md text-white">
+                            <SmartLink href={'/friends/suggestions'} className="text-xs bg-blue-500 p-1 rounded-md text-white">
                                 Add friends
-                            </Link>
+                            </SmartLink>
                             <span className="font-medium dark:text-white shadow-md text-center h-10 text-xm lg:text-sm dark:bg-slate-700 bg-white rounded-b-md w-full">
                                 No Stories
                                 </span>

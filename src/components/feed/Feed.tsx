@@ -1,12 +1,11 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
-import Link from 'next/link';
+import { useQuery } from '@tanstack/react-query';
+import SmartLink from '@/components/SmartLink';
 import { toast } from 'sonner';
-import { Loader1, LoaderAddPost, PostSkeletonList, Spinner } from '../Loader';
+import { LoaderAddPost, PostSkeletonList, Spinner } from '../Loader';
 import dynamic from 'next/dynamic';
-import { Post as PostType, User } from '@prisma/client';
 import { useSession } from 'next-auth/react';
 import { extractUrl } from '@/lib/utils';
 import { addPost } from '@/lib/form.actions';
@@ -35,8 +34,8 @@ const Feed = ({
   const loading = status === 'loading';
   const [desc, setDesc] = useState("");
   const [img, setImg] = useState<any>();
-  const [linkPreviewLoader, setLinkPreviewLoader] = useState(false);
-  const [linkPreview, setLinkPreview] = useState<null | {
+  const [SmartLinkPreviewLoader, setSmartLinkPreviewLoader] = useState(false);
+  const [SmartLinkPreview, setSmartLinkPreview] = useState<null | {
     title: string;
     description: string;
     image: string;
@@ -74,7 +73,7 @@ const Feed = ({
     const timeout = setTimeout(async () => {
       if (url && !img) {
         try {
-          setLinkPreviewLoader(true);
+          setSmartLinkPreviewLoader(true);
           const res = await fetch(`/api/link-preview?url=${url}`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -82,21 +81,21 @@ const Feed = ({
 
           const data = await res.json();
           if (!data.error) {
-            setLinkPreview(data);
+            setSmartLinkPreview(data);
           } else {
-            toast.warning("Link preview unavailable.");
-            setLinkPreview(null);
+            toast.warning("SmartLink preview unavailable.");
+            setSmartLinkPreview(null);
           }
         } catch (err) {
-          toast.error("Failed to fetch link preview.");
+          toast.error("Failed to fetch SmartLink preview.");
           console.error("Preview error", err);
-          setLinkPreview(null);
+          setSmartLinkPreview(null);
         } finally {
 
-          setLinkPreviewLoader(false);
+          setSmartLinkPreviewLoader(false);
         }
       } else {
-        setLinkPreview(null);
+        setSmartLinkPreview(null);
       }
     }, 800); // debounce
 
@@ -124,16 +123,15 @@ const Feed = ({
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     if (!session) return toast.error("Current User is not authenticated if you're logged in please login again");
     e.preventDefault();
-    const formData = new FormData(e.currentTarget);
     setShowEmojiPicker(false);
-    const optimisticDesc = desc;
-    const optimisticImg = img;
+    const optimisticDesc = `${desc} - \n${SmartLinkPreview?.title||''} \n${SmartLinkPreview?.description||''}`;
+    const optimisticImg = img?.secure_url || SmartLinkPreview?.image;
     setDesc("");
     setImg(null);
     setIsSubmitting(true);
 
     try {
-      const post = await addPost(formData, optimisticImg?.secure_url || "");
+      const post = await addPost(optimisticDesc, optimisticImg || "");
       toast.success("Posted successfully");
       const optimisticPost = {
         id: post.id,
@@ -179,21 +177,21 @@ const Feed = ({
                 ) : (
                   <Image src={img?.secure_url} className="rounded-md" alt="Uploaded Image" width={300} height={300} />
                 )
-              ) : url && linkPreviewLoader ? <Spinner /> : linkPreview && (
-                <a href={linkPreview.url} target="_blank" rel="noopener noreferrer" className="block border rounded-lg overflow-hidden w-[300px]">
-                  {linkPreview.image && (
+              ) : url && SmartLinkPreviewLoader ? <Spinner /> : SmartLinkPreview && (
+                <a href={SmartLinkPreview.url} target="_blank" rel="noopener noreferrer" className="block border rounded-lg overflow-hidden w-[300px]">
+                  {SmartLinkPreview.image && (
                     <img
-                      src={linkPreview.image}
-                      alt={linkPreview.title}
+                      src={SmartLinkPreview.image}
+                      alt={SmartLinkPreview.title}
                       width={300}
                       height={160}
-                      title={linkPreview.url}
+                      title={SmartLinkPreview.url}
                       className="object-cover"
                     />
                   )}
                   <div className="p-2 bg-slate-100 dark:bg-slate-800 text-sm">
-                    <h4 title={linkPreview.title} className="font-semibold line-clamp-1">{linkPreview.title}</h4>
-                    <p title={linkPreview.description} className="text-gray-500 line-clamp-2">{linkPreview.description}</p>
+                    <h4 title={SmartLinkPreview.title} className="font-semibold line-clamp-1">{SmartLinkPreview.title}</h4>
+                    <p title={SmartLinkPreview.description} className="text-gray-500 line-clamp-2">{SmartLinkPreview.description}</p>
                   </div>
                 </a>
               )}
@@ -206,7 +204,7 @@ const Feed = ({
                 className="flex-1 bg-slate-100 dark:text-gray-200 dark:bg-[#2a2a2b] rounded-lg p-2 disabled:opacity-35 disabled:cursor-not-allowed"
                 name="desc"
                 value={desc}
-                maxLength={230}
+                maxLength={500}
                 minLength={3}
                 onChange={(e) => setDesc(e.target.value)}
                 disabled={isSubmitting}
@@ -276,7 +274,7 @@ const Feed = ({
                 <Image src="/addevent.png" alt="Event" width={20} height={20} />
                 Event
               </div>
-              {desc.length}/230
+              {desc.length}/500
             </div>
           </div>
         </div>}
@@ -285,12 +283,12 @@ const Feed = ({
           <p className="text-gray-600 text-center font-medium text-xl">No Posts yet. make friends to see thier posts or switch to public.</p>
           <div className="flex justify-center gap-2">
 
-            <Link href="/" className={`mr-2 ${filter === 'friends' ? 'text-blue-500' : 'text-gray-500'}`}>
+            <SmartLink href="/" className={`mr-2 ${filter === 'friends' ? 'text-blue-500' : 'text-gray-500'}`}>
               Friends
-            </Link>
-            <Link href="?filter=all" className={`${filter === 'all' ? 'text-blue-500' : 'text-gray-500'}`}>
+            </SmartLink>
+            <SmartLink href="?filter=all" className={`${filter === 'all' ? 'text-blue-500' : 'text-gray-500'}`}>
               Public
-            </Link>
+            </SmartLink>
           </div>
         </div>
       }
@@ -309,28 +307,9 @@ const Feed = ({
           <Post key={post.id} post={post} userId={session?.user?.id || ''} />
         ))}
       </InfiniteScroll>}
-      <ShowCacheKeys />
     </>
   );
 };
 
 export default Feed;
-const ShowCacheKeys = () => {
-  const queryClient = useQueryClient();
-
-  const getAllCacheKeys = () => {
-    // Get all queries from the cache
-    const queries = queryClient.getQueryCache().getAll();
-
-    // Map through them to extract keys
-    const queryKeys = queries.map(query => query.queryKey);
-    toast.warning(JSON.stringify(queryKeys));
-  };
-
-  return (
-    <div>
-      <button onClick={getAllCacheKeys}>Show Cache Keys</button>
-    </div>
-  );
-};
 

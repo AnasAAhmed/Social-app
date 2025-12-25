@@ -56,7 +56,7 @@ export default function RootLayout({
             }} />
           </head>
           <body className={inter.className}>
-          <NextTopLoader/>
+          <NextTopLoader showSpinner={false}/>
             <Navbar />
             {/* <CreateUser /> */}
             <div className="dark:bg-black bg-slate-100 md:px-8 xl:px-20 pt-20 min-h-[100vh]">

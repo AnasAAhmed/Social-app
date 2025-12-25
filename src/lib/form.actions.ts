@@ -141,15 +141,13 @@ export const deleteProfile = async (
         };
     }
 };
-export const addPost = async (formData: FormData, img: string) => {
-    const desc = formData.get("desc") as string;
-
-    const Desc = z.string().min(1).max(255);
+export const addPost = async (desc: string, img: string) => {
+    const Desc = z.string().min(1).max(500);
     const validatedDesc = Desc.safeParse(desc);
 
     if (!validatedDesc.success) {
         console.log("Description is not valid");
-        throw new Error(`Description is not valid. It must be less than 255 characters.`);
+        throw new Error(`Description is not valid. It must be less than 500 characters.`);
     }
 
     const { user } = (await auth()) as Session;

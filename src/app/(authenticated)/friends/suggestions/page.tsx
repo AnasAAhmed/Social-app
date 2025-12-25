@@ -7,7 +7,7 @@ import { auth } from '@/auth';
 import NotLoggedIn from '@/components/NotLoggedIn';
 import prisma from '@/lib/client';
 import Pagination from '@/components/Pagination';
-import Link from 'next/link';
+import SmartLink from '@/components/SmartLink';
 import Image from 'next/image';
 import UserInfoCardInteraction from '@/components/userInfo/UserInfoCardIntraction';
 
@@ -103,13 +103,13 @@ const page = async ({ searchParams }: { searchParams: Promise<{ page?: string }>
                 <span className='text-sm dark:text-white text-gray-400'>@{user.username}</span>
                 <p className="text-gray-600 dark:text-gray-300">mutual friends 12</p>
               </div>
-              <Link
+              <SmartLink
                 title={`${session.user.name === user.username ? 'Your' : user.username + "'s"} Profile`}
                 href={`/profile/${user.username}`}
                 className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700"
               >
                 {session.user.name === user.username ? 'Your Profile' : 'See Profile'}
-              </Link>
+              </SmartLink>
               < UserInfoCardInteraction
                 isFriendsPage={true}
                 userId={user.id}

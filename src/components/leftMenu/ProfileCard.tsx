@@ -1,6 +1,6 @@
 // 'use client'
 // import Image from 'next/image'
-// import Link from 'next/link'
+// import SmartLink from '@/components/SmartLink';
 // import React, { useEffect, useState } from 'react'
 // import { ProfileCardError, ProfileCardLoad } from '../Loader'
 // import { useMediaQuery } from '@/lib/truncate'
@@ -60,7 +60,7 @@
 //           <span className="text-xs dark:text-white text-gray-500">{data._count.follower} Followers</span>
 //           <span className="text-xs dark:text-white text-gray-500">{data._count.following} Following</span>
 //         </div>
-//         <Link href={`/profile/${data.username}`} className='bg-blue-500 text-white text-xs p-2 rounded-md'>My Profile</Link>
+//         <SmartLink href={`/profile/${data.username}`} className='bg-blue-500 text-white text-xs p-2 rounded-md'>My Profile</SmartLink>
 //       </div>
 //     </div>
 //   )
@@ -75,7 +75,7 @@ import { ProfileCardError, ProfileCardLoad } from '../Loader'
 import { useMediaQuery } from '@/lib/truncate'
 import { useSession } from 'next-auth/react'
 import { useQuery } from '@tanstack/react-query'
-import Link from 'next/link'
+import SmartLink from '@/components/SmartLink';
 
 const ProfileCard = () => {
   const { data: session, status } = useSession();
@@ -121,7 +121,7 @@ const ProfileCard = () => {
           <span className="text-xs dark:text-white text-gray-500">{data._count?.follower} Followers</span>
           <span className="text-xs dark:text-white text-gray-500">{data._count?.following} Following</span>
         </div>
-        <Link href={`/profile/${data.username}`} className='bg-blue-500 text-white text-xs p-2 rounded-md'>My Profile</Link>
+        <SmartLink href={`/profile/${data.username}`} className='bg-blue-500 text-white text-xs p-2 rounded-md'>My Profile</SmartLink>
       </div>
     </div>
   )

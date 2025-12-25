@@ -1,6 +1,6 @@
 import prisma from '@/lib/client';
 import Image from 'next/image';
-import Link from 'next/link';
+import SmartLink from '@/components/SmartLink';
 import React from 'react';
 import { Metadata } from "next";
 import { auth } from '@/auth';
@@ -93,20 +93,20 @@ const BirthDays = async () => {
                 {todayBirthdays.length > 0 ? (
                     todayBirthdays.map(f => (
                         <div key={f.id} className="flex justify-between items-center">
-                            <Link href={`/profile/${f.follower.username}`} className="flex items-center gap-4">
+                            <SmartLink href={`/profile/${f.follower.username}`} className="flex items-center gap-4">
                                 <Image src={f.follower.avatar || '/noAvatar.png'} alt='' width={40} height={40} className='w-10 h-10 rounded-full object-cover' />
                                 <span className="font-medium">@{f.follower.username}</span>
-                            </Link>
+                            </SmartLink>
                             <button className='bg-blue-500 text-white text-xs rounded-md px-2 py-1'>Celebrate</button>
                         </div>
                     ))
                 ) : todayBirthdays2.length > 0 ? (
                     todayBirthdays2.map(f => (
                         <div key={f.id} className="flex justify-between items-center">
-                            <Link href={`/profile/${f.following.username}`} className="flex items-center gap-4">
+                            <SmartLink href={`/profile/${f.following.username}`} className="flex items-center gap-4">
                                 <Image src={f.following.avatar || '/noAvatar.png'} alt='' width={40} height={40} className='w-10 h-10 rounded-full object-cover' />
                                 <span className="font-medium">@{f.following.username}</span>
-                            </Link>
+                            </SmartLink>
                             <button className='bg-blue-500 text-white text-xs rounded-md px-2 py-1'>Celebrate</button>
                         </div>
                     ))
@@ -122,7 +122,7 @@ const BirthDays = async () => {
                     {upcomingBirthdays.slice(0, 5).map(f => (
                         <div key={f.id} className="flex items-center gap-4">
                             <Image src={f.follower.avatar || '/noAvatar.png'} alt='' width={24} height={24} className='w-6 h-6 rounded-full object-cover' />
-                            <Link href={`/profile/${f.follower.username}`} className='text-xs text-gray-700'>@{f.follower.username}</Link>
+                            <SmartLink href={`/profile/${f.follower.username}`} className='text-xs text-gray-700'>@{f.follower.username}</SmartLink>
                             <span className="text-xs dark:text-white text-gray-500">{formatDate(new Date(f.follower.userInfo!.dob!))}</span>
                         </div>
                     ))}
@@ -134,7 +134,7 @@ const BirthDays = async () => {
                     {upcomingBirthdays2.slice(0, 5).map(f => (
                         <div key={f.id} className="flex items-center gap-4">
                             <Image src={f.following.avatar || '/noAvatar.png'} alt='' width={24} height={24} className='w-6 h-6 rounded-full object-cover' />
-                            <Link href={`/profile/${f.following.username}`} className='text-xs text-gray-700'>@{f.following.username}</Link>
+                            <SmartLink href={`/profile/${f.following.username}`} className='text-xs text-gray-700'>@{f.following.username}</SmartLink>
                             <span className="text-xs dark:text-white text-gray-500">{formatDate(new Date(f.following.userInfo!.dob!))}</span>
                         </div>
                     ))}

@@ -5,7 +5,7 @@ import Pagination from "@/components/Pagination";
 import RightMenu from "@/components/rightMenu/RightMenu";
 import prisma from "@/lib/client";
 import Image from "next/image";
-import Link from "next/link";
+import SmartLink from '@/components/SmartLink';
 
 export const dynamic = 'force-dynamic';
 
@@ -104,12 +104,12 @@ const page = async ({ params, searchParams }: { params: Promise<{ username: stri
                                     <span className='text-sm dark:text-white text-gray-400'>@{user.username}</span>
                                     <p className="text-gray-600 dark:text-gray-300">mutual friends 12</p>
                                 </div>
-                                <Link
+                                <SmartLink
                                     href={`/profile/${user.username}`}
                                     className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700"
                                 >
                                     {session?.user?.id === user.id ? 'Your Profile' : 'Profile'}
-                                </Link>
+                                </SmartLink>
                             </div>
                         ))}
                         <Pagination urlParamName='page' totalPages={totalPages} page={currentPage} />
