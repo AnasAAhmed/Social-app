@@ -44,8 +44,7 @@ export default function ChatSidebar({ open, onClose }: ChatSidebarProps) {
 
     return (
         <div
-            className="size-full flex-col border-e md:flex md:w-72"
-            style={{ display: open ? "flex" : "hidden" }}
+            className={`s flex-col border-e md:flex md:w-72 ${open ? "flex" : "hidden"}`}
         >
             <MenuHeader onClose={onClose} />
             <ChannelList
@@ -79,32 +78,31 @@ function MenuHeader({ onClose }: MenuHeaderProps) {
 
     return (
         <>
-            <div className="flex items-center gap-3 p-2">
+            <div className="flex bg-white dark:bg-[#17191c] items-center gap-3 p-2">
                 <div className="h-full md:hidden">
                     <button
-                        className="mt-4 bg-blue-600 text-white w-full py-2 rounded-lg disabled:opacity-50"
+                        className="bg-blue-600 text-white w-full p-2 rounded-lg disabled:opacity-50"
                         onClick={onClose}>
                         <X className="size-5" />
                     </button>
                 </div>
-                <h1 className="me-auto text-xl font-bold md:ms-2">Messages</h1>
+                <h1 className="me-auto text-xl dark:text-gray-300 font-bold md:ms-2">Messages</h1>
                 <button
-                    className="mt-4 bg-blue-600 text-white w-fusll p-2 rounded-lg disabled:opacity-50"
+                    className="bg-blue-600 text-white w-fusll p-2 rounded-lg disabled:opacity-50"
 
                     onClick={() => setShowNewChatDialog(true)}
                 >
                     <MailPlus className="size-5" />
                 </button>
             </div>
-            {showNewChatDialog && (
-                <NewChatDialog
-                    onOpenChange={setShowNewChatDialog}
-                    onChatCreated={() => {
-                        setShowNewChatDialog(false);
-                        onClose();
-                    }}
-                />
-            )}
+            <NewChatDialog
+                onOpenChange={setShowNewChatDialog}
+                open={showNewChatDialog}
+                onChatCreated={() => {
+                    setShowNewChatDialog(false);
+                    onClose();
+                }}
+            />
         </>
     );
 }

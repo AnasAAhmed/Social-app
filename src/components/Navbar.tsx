@@ -71,7 +71,7 @@ const User = ({ session }: { session: Session | null }) => {
           &#128172;
         </SmartLink>
         <DarkModeToggle />
-      <div className="relative" onBlur={() => setTimeout(() => setOpen(false), 170)}>
+      <div className="relative" onBlur={() => setTimeout(() => setOpen(false), 270)}>
         {session?.user ? (
           <>
             <button title="Avatar dropdown btn" onClick={() => setOpen(!open)}>

@@ -194,7 +194,7 @@ export const Loader1 = () => {
 }
 export const LoaderGif = ({ w, h }: { w?: number, h?: number }) => {
   return (
-    <div className="flex items-center justify-center w-full h-screen">
+    <div className="flex items-center justify-center w-full h-[80vh]">
 
       <Image unoptimized src={'/Bars.gif'} alt='Loader' width={w || 200} height={w || 200} />
     </div>

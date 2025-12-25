@@ -4,6 +4,7 @@ import { auth } from "@/auth";
 import { z } from "zod";
 import prisma from "./client";
 import { Post } from "@prisma/client";
+import streamServerClient from "./stream";
 
 
 export const updateProfile = async (
@@ -67,27 +68,37 @@ export const updateProfile = async (
     }
 
     try {
-        await prisma.user.update({
-            where: { id: user.id },
-            data: {
-                username: validatedFields.data.username,
-                cover: validatedFields.data.cover,
-                avatar: validatedFields.data.avatar,
-                userInfo: {
-                    update: {
-                        name: validatedFields.data.name ?? null,
-                        surname: validatedFields.data.surname ?? null,
-                        description: validatedFields.data.description ?? null,
-                        city: validatedFields.data.city ?? null,
-                        school: validatedFields.data.school ?? null,
-                        work: validatedFields.data.work ?? null,
-                        website: validatedFields.data.website ?? null,
-                        dob: validatedFields.data.dob ?? null,
+        await prisma.$transaction(async (tx) => {
+
+            await prisma.user.update({
+                where: { id: user.id },
+                data: {
+                    username: validatedFields.data.username,
+                    cover: validatedFields.data.cover,
+                    avatar: validatedFields.data.avatar,
+                    userInfo: {
+                        update: {
+                            name: validatedFields.data.name ?? null,
+                            surname: validatedFields.data.surname ?? null,
+                            description: validatedFields.data.description ?? null,
+                            city: validatedFields.data.city ?? null,
+                            school: validatedFields.data.school ?? null,
+                            work: validatedFields.data.work ?? null,
+                            website: validatedFields.data.website ?? null,
+                            dob: validatedFields.data.dob ?? null,
+                        },
                     },
                 },
-            },
+            });
+            await streamServerClient.partialUpdateUser({
+                id: user.id,
+                set: {
+                    username: validatedFields.data.username,
+                    name: validatedFields.data.username,
+                    image: validatedFields.data.avatar
+                }
+            })
         });
-
         return {
             success: true,
             error: false,
@@ -106,7 +117,7 @@ export const updateProfile = async (
 export const deleteProfile = async (
     prevState: { success: boolean; error: boolean; message: string },
 ): Promise<{ success: boolean; error: boolean; message: string }> => {
-   
+
     const { user } = (await auth()) as Session;
 
     if (!user?.id) {
@@ -119,13 +130,21 @@ export const deleteProfile = async (
     }
 
     try {
-        await prisma.userInfo.delete({
-            where: { id: user.id },
-          });
-          
-          await prisma.user.delete({
-            where: { id: user.id },
-          });
+        await prisma.$transaction(async (tx) => {
+            await tx.userInfo.delete({
+                where: { id: user.id },
+            });
+
+            await tx.user.delete({
+                where: { id: user.id },
+            });
+
+            await streamServerClient.deleteUser(user.id, {
+                hard_delete: true, 
+                mark_messages_deleted: true, 
+            });
+        });
+
         return {
             success: true,
             error: false,
@@ -182,7 +201,7 @@ export const addPost = async (desc: string, img: string) => {
 export const updatePost = async (
     prevState: { success: boolean; error: boolean; message: string },
     formData: FormData
-  ): Promise<{ success: boolean; error: boolean; message: string }> => {
+): Promise<{ success: boolean; error: boolean; message: string }> => {
     const desc = formData.get('desc')?.toString() || '';
     const img = formData.get('img')?.toString() || '';
     const postId = formData.get('postId')?.toString() || '';

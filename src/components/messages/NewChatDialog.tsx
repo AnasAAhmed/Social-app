@@ -6,16 +6,17 @@ import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { useCallback, useState } from "react";
 import { toast } from "sonner";
-import { UserResponse } from "stream-chat";
 import { useChatContext } from "stream-chat-react";
 import Dialog from "../Dialog";
 
 interface NewChatDialogProps {
+    open: boolean;
     onOpenChange: (open: boolean) => void;
     onChatCreated: () => void;
 }
 
 export default function NewChatDialog({
+    open,
     onOpenChange,
     onChatCreated,
 }: NewChatDialogProps) {
@@ -25,7 +26,6 @@ export default function NewChatDialog({
     if (!loggedInUser?.user) return;
 
     const [searchInput, setSearchInput] = useState("");
-    const [isOpen, setIsOpen] = useState(false);
     const debounce = (func: (value: string) => void, delay: number) => {
         let timeoutId: NodeJS.Timeout;
         return (...args: any) => {
@@ -41,14 +41,12 @@ export default function NewChatDialog({
     );
 
     const [selectedUsers, setSelectedUsers] = useState<any>(null);
-    const user_id = loggedInUser!.user!.id
-    const user = loggedInUser!.user
     const { data, isFetching, isError, isSuccess } = useQuery({
         queryKey: ["stream-users", searchInput],
         queryFn: async () =>
             client.queryUsers(
                 {
-                    id: { $in: [] },
+                    id: { $in: [''] },
                     role: { $in: ["user"] },
                     ...(searchInput
                         ? {
@@ -93,19 +91,19 @@ export default function NewChatDialog({
     });
 
     return (
-        <Dialog open={isOpen} onClose={() => setIsOpen(false)} title="New chat">=
+        <Dialog open={open} onClose={()=>onOpenChange(false)} title="New chat">
             <div className="group relative">
                 <SearchIcon className="absolute left-5 top-1/2 size-5 -translate-y-1/2 transform text-muted-foreground group-focus-within:text-primary" />
                 <input
                     placeholder="Search users..."
                     className="h-12 w-full pe-4 ps-14 focus:outline-none"
-                    value={searchInput}
+                    defaultValue={searchInput}
                     onChange={(e) => handleSearch(e.target.value)}
                 />
             </div>
-            {!!selectedUsers.length && (
+            {!!selectedUsers?.length && (
                 <div className="mt-4 flex flex-wrap gap-2 p-2">
-                    {selectedUsers.map((user: any) => (
+                    {selectedUsers?.map((user: any) => (
                         <SelectedUserTag
                             key={user.id}
                             user={user}
@@ -119,7 +117,7 @@ export default function NewChatDialog({
                 </div>
             )}
             <hr />
-            <div className="h-96 overflow-y-auto">
+            <div className="min-h-56 overflow-y-auto">
                 {isSuccess &&
                     data.users.map((user) => (
                         <UserResult
@@ -146,10 +144,10 @@ export default function NewChatDialog({
                         An error occurred while loading users.
                     </p>
                 )}
-            </div>=
+            </div>
             <button
                 className="mt-4 bg-blue-600 text-white w-full py-2 rounded-lg disabled:opacity-50"
-                disabled={!selectedUsers.length || mutation.isPending}
+                disabled={!selectedUsers?.length || mutation.isPending}
                 onClick={() => mutation.mutate()}
             >
                 {mutation.isPending ? "Creating..." : "Start Chat"}

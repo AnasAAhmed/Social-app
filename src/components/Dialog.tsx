@@ -27,14 +27,14 @@ const Dialog = ({ open, onClose, title, children }: DialogProps) => {
     >
       <FocusLock returnFocus>
         <div
-          className="bg-white dark:bg-neutral-900 rounded-xl shadow-lg w-full max-w-lg p-6 relative"
+          className="bg-white animate-modal max-h-[90vh] overflow-y-auto dark:bg-neutral-900 rounded-xl shadow-lg w-full max-w-lg p-3 sm:p-6 relative"
           onClick={(e) => e.stopPropagation()}
         >
           {/* Close Button */}
           <button
             onClick={onClose}
             aria-label="Close Dialog"
-            className="absolute right-4 top-4 text-gray-500 hover:text-gray-900"
+            className="absolute right-4 top-7 text-gray-500 hover:text-gray-900"
           >
             <X size={18} />
           </button>

@@ -22,7 +22,7 @@
     "ky": "^1.14.1",
     "lucide-react": "^0.487.0",
     "mailtrap": "^4.0.0",
-    "next": "16.0.1",
+    "next": "^16.0.10",
     "next-auth": "^5.0.0-beta.25",
     "next-cloudinary": "^6.6.2",
     "nextjs-toploader": "^3.9.17",

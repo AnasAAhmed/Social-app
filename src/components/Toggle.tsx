@@ -18,24 +18,30 @@ const DarkModeToggle = () => {
     }, []);
 
     const toggleDarkMode = () => {
-        if (darkMode) {
-            document.documentElement.classList.remove('dark');
-            localStorage.setItem('theme', 'light');
-        } else {
-            document.documentElement.classList.add('dark');
-            localStorage.setItem('theme', 'dark');
-        }
+        const newTheme = darkMode ? "light" : "dark";
+
+        // for full website
+        document.documentElement.classList.toggle("dark", newTheme === "dark");
+        localStorage.setItem("theme", newTheme);
+
+        //for stream,io elements
+        const streamElements = document.querySelectorAll(".str-chat");
+        streamElements.forEach((el) => {
+            el.classList.remove("str-chat__theme-dark", "str-chat__theme-light");
+            el.classList.add(`str-chat__theme-${newTheme}`);
+        });
+
         setDarkMode(!darkMode);
     };
 
     return (
-            <button
-                onClick={toggleDarkMode}
-                title={darkMode?'toggle light theme':'toggle dark theme'}
-                className="text-black text-[22px] dark:text-white"
-            >
-              {!darkMode?<Sun size={18}/>:<Moon size={18}/>} 
-            </button>
+        <button
+            onClick={toggleDarkMode}
+            title={darkMode ? 'toggle light theme' : 'toggle dark theme'}
+            className="text-black text-[22px] dark:text-white"
+        >
+            {!darkMode ? <Sun size={18} /> : <Moon size={18} />}
+        </button>
     );
 };
 
