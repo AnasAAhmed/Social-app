@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 const protectedRoutes = ['/'];
 const authRoutes = ['/login', '/sign-up', '/reset-password'];
 
-export async function middleware(req: NextRequest) {
+export async function proxy(req: NextRequest) {
     const token =
         req.cookies.get('authjs.session-token')?.value ||
         req.cookies.get('__Secure-authjs.session-token')?.value;
