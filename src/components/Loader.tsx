@@ -276,6 +276,7 @@ export const LoaderStories = () => {
       <div className="h-40 w-28 animate-pulse dark:bg-slate-700 bg-slate-200 flex flex-col items-center justify-end rounded-md gap-1" />
       <div className="h-40 w-28 animate-pulse dark:bg-slate-700 bg-slate-200 flex flex-col items-center justify-end rounded-md gap-1" />
       <div className="h-40 w-28 animate-pulse dark:bg-slate-700 bg-slate-200 flex flex-col items-center justify-end rounded-md gap-1" />
+      <div className="h-40 w-28 animate-pulse dark:bg-slate-700 bg-slate-200 flex flex-col items-center justify-end rounded-md gap-1" />
      </>
   )
 }

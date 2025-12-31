@@ -1,11 +1,13 @@
 "use client";
 
 import { switchBlock, switchFollow, switchUnFollow } from "@/lib/action";
+import { useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { useOptimistic, useState } from "react";
 
 const UserInfoCardInteraction = ({
   isFriendsPage = false,
+  currentUserId,
   userId,
   isUserBlocked,
   isFollowing,
@@ -14,12 +16,14 @@ const UserInfoCardInteraction = ({
 }: {
   isFriendsPage?: boolean;
   userId: string;
+  currentUserId?: string;
   isUserBlocked: boolean;
   isFollowing: boolean;
   isFollowingSent: boolean;
   isFollowedByThem: boolean
 }) => {
   const router = useRouter();
+  const queryClient = useQueryClient();
   const [userState, setUserState] = useState({
     following: isFollowing,
     blocked: isUserBlocked,
@@ -39,7 +43,11 @@ const UserInfoCardInteraction = ({
       if (isFriendsPage) {
         router.refresh();
       }
-    } catch (err) { }
+      if (currentUserId) queryClient.invalidateQueries({ queryKey: ["userInfo" + userId + currentUserId] });
+
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   const unfollow = async () => {
@@ -52,6 +60,7 @@ const UserInfoCardInteraction = ({
         followingRequestSent:
           !prev.following && !prev.followingRequestSent ? true : false,
       }));
+      if (currentUserId) queryClient.invalidateQueries({ queryKey: ["userInfo" + userId + currentUserId] });
       if (isFriendsPage) {
         router.refresh();
       }
@@ -66,6 +75,7 @@ const UserInfoCardInteraction = ({
         ...prev,
         blocked: !prev.blocked,
       }));
+      if (currentUserId) queryClient.invalidateQueries({ queryKey: ["userInfo" + userId + currentUserId] });
     } catch (err) { }
   };
 
