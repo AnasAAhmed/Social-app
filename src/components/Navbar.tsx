@@ -42,7 +42,7 @@ const Navbar = () => {
           <Search />
         </div>
       </div>
-      <div id='RIGHT' className="w-[33%] flex items-center gap-2 sm:gap-4 xl:gap-8 justify-end">
+      <div id='RIGHT' className="w-[42%] flex items-center gap-2 sm:gap-4 xl:gap-8 justify-end">
         {loading ? (
           <div role="status" className="animate-pulse">
             <div className="flex items-center gap-4">
@@ -136,7 +136,7 @@ function MessagesButton() {
     };
   }, [data?.unreadCount]);
   return (
-    <SmartLink title='chat' className='max-sm:hidden relative' href={'/chat'}>
+    <SmartLink title='chat' className='max-sm:shidden relative' href={'/chat'}>
       &#128172;
       {data?.unreadCount > 0 && (
         <span className="absolute -right-[6px] text-white bg-blue-500 -top-[5px] rounded-full bg-primary px-1 text-[10px] font-medium tabular-nums text-primary-foreground">
