@@ -16,7 +16,7 @@ interface ChatChannelProps {
 
 export default function ChatChannel({ open, openSidebar }: ChatChannelProps) {
     return (
-        <div className={`w-full duration-300 ease-out transition-transform md:block ${!open ? "max-sm:translate-x-[200%]" : "translate-x-0"}`}
+        <div className={`w-full max-h-[86vh] overflow-auto duration-300 ease-out transition-transform md:block ${!open ? "max-sm:translate-x-[200%]" : "translate-x-0"}`}
         >
             <Channel>
                 <Window>

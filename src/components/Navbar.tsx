@@ -1,6 +1,6 @@
 'use client'
 import SmartLink from '@/components/SmartLink';
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import MobMenu from './MObMenu'
 import Image from 'next/image'
 import Search from './Search'
@@ -9,6 +9,8 @@ import DarkModeToggle from './Toggle'
 import { useSession, signOut } from "next-auth/react";
 import { usePathname } from 'next/navigation'
 import { Session } from 'next-auth'
+import { useQuery } from '@tanstack/react-query';
+import kyInstance from '@/lib/ky';
 
 const Navbar = () => {
   const { data: session, status } = useSession();
@@ -64,13 +66,11 @@ const User = ({ session }: { session: Session | null }) => {
   const [open, setOpen] = useState(false);
   return (
     <>
-        <SmartLink title='friends' className='max-sm:hidden' href={'/friends'}>
-          <Image src={"/friends.png"} alt='people' width={20} height={20} />
-        </SmartLink>
-        <SmartLink title='chat' className='max-sm:hidden text-blue-500' href={'/chat'}>
-          &#128172;
-        </SmartLink>
-        <DarkModeToggle />
+      <SmartLink title='friends' className='max-sm:hidden' href={'/friends/suggestions'}>
+        <Image src={"/friends.png"} alt='people' width={20} height={20} />
+      </SmartLink>
+      <MessagesButton />
+      <DarkModeToggle />
       <div className="relative" onBlur={() => setTimeout(() => setOpen(false), 270)}>
         {session?.user ? (
           <>
@@ -110,5 +110,40 @@ const User = ({ session }: { session: Session | null }) => {
       <MobMenu />
     </>
   )
+}
+function MessagesButton() {
+  const { data } = useQuery({
+    queryKey: ["unread-messages-count"],
+    queryFn: () =>
+      kyInstance.get("/api/messages/unread-count").json<{
+        unreadCount: number,
+      }>(),
+    initialData: { unreadCount: 0 },
+    refetchInterval: 60 * 1000,
+  });
+  useEffect(() => {
+    if (!data) return;
+    const currentTitle = document.title;
+    const count = data?.unreadCount || 0;
+    if (count > 0) {
+      document.title = `Messages:(${count}) ${currentTitle}`;
+    } else {
+      document.title = currentTitle;
+    }
+
+    return () => {
+      document.title = currentTitle;
+    };
+  }, [data?.unreadCount]);
+  return (
+    <SmartLink title='chat' className='max-sm:hidden relative' href={'/chat'}>
+      &#128172;
+      {data?.unreadCount > 0 && (
+        <span className="absolute -right-[6px] text-white bg-blue-500 -top-[5px] rounded-full bg-primary px-1 text-[10px] font-medium tabular-nums text-primary-foreground">
+          {data.unreadCount}
+        </span>
+      )}
+    </SmartLink>
+  );
 }
 export default Navbar

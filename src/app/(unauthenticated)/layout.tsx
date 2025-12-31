@@ -6,6 +6,7 @@ import { Toaster } from 'sonner';
 import { SessionProvider } from "next-auth/react";
 // import IsAuth from "@/components/isAuth";
 import NextTopLoader from 'nextjs-toploader';
+import ReactQueryProvider from "@/lib/QueryProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -39,10 +40,12 @@ export default async function RootLayout({
 }>) {
   return (
     <SessionProvider >
-      <html lang="en" suppressHydrationWarning>
-        <head>
-          <script dangerouslySetInnerHTML={{
-            __html: `
+      <ReactQueryProvider>
+
+        <html lang="en" suppressHydrationWarning>
+          <head>
+            <script dangerouslySetInnerHTML={{
+              __html: `
             (function() {
               const theme = localStorage.getItem('theme')
               if (theme === 'dark') {
@@ -52,18 +55,20 @@ export default async function RootLayout({
               }
             })()
           `
-          }} />
-        </head>
-        <body className={inter.className}>
-          <NextTopLoader/>
-          <Navbar />
-          {/* <IsAuth /> */}
-          <div className="dark:bg-[#111] bg-slate-100 pt-14 min-h-[100vh]">
-            {children}
-            <Toaster />
-          </div>
-        </body>
-      </html>
+            }} />
+          </head>
+          <body className={inter.className}>
+            <NextTopLoader />
+            <Navbar />
+            {/* <IsAuth /> */}
+            <div className="dark:bg-[#111] bg-slate-100 pt-14 min-h-[100vh]">
+              {children}
+              <Toaster />
+            </div>
+          </body>
+        </html>
+      </ReactQueryProvider>
+
     </SessionProvider>
   );
 }

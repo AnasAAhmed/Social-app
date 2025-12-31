@@ -26,7 +26,7 @@ const FriendRequest = ({ userId }: { userId: string }) => {
         const currentTitle = document.title;
         const count = data.requestsCount || 0;
         if (count > 0) {
-            document.title = `(${count}) ${currentTitle}`;
+            document.title = `Frd:(${count}) ${currentTitle}`;
         } else {
             document.title = currentTitle;
         }
